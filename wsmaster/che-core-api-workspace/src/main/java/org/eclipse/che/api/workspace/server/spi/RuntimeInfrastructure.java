@@ -10,13 +10,13 @@
  *******************************************************************************/
 package org.eclipse.che.api.workspace.server.spi;
 
+import com.google.common.collect.ImmutableSet;
+
 import org.eclipse.che.api.core.ApiException;
 import org.eclipse.che.api.core.ServerException;
 import org.eclipse.che.api.core.model.workspace.config.Environment;
 
 import java.io.IOException;
-import java.util.ArrayList;
-import java.util.List;
 import java.util.Set;
 
 /**
@@ -27,20 +27,27 @@ import java.util.Set;
  */
 public abstract class RuntimeInfrastructure {
 
-    protected final List<String> recipeTypes = new ArrayList<>();
-    protected String name;
+    protected final Set<String> recipeTypes;
+    protected final String name;
+
+    public RuntimeInfrastructure(String name, Set<String> types) throws ValidationException {
+        if(name == null)
+            throw new ValidationException("Infrastructure name undefined");
+        this.name = name;
+        this.recipeTypes = ImmutableSet.copyOf(types);
+    }
 
     /**
      * @return the name
      */
-    public String getName() {
+    public final String getName() {
         return name;
     }
 
     /**
      * @return Recipe Types supported by this Infrastructure
      */
-    public List<String> getRecipeTypes() {
+    public final Set<String> getRecipeTypes() {
         return recipeTypes;
     }
 
