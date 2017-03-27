@@ -14,7 +14,7 @@ import com.google.gwtmockito.GwtMockitoTestRunner;
 import com.google.web.bindery.event.shared.EventBus;
 
 import org.eclipse.che.api.core.model.machine.Machine;
-import org.eclipse.che.api.core.model.machine.MachineRuntimeInfo;
+import org.eclipse.che.api.core.model.workspace.runtime.MachineRuntime;
 import org.eclipse.che.api.core.model.machine.Server;
 import org.eclipse.che.api.machine.shared.Constants;
 import org.eclipse.che.api.promises.client.Operation;
@@ -67,7 +67,7 @@ public class ServerPortMacroTest {
     private Machine machine;
 
     @Mock
-    private MachineRuntimeInfo machineRuntimeInfo;
+    private MachineRuntime machineRuntimeInfo;
 
     @Mock
     private Server server;
@@ -115,7 +115,7 @@ public class ServerPortMacroTest {
     }
 
     protected void registerProvider() {
-        when(devMachine.getDescriptor()).thenReturn(machine);
+        //when(devMachine.getDescriptor()).thenReturn(machine);
         when(machine.getRuntime()).thenReturn(machineRuntimeInfo);
         doReturn(Collections.<String, Server>singletonMap(WS_AGENT_PORT, server)).when(machineRuntimeInfo).getServers();
         when(server.getAddress()).thenReturn(ADDRESS);

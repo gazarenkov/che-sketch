@@ -15,13 +15,13 @@ import com.google.inject.assistedinject.Assisted;
 
 import org.eclipse.che.api.core.NotFoundException;
 import org.eclipse.che.api.core.ServerException;
-import org.eclipse.che.api.core.model.machine.Command;
+import org.eclipse.che.api.core.model.workspace.config.Command;
 import org.eclipse.che.api.core.model.machine.Machine;
 import org.eclipse.che.api.core.model.machine.MachineSource;
 import org.eclipse.che.api.core.util.LineConsumer;
 import org.eclipse.che.api.core.util.ListLineConsumer;
 import org.eclipse.che.api.machine.server.exception.MachineException;
-import org.eclipse.che.api.machine.server.model.impl.MachineRuntimeInfoImpl;
+import org.eclipse.che.api.machine.server.model.impl.MachineRuntimeImpl;
 import org.eclipse.che.api.machine.server.spi.Instance;
 import org.eclipse.che.api.machine.server.spi.InstanceProcess;
 import org.eclipse.che.api.machine.server.spi.impl.AbstractInstance;
@@ -101,7 +101,7 @@ public class DockerInstance extends AbstractInstance {
     private final DockerInstanceProcessesCleaner              processesCleaner;
     private final ConcurrentHashMap<Integer, InstanceProcess> machineProcesses;
     private final boolean                                     snapshotUseRegistry;
-    private final MachineRuntimeInfoImpl                      machineRuntime;
+    private final MachineRuntimeImpl                          machineRuntime;
 
     @Inject
     public DockerInstance(DockerConnector docker,
@@ -139,7 +139,7 @@ public class DockerInstance extends AbstractInstance {
     }
 
     @Override
-    public MachineRuntimeInfoImpl getRuntime() {
+    public MachineRuntimeImpl getRuntime() {
         return machineRuntime;
     }
 
@@ -379,11 +379,18 @@ public class DockerInstance extends AbstractInstance {
         return container;
     }
 
-    private MachineRuntimeInfoImpl doGetRuntime() throws MachineException {
+    private MachineRuntimeImpl doGetRuntime() throws MachineException {
         try {
-            return new MachineRuntimeInfoImpl(dockerMachineFactory.createMetadata(docker.inspectContainer(container),
-                                                                                  getConfig(),
-                                                                                  node.getHost()));
+
+            DockerInstanceRuntime runtime = dockerMachineFactory.createMetadata(docker.inspectContainer(container),
+                                                                                getConfig(),
+                                                                                node.getHost());
+            return new MachineRuntimeImpl(runtime.getProperties(), runtime.getServers());
+
+
+//            return new MachineRuntimeImpl(dockerMachineFactory.createMetadata(docker.inspectContainer(container),
+//                                                                              getConfig(),
+//                                                                              node.getHost()));
         } catch (IOException x) {
             throw new MachineException(x.getMessage(), x);
         }

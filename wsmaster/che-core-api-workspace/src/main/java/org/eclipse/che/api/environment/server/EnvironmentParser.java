@@ -13,9 +13,9 @@ package org.eclipse.che.api.environment.server;
 import com.google.common.base.Joiner;
 
 import org.eclipse.che.api.core.ServerException;
-import org.eclipse.che.api.core.model.workspace.Environment;
-import org.eclipse.che.api.core.model.workspace.EnvironmentRecipe;
-import org.eclipse.che.api.core.model.workspace.ExtendedMachine;
+import org.eclipse.che.api.core.model.workspace.config.Environment;
+import org.eclipse.che.api.core.model.workspace.config.EnvironmentRecipe;
+import org.eclipse.che.api.core.model.workspace.config.MachineConfig2;
 import org.eclipse.che.api.environment.server.model.CheServiceImpl;
 import org.eclipse.che.api.environment.server.model.CheServicesEnvironmentImpl;
 
@@ -90,20 +90,20 @@ public class EnvironmentParser {
         CheServicesEnvironmentImpl cheServicesEnvironment = parser.parse(environment);
 
         cheServicesEnvironment.getServices().forEach((name, service) -> {
-            ExtendedMachine extendedMachine = environment.getMachines().get(name);
-            if (extendedMachine != null) {
-                normalizeMachine(name, service, extendedMachine);
+            MachineConfig2 machineConfig2 = environment.getMachines().get(name);
+            if (machineConfig2 != null) {
+                normalizeMachine(name, service, machineConfig2);
             }
         });
 
         return cheServicesEnvironment;
     }
 
-    private void normalizeMachine(String name, CheServiceImpl service, ExtendedMachine extendedMachine) {
-        if (extendedMachine.getAttributes().containsKey("memoryLimitBytes")) {
+    private void normalizeMachine(String name, CheServiceImpl service, MachineConfig2 machineConfig2) {
+        if (machineConfig2.getAttributes().containsKey("memoryLimitBytes")) {
 
             try {
-                service.setMemLimit(Long.parseLong(extendedMachine.getAttributes().get("memoryLimitBytes")));
+                service.setMemLimit(Long.parseLong(machineConfig2.getAttributes().get("memoryLimitBytes")));
             } catch (NumberFormatException e) {
                 throw new IllegalArgumentException(
                         format("Value of attribute 'memoryLimitBytes' of machine '%s' is illegal", name));
@@ -115,7 +115,7 @@ public class EnvironmentParser {
                                                 expose :
                                                 expose + "/tcp")
                                  .collect(toList()));
-        extendedMachine.getServers().forEach((serverRef, serverConf) -> {
+        machineConfig2.getServers().forEach((serverRef, serverConf) -> {
             String normalizedPort = serverConf.getPort().contains("/") ?
                                     serverConf.getPort() :
                                     serverConf.getPort() + "/tcp";

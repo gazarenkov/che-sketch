@@ -69,10 +69,10 @@
             <groupId>org.eclipse.che.core</groupId>
             <artifactId>che-core-api-dto</artifactId>
         </dependency>
-        <dependency>
+        <!-- dependency>
             <groupId>org.eclipse.che.core</groupId>
             <artifactId>che-core-api-machine-shared</artifactId>
-        </dependency>
+        </dependency -->
         <dependency>
             <groupId>org.eclipse.che.core</groupId>
             <artifactId>che-core-api-model</artifactId>
@@ -81,10 +81,10 @@
             <groupId>org.eclipse.che.core</groupId>
             <artifactId>che-core-api-project</artifactId>
         </dependency>
-        <dependency>
+        <!-- dependency>
             <groupId>org.eclipse.che.core</groupId>
             <artifactId>che-core-api-workspace-shared</artifactId>
-        </dependency>
+        </dependency -->
         <dependency>
             <groupId>org.eclipse.che.core</groupId>
             <artifactId>che-core-commons-inject</artifactId>

@@ -12,9 +12,8 @@ package org.eclipse.che.ide.api.machine;
 
 import org.eclipse.che.api.core.model.machine.Machine;
 import org.eclipse.che.api.core.model.machine.Server;
-import org.eclipse.che.api.core.rest.shared.dto.Link;
+import org.eclipse.che.api.core.model.workspace.runtime.ServerRuntime;
 
-import java.util.List;
 import java.util.Map;
 
 /**
@@ -22,7 +21,9 @@ import java.util.Map;
  *
  * @author Roman Nikitenko
  */
-public interface MachineEntity extends Machine {
+public interface MachineEntity /*extends Machine*/ {
+
+    String getId();
 
     /** Returns {@code true} when the machine entity is development machine and {@code false} otherwise */
     boolean isDev();
@@ -43,18 +44,18 @@ public interface MachineEntity extends Machine {
     String getExecAgentUrl();
 
     /** Returns mapping of exposed ports to {@link Server}. */
-    Map<String, ? extends Server> getServers();
+    Map<String, ? extends ServerRuntime> getServers();
 
     /** Returns {@link Server} by reference or null if it not exists. */
-    Server getServer(String ref);
+    ServerRuntime getServer(String ref);
 
-    List<Link> getMachineLinks();
+    //List<Link> getMachineLinks();
 
-    Link getMachineLink(String ref);
+    //Link getMachineLink(String ref);
 
-    Map<String, String> getEnvVariables();
+    //Map<String, String> getEnvVariables();
 
     /** Returns {@link Machine descriptor} */
-    Machine getDescriptor();
+    //Machine getDescriptor();
 
 }

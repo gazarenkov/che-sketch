@@ -12,7 +12,7 @@ package org.eclipse.che.plugin.machine.ssh;
 
 import org.eclipse.che.api.core.model.machine.Machine;
 import org.eclipse.che.api.core.model.machine.MachineConfig;
-import org.eclipse.che.api.core.model.machine.MachineRuntimeInfo;
+import org.eclipse.che.api.core.model.workspace.runtime.MachineRuntime;
 import org.eclipse.che.api.core.util.LineConsumer;
 import org.mockito.Mock;
 import org.mockito.testng.MockitoTestNGListener;
@@ -48,7 +48,7 @@ public class SshMachineInstanceTest {
         when(machine.getEnvName()).thenReturn("EnvName");
         when(machine.getId()).thenReturn("Id");
         when(machine.getOwner()).thenReturn("Owner");
-        when(machine.getRuntime()).thenReturn(mock(MachineRuntimeInfo.class));
+        when(machine.getRuntime()).thenReturn(mock(MachineRuntime.class));
         when(machine.getWorkspaceId()).thenReturn("WorkspaceId");
 
         sshMachineInstance = new SshMachineInstance(machine,

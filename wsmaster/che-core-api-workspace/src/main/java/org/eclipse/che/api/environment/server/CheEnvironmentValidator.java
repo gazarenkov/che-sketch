@@ -15,12 +15,11 @@ import com.google.common.base.Joiner;
 import org.eclipse.che.api.core.ServerException;
 import org.eclipse.che.api.core.model.machine.MachineConfig;
 import org.eclipse.che.api.core.model.machine.ServerConf;
-import org.eclipse.che.api.core.model.workspace.Environment;
-import org.eclipse.che.api.core.model.workspace.ExtendedMachine;
-import org.eclipse.che.api.core.model.workspace.ServerConf2;
+import org.eclipse.che.api.core.model.workspace.config.Environment;
+import org.eclipse.che.api.core.model.workspace.config.MachineConfig2;
+import org.eclipse.che.api.core.model.workspace.config.ServerConf2;
 import org.eclipse.che.api.environment.server.model.CheServiceImpl;
 import org.eclipse.che.api.environment.server.model.CheServicesEnvironmentImpl;
-import org.eclipse.che.api.machine.server.MachineInstanceProviders;
 import org.eclipse.che.commons.annotation.Nullable;
 
 import javax.inject.Inject;
@@ -74,15 +73,16 @@ public class CheEnvironmentValidator {
     private static final Pattern VOLUME_FROM_PATTERN =
             Pattern.compile("^(?<serviceName>" + MACHINE_NAME_REGEXP + ")(:(ro|rw))?$");
 
-    private final MachineInstanceProviders     machineInstanceProviders;
+//    private final MachineInstanceProviders     machineInstanceProviders;
     private final EnvironmentParser            environmentParser;
     private final DefaultServicesStartStrategy startStrategy;
 
     @Inject
-    public CheEnvironmentValidator(MachineInstanceProviders machineInstanceProviders,
+    public CheEnvironmentValidator(
+//            MachineInstanceProviders machineInstanceProviders,
                                    EnvironmentParser environmentParser,
                                    DefaultServicesStartStrategy startStrategy) {
-        this.machineInstanceProviders = machineInstanceProviders;
+//        this.machineInstanceProviders = machineInstanceProviders;
         this.environmentParser = environmentParser;
         this.startStrategy = startStrategy;
     }
@@ -167,7 +167,7 @@ public class CheEnvironmentValidator {
     }
 
     protected void validateMachine(String machineName,
-                                   @Nullable ExtendedMachine extendedMachine,
+                                   @Nullable MachineConfig2 machineConfig2,
                                    CheServiceImpl service,
                                    String envName,
                                    Set<String> servicesNames) throws IllegalArgumentException {
@@ -186,8 +186,8 @@ public class CheEnvironmentValidator {
                       "Machine '%s' in environment '%s' contains mutually exclusive dockerfile content and build context.",
                       machineName, envName);
 
-        if (extendedMachine != null) {
-            validateExtendedMachine(extendedMachine, envName, machineName);
+        if (machineConfig2 != null) {
+            validateExtendedMachine(machineConfig2, envName, machineName);
         }
 
         service.getExpose()
@@ -247,12 +247,12 @@ public class CheEnvironmentValidator {
                       machineName, envName);
     }
 
-    private void validateExtendedMachine(ExtendedMachine extendedMachine, String envName, String machineName) {
-        if (extendedMachine.getAttributes() != null &&
-            extendedMachine.getAttributes().get("memoryLimitBytes") != null) {
+    private void validateExtendedMachine(MachineConfig2 machineConfig2, String envName, String machineName) {
+        if (machineConfig2.getAttributes() != null &&
+            machineConfig2.getAttributes().get("memoryLimitBytes") != null) {
 
             try {
-                long memoryLimitBytes = Long.parseLong(extendedMachine.getAttributes().get("memoryLimitBytes"));
+                long memoryLimitBytes = Long.parseLong(machineConfig2.getAttributes().get("memoryLimitBytes"));
                 checkArgument(memoryLimitBytes > 0,
                               "Value of attribute 'memoryLimitBytes' of machine '%s' in environment '%s' is illegal",
                               machineName, envName);
@@ -263,10 +263,10 @@ public class CheEnvironmentValidator {
             }
         }
 
-        if (extendedMachine.getServers() != null) {
-            extendedMachine.getServers()
-                           .entrySet()
-                           .forEach(serverEntry -> {
+        if (machineConfig2.getServers() != null) {
+            machineConfig2.getServers()
+                          .entrySet()
+                          .forEach(serverEntry -> {
                                String serverName = serverEntry.getKey();
                                ServerConf2 server = serverEntry.getValue();
 
@@ -279,8 +279,8 @@ public class CheEnvironmentValidator {
                            });
         }
 
-        if (extendedMachine.getAgents() != null) {
-            for (String agent : extendedMachine.getAgents()) {
+        if (machineConfig2.getAgents() != null) {
+            for (String agent : machineConfig2.getAgents()) {
                 checkArgument(!isNullOrEmpty(agent),
                               "Machine '%s' in environment '%s' contains invalid agent '%s'",
                               machineName, envName, agent);
@@ -300,11 +300,11 @@ public class CheEnvironmentValidator {
         checkArgument(machineCfg.getSource().getContent() == null || machineCfg.getSource().getLocation() == null,
                       "Source of machine '%s' contains mutually exclusive fields location and content",
                       machineName);
-        checkArgument(machineInstanceProviders.hasProvider(machineCfg.getType()),
-                      "Type '%s' of machine '%s' is not supported. Supported values are: %s.",
-                      machineCfg.getType(),
-                      machineName,
-                      Joiner.on(", ").join(machineInstanceProviders.getProviderTypes()));
+//        checkArgument(machineInstanceProviders.hasProvider(machineCfg.getType()),
+//                      "Type '%s' of machine '%s' is not supported. Supported values are: %s.",
+//                      machineCfg.getType(),
+//                      machineName,
+//                      Joiner.on(", ").join(machineInstanceProviders.getProviderTypes()));
 
         if (machineCfg.getSource().getType().equals("dockerfile") && machineCfg.getSource().getLocation() != null) {
             try {

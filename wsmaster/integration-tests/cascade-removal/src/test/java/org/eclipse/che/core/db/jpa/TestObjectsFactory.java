@@ -22,7 +22,7 @@ import org.eclipse.che.api.user.server.model.impl.ProfileImpl;
 import org.eclipse.che.api.user.server.model.impl.UserImpl;
 import org.eclipse.che.api.workspace.server.model.impl.EnvironmentImpl;
 import org.eclipse.che.api.workspace.server.model.impl.EnvironmentRecipeImpl;
-import org.eclipse.che.api.workspace.server.model.impl.ExtendedMachineImpl;
+import org.eclipse.che.api.workspace.server.model.impl.MachineConfig2Impl;
 import org.eclipse.che.api.workspace.server.model.impl.ProjectConfigImpl;
 import org.eclipse.che.api.workspace.server.model.impl.ServerConf2Impl;
 import org.eclipse.che.api.workspace.server.model.impl.SourceStorageImpl;
@@ -103,7 +103,7 @@ public final class TestObjectsFactory {
         newRecipe.setContentType("new-content-type");
         newRecipe.setContent("new-content");
 
-        final ExtendedMachineImpl newMachine = new ExtendedMachineImpl();
+        final MachineConfig2Impl newMachine = new MachineConfig2Impl();
         final ServerConf2Impl serverConf1 = new ServerConf2Impl("2265", "http", ImmutableMap.of("prop1", "val"));
         final ServerConf2Impl serverConf2 = new ServerConf2Impl("2266", "ftp", ImmutableMap.of("prop1", "val"));
         newMachine.setServers(ImmutableMap.of("ref1", serverConf1, "ref2", serverConf2));

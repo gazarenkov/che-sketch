@@ -11,7 +11,7 @@
 package org.eclipse.che.ide.api.project;
 
 import org.eclipse.che.api.core.model.project.NewProjectConfig;
-import org.eclipse.che.api.core.model.project.SourceStorage;
+import org.eclipse.che.api.core.model.workspace.config.SourceStorage;
 import org.eclipse.che.api.project.templates.shared.dto.ProjectTemplateDescriptor;
 import org.eclipse.che.api.workspace.shared.dto.NewProjectConfigDto;
 

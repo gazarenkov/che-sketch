@@ -12,8 +12,8 @@ package org.eclipse.che.plugin.docker.machine.parser;
 
 import com.google.common.base.Joiner;
 
-import org.eclipse.che.api.core.model.workspace.Environment;
-import org.eclipse.che.api.core.model.workspace.ExtendedMachine;
+import org.eclipse.che.api.core.model.workspace.config.Environment;
+import org.eclipse.che.api.core.model.workspace.config.MachineConfig2;
 
 import org.eclipse.che.api.environment.server.TypeSpecificEnvironmentParser;
 import org.eclipse.che.api.environment.server.model.CheServicesEnvironmentImpl;
@@ -22,7 +22,7 @@ import static com.google.common.base.Preconditions.checkArgument;
 
 /**
  * Parser for creating {@link CheServicesEnvironmentImpl} from {@link Environment}
- * which contains a single {@link ExtendedMachine}.
+ * which contains a single {@link MachineConfig2}.
  *
  * @author Alexander Garagatyi
  * @author Alexander Andrienko
@@ -30,10 +30,10 @@ import static com.google.common.base.Preconditions.checkArgument;
 public abstract class DockerEnvironmentParser implements TypeSpecificEnvironmentParser {
 
     /**
-     * Returns machine name which is mapped to {@link ExtendedMachine}
+     * Returns machine name which is mapped to {@link MachineConfig2}
      * in the {@code environment}.
      * Note: Valid {@link Environment} based on docker file or docker
-     * image recipe type contains only one {@link ExtendedMachine}.
+     * image recipe type contains only one {@link MachineConfig2}.
      *
      * @param environment
      *         environment to get machine name

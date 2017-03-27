@@ -19,9 +19,11 @@ import com.google.web.bindery.event.shared.EventBus;
 
 import org.eclipse.che.api.core.model.machine.Server;
 import org.eclipse.che.ide.api.app.AppContext;
+import org.eclipse.che.ide.api.machine.DevMachine;
+import org.eclipse.che.ide.api.machine.MachineServer;
 import org.eclipse.che.ide.api.macro.Macro;
 import org.eclipse.che.ide.api.macro.MacroRegistry;
-import org.eclipse.che.ide.api.machine.DevMachine;
+import org.eclipse.che.ide.rest.UrlBuilder;
 
 import java.util.Map;
 import java.util.Set;
@@ -55,28 +57,32 @@ public class ServerProtocolMacro extends AbstractServerMacro {
     public Set<Macro> getMacros(DevMachine devMachine) {
         final Set<Macro> providers = Sets.newHashSet();
 
-        for (Map.Entry<String, ? extends Server> entry : devMachine.getDescriptor().getRuntime().getServers().entrySet()) {
 
-            if (Strings.isNullOrEmpty(entry.getValue().getProtocol())) {
+
+        for (Map.Entry<String, ? extends MachineServer> entry : devMachine.getServers().entrySet()) {
+
+            if (Strings.isNullOrEmpty(entry.getValue().getUrl())) {
                 continue;
             }
 
+            UrlBuilder urlBuilder = new UrlBuilder(entry.getValue().getUrl());
+
             Macro macro = new CustomMacro(KEY.replace("%", entry.getKey()),
-                                          entry.getValue().getProtocol(),
+                                          urlBuilder.getProtocol(),
                                           "Returns protocol of a server registered by name");
 
             providers.add(macro);
 
-            // register port without "/tcp" suffix
-            if (entry.getKey().endsWith("/tcp")) {
-                final String port = entry.getKey().substring(0, entry.getKey().length() - 4);
-
-                Macro shortMacro = new CustomMacro(KEY.replace("%", port),
-                                                   entry.getValue().getProtocol(),
-                                                   "Returns protocol of a server registered by name");
-
-                providers.add(shortMacro);
-            }
+//            // register port without "/tcp" suffix
+//            if (entry.getKey().endsWith("/tcp")) {
+//                final String port = entry.getKey().substring(0, entry.getKey().length() - 4);
+//
+//                Macro shortMacro = new CustomMacro(KEY.replace("%", port),
+//                                                   urlBuilder.getProtocol(),
+//                                                   "Returns protocol of a server registered by name");
+//
+//                providers.add(shortMacro);
+//            }
         }
 
         return providers;

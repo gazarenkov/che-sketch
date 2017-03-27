@@ -10,7 +10,7 @@
  *******************************************************************************/
 package org.eclipse.che.plugin.docker.machine.ext.provider;
 
-import org.eclipse.che.plugin.docker.machine.DockerInstanceRuntimeInfo;
+import org.eclipse.che.plugin.docker.machine.DockerInstanceRuntime;
 
 import javax.inject.Inject;
 import javax.inject.Named;
@@ -30,6 +30,6 @@ public class JavaOptsEnvVariableProvider implements Provider<String> {
 
     @Override
     public String get() {
-        return DockerInstanceRuntimeInfo.JAVA_OPTS_VARIABLE + '=' + javaOpts;
+        return DockerInstanceRuntime.JAVA_OPTS_VARIABLE + '=' + javaOpts;
     }
 }

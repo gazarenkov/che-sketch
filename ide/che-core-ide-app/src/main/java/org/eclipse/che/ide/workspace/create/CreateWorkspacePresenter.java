@@ -24,7 +24,7 @@ import org.eclipse.che.api.promises.client.Promise;
 import org.eclipse.che.api.promises.client.PromiseError;
 import org.eclipse.che.api.workspace.shared.dto.EnvironmentDto;
 import org.eclipse.che.api.workspace.shared.dto.EnvironmentRecipeDto;
-import org.eclipse.che.api.workspace.shared.dto.ExtendedMachineDto;
+import org.eclipse.che.api.workspace.shared.dto.MachineConfig2Dto;
 import org.eclipse.che.api.workspace.shared.dto.WorkspaceConfigDto;
 import org.eclipse.che.api.workspace.shared.dto.WorkspaceDto;
 import org.eclipse.che.ide.CoreLocalizationConstant;
@@ -233,9 +233,9 @@ public class CreateWorkspacePresenter implements CreateWorkspaceView.ActionDeleg
                                                 .withType("dockerimage")
                                                 .withLocation(view.getRecipeUrl());
 
-        ExtendedMachineDto machine = dtoFactory.createDto(ExtendedMachineDto.class)
-                                               .withAgents(singletonList("org.eclipse.che.ws-agent"))
-                                               .withAttributes(singletonMap("memoryLimitBytes", MEMORY_LIMIT_BYTES));
+        MachineConfig2Dto machine = dtoFactory.createDto(MachineConfig2Dto.class)
+                                              .withAgents(singletonList("org.eclipse.che.ws-agent"))
+                                              .withAttributes(singletonMap("memoryLimitBytes", MEMORY_LIMIT_BYTES));
 
         EnvironmentDto environment = dtoFactory.createDto(EnvironmentDto.class)
                                                .withRecipe(recipe)

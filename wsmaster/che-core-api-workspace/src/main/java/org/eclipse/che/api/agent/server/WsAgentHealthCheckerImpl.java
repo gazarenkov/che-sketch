@@ -12,8 +12,8 @@ package org.eclipse.che.api.agent.server;
 
 import org.eclipse.che.api.core.ApiException;
 import org.eclipse.che.api.core.ServerException;
-import org.eclipse.che.api.core.model.machine.Machine;
-import org.eclipse.che.api.core.model.machine.Server;
+import org.eclipse.che.api.core.model.workspace.runtime.MachineRuntime;
+import org.eclipse.che.api.core.model.workspace.runtime.ServerRuntime;
 import org.eclipse.che.api.core.rest.HttpJsonRequest;
 import org.eclipse.che.api.core.rest.HttpJsonResponse;
 import org.eclipse.che.api.workspace.shared.dto.WsAgentHealthStateDto;
@@ -48,8 +48,8 @@ public class WsAgentHealthCheckerImpl implements WsAgentHealthChecker {
     }
 
     @Override
-    public WsAgentHealthStateDto check(Machine machine) throws ServerException {
-        Server wsAgent = getWsAgent(machine);
+    public WsAgentHealthStateDto check(MachineRuntime machine) throws ServerException {
+        ServerRuntime wsAgent = getWsAgent(machine);
         final WsAgentHealthStateDto agentHealthStateDto = newDto(WsAgentHealthStateDto.class);
         if (wsAgent == null) {
             return agentHealthStateDto.withCode(NOT_FOUND.getStatusCode())
@@ -65,18 +65,19 @@ public class WsAgentHealthCheckerImpl implements WsAgentHealthChecker {
         }
     }
 
-    protected HttpJsonRequest createPingRequest(Machine machine) throws ServerException {
+    protected HttpJsonRequest createPingRequest(MachineRuntime machine) throws ServerException {
         return wsAgentPingRequestFactory.createRequest(machine);
     }
 
-    private Server getWsAgent(Machine machine) {
-        final Map<String, ? extends Server> servers = machine.getRuntime().getServers();
-        for (Server server : servers.values()) {
-            if (WSAGENT_REFERENCE.equals(server.getRef())) {
-                return server;
-            }
-        }
-        return null;
+    private ServerRuntime getWsAgent(MachineRuntime machine) {
+        final Map<String, ? extends ServerRuntime> servers = machine.getServers();
+        return servers.get(WSAGENT_REFERENCE);
+//        for (ServerRuntime server : servers.values()) {
+//            if (WSAGENT_REFERENCE.equals(server.getRef())) {
+//                return server;
+//            }
+//        }
+//        return null;
     }
 
 }

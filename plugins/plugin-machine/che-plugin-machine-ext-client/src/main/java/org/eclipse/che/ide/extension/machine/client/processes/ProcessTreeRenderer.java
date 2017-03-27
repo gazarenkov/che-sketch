@@ -19,7 +19,6 @@ import elemental.html.SpanElement;
 
 import com.google.inject.Inject;
 
-import org.eclipse.che.api.core.model.machine.MachineConfig;
 import org.eclipse.che.ide.api.machine.MachineEntity;
 import org.eclipse.che.ide.api.parts.PartStackUIResources;
 import org.eclipse.che.ide.extension.machine.client.MachineLocalizationConstant;
@@ -115,8 +114,8 @@ public class ProcessTreeRenderer implements NodeRenderer<ProcessTreeNode> {
     private SpanElement createMachineElement(final ProcessTreeNode node) {
         final MachineEntity machine = (MachineEntity)node.getData();
         final String machineId = machine.getId();
-        final MachineConfig machineConfig = machine.getConfig();
-        final String machineCategory = machineConfig.isDev() ? locale.devMachineCategory() : machineConfig.getType();
+        //final MachineConfig machineConfig = machine.getConfig();
+        final String machineCategory = machine.isDev() ? locale.devMachineCategory() : machine.getType();
 
         SpanElement root = Elements.createSpanElement();
         root.appendChild(createMachineLabel(machineCategory));
@@ -215,11 +214,11 @@ public class ProcessTreeRenderer implements NodeRenderer<ProcessTreeNode> {
         monitorsElement.appendChild(monitorNode);
 
         Element nameElement = Elements.createSpanElement(resources.getCss().nameLabel());
-        nameElement.setTextContent(machineConfig.getName());
+        nameElement.setTextContent(machine.getDisplayName());
         Tooltip.create(nameElement,
                        BOTTOM,
                        MIDDLE,
-                       machineConfig.getName());
+                       machine.getDisplayName());
         root.appendChild(nameElement);
 
         return root;

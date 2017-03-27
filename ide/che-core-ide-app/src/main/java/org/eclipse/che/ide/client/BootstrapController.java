@@ -10,11 +10,10 @@
  *******************************************************************************/
 package org.eclipse.che.ide.client;
 
-import com.google.gwt.dom.client.Document;
-
 import com.google.gwt.core.client.Callback;
 import com.google.gwt.core.client.Scheduler;
 import com.google.gwt.core.client.Scheduler.ScheduledCommand;
+import com.google.gwt.dom.client.Document;
 import com.google.gwt.event.logical.shared.CloseEvent;
 import com.google.gwt.event.logical.shared.CloseHandler;
 import com.google.gwt.user.client.Window;
@@ -25,7 +24,8 @@ import com.google.inject.Provider;
 import com.google.inject.Singleton;
 import com.google.web.bindery.event.shared.EventBus;
 
-import org.eclipse.che.api.machine.shared.dto.MachineDto;
+import org.eclipse.che.api.machine.shared.Constants;
+import org.eclipse.che.api.machine.shared.dto.MachineRuntimeDto;
 import org.eclipse.che.api.promises.client.Operation;
 import org.eclipse.che.api.promises.client.OperationException;
 import org.eclipse.che.api.promises.client.PromiseError;
@@ -108,11 +108,12 @@ public class BootstrapController {
                 workspaceService.getWorkspace(event.getWorkspace().getId()).then(new Operation<WorkspaceDto>() {
                     @Override
                     public void apply(WorkspaceDto ws) throws OperationException {
-                        MachineDto devMachineDto = ws.getRuntime().getDevMachine();
-                        DevMachine devMachine = new DevMachine(devMachineDto);
+
+                        //MachineDto devMachineDto = ws.getRuntime().getDevMachine();
+                        DevMachine devMachine = devMachine(ws);
 
                         if (appContext instanceof AppContextImpl) {
-                            ((AppContextImpl)appContext).setProjectsRoot(Path.valueOf(devMachineDto.getRuntime().projectsRoot()));
+                            ((AppContextImpl)appContext).setProjectsRoot(Path.valueOf(devMachine.getProjectsRoot()));
                         }
 
                         wsAgentStateControllerProvider.get().initialize(devMachine);
@@ -221,6 +222,19 @@ public class BootstrapController {
                 eventBus.fireEvent(WindowActionEvent.createWindowClosedEvent());
             }
         });
+    }
+
+    private DevMachine devMachine(WorkspaceDto ws) {
+
+        for(Map.Entry<String, MachineRuntimeDto> runtime : ws.getRuntime().getMachines().entrySet()) {
+            for(String server : runtime.getValue().getServers().keySet()) {
+                if(server.equals(Constants.WSAGENT_REFERENCE)) {
+                    return new DevMachine(ws, runtime.getKey());
+                }
+            }
+        }
+
+        throw new RuntimeException("Dev Machine description not found for workspace " + ws.getConfig().getName());
     }
 
     /**

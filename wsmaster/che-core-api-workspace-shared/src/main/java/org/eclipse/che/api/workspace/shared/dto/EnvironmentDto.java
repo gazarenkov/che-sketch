@@ -11,7 +11,7 @@
 package org.eclipse.che.api.workspace.shared.dto;
 
 import org.eclipse.che.api.core.factory.FactoryParameter;
-import org.eclipse.che.api.core.model.workspace.Environment;
+import org.eclipse.che.api.core.model.workspace.config.Environment;
 import org.eclipse.che.dto.shared.DTO;
 
 import java.util.Map;
@@ -34,9 +34,9 @@ public interface EnvironmentDto extends Environment {
 
     @Override
     @FactoryParameter(obligation = MANDATORY)
-    Map<String, ExtendedMachineDto> getMachines();
+    Map<String, MachineConfig2Dto> getMachines();
 
-    void setMachines(Map<String, ExtendedMachineDto> machines);
+    void setMachines(Map<String, MachineConfig2Dto> machines);
 
-    EnvironmentDto withMachines(Map<String, ExtendedMachineDto> machines);
+    EnvironmentDto withMachines(Map<String, MachineConfig2Dto> machines);
 }

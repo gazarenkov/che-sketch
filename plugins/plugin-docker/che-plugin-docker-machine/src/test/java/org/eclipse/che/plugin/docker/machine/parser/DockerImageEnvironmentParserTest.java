@@ -11,13 +11,13 @@
 package org.eclipse.che.plugin.docker.machine.parser;
 
 import org.eclipse.che.api.core.ServerException;
-import org.eclipse.che.api.core.model.workspace.Environment;
-import org.eclipse.che.api.core.model.workspace.EnvironmentRecipe;
+import org.eclipse.che.api.core.model.workspace.config.Environment;
+import org.eclipse.che.api.core.model.workspace.config.EnvironmentRecipe;
 import org.eclipse.che.api.environment.server.model.CheServiceImpl;
 import org.eclipse.che.api.environment.server.model.CheServicesEnvironmentImpl;
 import org.eclipse.che.api.workspace.server.model.impl.EnvironmentImpl;
 import org.eclipse.che.api.workspace.server.model.impl.EnvironmentRecipeImpl;
-import org.eclipse.che.api.workspace.server.model.impl.ExtendedMachineImpl;
+import org.eclipse.che.api.workspace.server.model.impl.MachineConfig2Impl;
 import org.mockito.InjectMocks;
 import org.mockito.Mock;
 import org.mockito.testng.MockitoTestNGListener;
@@ -51,7 +51,7 @@ public class DockerImageEnvironmentParserTest {
           expectedExceptionsMessageRegExp = "Environment of type '.*' doesn't support multiple machines, but contains machines: .*")
     public void shouldThrowExceptionOnParseOfDockerimageEnvWithSeveralExtendedMachines() throws Exception {
         EnvironmentImpl environment = createDockerimageEnvConfig();
-        environment.getMachines().put("anotherMachine", new ExtendedMachineImpl(emptyList(), emptyMap(), emptyMap()));
+        environment.getMachines().put("anotherMachine", new MachineConfig2Impl(emptyList(), emptyMap(), emptyMap()));
 
         // when
         parser.parse(environment);
@@ -93,8 +93,8 @@ public class DockerImageEnvironmentParserTest {
                                                              null,
                                                              image),
                                    singletonMap(machineName,
-                                                new ExtendedMachineImpl(emptyList(),
-                                                                        emptyMap(),
-                                                                        emptyMap())));
+                                                new MachineConfig2Impl(emptyList(),
+                                                                       emptyMap(),
+                                                                       emptyMap())));
     }
 }

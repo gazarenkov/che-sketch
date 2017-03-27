@@ -12,7 +12,7 @@ package org.eclipse.che.api.machine.server.model.impl;
 
 import org.eclipse.che.api.core.model.machine.Machine;
 import org.eclipse.che.api.core.model.machine.MachineConfig;
-import org.eclipse.che.api.core.model.machine.MachineRuntimeInfo;
+import org.eclipse.che.api.core.model.workspace.runtime.MachineRuntime;
 import org.eclipse.che.api.core.model.machine.MachineStatus;
 
 import java.util.Objects;
@@ -29,11 +29,11 @@ public class MachineImpl implements Machine {
         return new MachineImplBuilder();
     }
 
-    private final MachineConfigImpl      machineConfig;
-    private final MachineRuntimeInfoImpl machineRuntime;
-    private final String                 workspace;
-    private final String                 envName;
-    private final String                 owner;
+    private final MachineConfigImpl  machineConfig;
+    private final MachineRuntimeImpl machineRuntime;
+    private final String             workspace;
+    private final String             envName;
+    private final String             owner;
 
     private MachineStatus status;
     private String        id;
@@ -44,14 +44,14 @@ public class MachineImpl implements Machine {
                        String envName,
                        String owner,
                        MachineStatus status,
-                       MachineRuntimeInfo machineRuntime) {
+                       MachineRuntime machineRuntime) {
         this.workspace = workspace;
         this.envName = envName;
         this.owner = owner;
         this.machineConfig = new MachineConfigImpl(machineConfig);
         this.id = id;
         this.status = status;
-        this.machineRuntime = machineRuntime != null ? new MachineRuntimeInfoImpl(machineRuntime) : null;
+        this.machineRuntime = machineRuntime != null ? new MachineRuntimeImpl(machineRuntime.getProperties(), machineRuntime.getServers()) : null;
     }
 
     public MachineImpl(Machine machine) {
@@ -99,7 +99,7 @@ public class MachineImpl implements Machine {
     }
 
     @Override
-    public MachineRuntimeInfoImpl getRuntime() {
+    public MachineRuntimeImpl getRuntime() {
         return machineRuntime;
     }
 
@@ -133,13 +133,13 @@ public class MachineImpl implements Machine {
      */
     public static class MachineImplBuilder {
 
-        private MachineConfig      machineConfig;
-        private String             id;
-        private String             envName;
-        private String             owner;
-        private String             workspaceId;
-        private MachineStatus      machineStatus;
-        private MachineRuntimeInfo machineRuntime;
+        private MachineConfig  machineConfig;
+        private String         id;
+        private String         envName;
+        private String         owner;
+        private String         workspaceId;
+        private MachineStatus  machineStatus;
+        private MachineRuntime machineRuntime;
 
         public MachineImpl build() {
             return new MachineImpl(machineConfig,
@@ -192,7 +192,7 @@ public class MachineImpl implements Machine {
             return this;
         }
 
-        public MachineImplBuilder setRuntime(MachineRuntimeInfo machineRuntime) {
+        public MachineImplBuilder setRuntime(MachineRuntime machineRuntime) {
             this.machineRuntime = machineRuntime;
             return this;
         }

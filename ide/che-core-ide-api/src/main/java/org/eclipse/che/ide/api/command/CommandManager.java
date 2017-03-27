@@ -10,8 +10,8 @@
  *******************************************************************************/
 package org.eclipse.che.ide.api.command;
 
-import org.eclipse.che.api.core.model.machine.Machine;
 import org.eclipse.che.api.promises.client.Promise;
+import org.eclipse.che.ide.api.machine.MachineEntity;
 import org.eclipse.che.ide.api.macro.Macro;
 
 import java.util.List;
@@ -65,7 +65,7 @@ public interface CommandManager {
      *         machine to execute the command
      * @see Macro
      */
-    void executeCommand(CommandImpl command, Machine machine);
+    void executeCommand(CommandImpl command, MachineEntity machine);
 
     void addCommandChangedListener(CommandChangedListener listener);
 

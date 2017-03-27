@@ -13,8 +13,7 @@ package org.eclipse.che.ide.extension.machine.client.perspective.widgets.machine
 import com.google.inject.Inject;
 import com.google.inject.assistedinject.Assisted;
 
-import org.eclipse.che.api.core.model.machine.Server;
-import org.eclipse.che.api.core.model.machine.ServerProperties;
+import org.eclipse.che.api.core.model.workspace.runtime.ServerRuntime;
 
 import javax.validation.constraints.NotNull;
 import java.util.Objects;
@@ -24,48 +23,48 @@ import java.util.Objects;
  *
  * @author Dmitry Shnurenko
  */
-public class ServerEntity implements Server {
+public class ServerEntity  {
 
-    private final Server descriptor;
-    private final String    port;
+    private final ServerRuntime descriptor;
+    private final String    ref;
 
     @Inject
-    public ServerEntity(@Assisted String port, @Assisted Server descriptor) {
-        this.port = port;
+    public ServerEntity(@Assisted String ref, @Assisted ServerRuntime descriptor) {
+        this.ref = ref;
         this.descriptor = descriptor;
     }
 
     @NotNull
-    public String getPort() {
-        return port;
+    public String getRef() {
+        return ref;
     }
 
-    @NotNull
-    @Override
-    public String getAddress() {
-        return descriptor.getAddress();
-    }
+//    @NotNull
+//    @Override
+//    public String getAddress() {
+//        return descriptor.getAddress();
+//    }
+//
+//    @Override
+//    public String getProtocol() {
+//        return descriptor.getProtocol();
+//    }
 
-    @Override
-    public String getProtocol() {
-        return descriptor.getProtocol();
-    }
-
-    @Override
+//    @Override
     public String getUrl() {
         return descriptor.getUrl();
     }
 
-    @NotNull
-    @Override
-    public String getRef() {
-        return descriptor.getRef();
-    }
-
-    @Override
-    public ServerProperties getProperties() {
-        return new ServerPropertiesImpl(descriptor.getProperties());
-    }
+//    @NotNull
+//    @Override
+//    public String getRef() {
+//        return descriptor.getRef();
+//    }
+//
+//    @Override
+//    public ServerProperties getProperties() {
+//        return new ServerPropertiesImpl(descriptor.getProperties());
+//    }
 
     @Override
     public boolean equals(Object o) {
@@ -73,14 +72,14 @@ public class ServerEntity implements Server {
         if (!(o instanceof ServerEntity)) return false;
         ServerEntity other = (ServerEntity)o;
         return Objects.equals(descriptor, other.descriptor) &&
-               Objects.equals(port, other.port);
+               Objects.equals(ref, other.ref);
     }
 
     @Override
     public int hashCode() {
         int hash = 7;
         hash = hash * 31 + Objects.hashCode(descriptor);
-        hash = hash * 31 + Objects.hashCode(port);
+        hash = hash * 31 + Objects.hashCode(ref);
         return hash;
     }
 
@@ -88,7 +87,7 @@ public class ServerEntity implements Server {
     public String toString() {
         return "Server{" +
                "descriptor=" + descriptor +
-               ", port='" + port + '\'' +
+               ", ref='" + ref + '\'' +
                '}';
     }
 }

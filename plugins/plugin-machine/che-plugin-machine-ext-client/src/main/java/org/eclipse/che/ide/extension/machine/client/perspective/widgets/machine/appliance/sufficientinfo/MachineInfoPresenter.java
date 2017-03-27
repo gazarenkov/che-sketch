@@ -14,14 +14,10 @@ import com.google.gwt.user.client.ui.AcceptsOneWidget;
 import com.google.gwt.user.client.ui.IsWidget;
 import com.google.inject.Inject;
 
-import org.eclipse.che.api.promises.client.Operation;
-import org.eclipse.che.api.promises.client.OperationException;
-import org.eclipse.che.api.promises.client.PromiseError;
 import org.eclipse.che.api.user.shared.dto.ProfileDto;
 import org.eclipse.che.ide.api.machine.MachineEntity;
 import org.eclipse.che.ide.api.user.UserProfileServiceClient;
 import org.eclipse.che.ide.api.workspace.WorkspaceServiceClient;
-import org.eclipse.che.api.workspace.shared.dto.WorkspaceDto;
 import org.eclipse.che.ide.extension.machine.client.perspective.widgets.tab.content.TabPresenter;
 import org.eclipse.che.ide.rest.AsyncRequestCallback;
 import org.eclipse.che.ide.rest.DtoUnmarshallerFactory;
@@ -91,18 +87,18 @@ public class MachineInfoPresenter implements TabPresenter {
             }
         });
 
-        wsService.getWorkspace(machine.getWorkspaceId())
-                 .then(new Operation<WorkspaceDto>() {
-                     @Override
-                     public void apply(WorkspaceDto ws) throws OperationException {
-                         view.setWorkspaceName(ws.getConfig().getName());
-                     }
-                 }).catchError(new Operation<PromiseError>() {
-            @Override
-            public void apply(PromiseError err) throws OperationException {
-                Log.error(getClass(), err.getCause());
-            }
-        });
+//        wsService.getWorkspace(machine.getWorkspaceId())
+//                 .then(new Operation<WorkspaceDto>() {
+//                     @Override
+//                     public void apply(WorkspaceDto ws) throws OperationException {
+//                         view.setWorkspaceName(ws.getConfig().getName());
+//                     }
+//                 }).catchError(new Operation<PromiseError>() {
+//            @Override
+//            public void apply(PromiseError err) throws OperationException {
+//                Log.error(getClass(), err.getCause());
+//            }
+//        });
 
         view.updateInfo(machine);
     }

@@ -27,12 +27,9 @@ import org.eclipse.che.api.factory.shared.dto.OnAppLoadedDto;
 import org.eclipse.che.api.factory.shared.dto.OnProjectsLoadedDto;
 import org.eclipse.che.api.factory.shared.dto.PoliciesDto;
 import org.eclipse.che.api.machine.shared.dto.CommandDto;
-import org.eclipse.che.api.machine.shared.dto.MachineConfigDto;
-import org.eclipse.che.api.machine.shared.dto.MachineSourceDto;
-import org.eclipse.che.api.machine.shared.dto.ServerConfDto;
 import org.eclipse.che.api.workspace.shared.dto.EnvironmentDto;
 import org.eclipse.che.api.workspace.shared.dto.EnvironmentRecipeDto;
-import org.eclipse.che.api.workspace.shared.dto.ExtendedMachineDto;
+import org.eclipse.che.api.workspace.shared.dto.MachineConfig2Dto;
 import org.eclipse.che.api.workspace.shared.dto.ProjectConfigDto;
 import org.eclipse.che.api.workspace.shared.dto.SourceStorageDto;
 import org.eclipse.che.api.workspace.shared.dto.WorkspaceConfigDto;
@@ -168,8 +165,8 @@ public class FactoryBuilderTest {
                                                                                       .withContentType("application/x-yaml")
                                                                                       .withContent("some content"))
                                         .withMachines(singletonMap("devmachine",
-                                                                   newDto(ExtendedMachineDto.class).withAgents(singletonList("org.eclipse.che.ws-agent"))
-                                                                                                   .withAttributes(singletonMap("memoryLimitBytes", "" + 512L * 1024L * 1024L))));
+                                                                   newDto(MachineConfig2Dto.class).withAgents(singletonList("org.eclipse.che.ws-agent"))
+                                                                                                  .withAttributes(singletonMap("memoryLimitBytes", "" + 512L * 1024L * 1024L))));
 
         WorkspaceConfigDto workspaceConfig = dto.createDto(WorkspaceConfigDto.class)
                                                 .withProjects(singletonList(project))

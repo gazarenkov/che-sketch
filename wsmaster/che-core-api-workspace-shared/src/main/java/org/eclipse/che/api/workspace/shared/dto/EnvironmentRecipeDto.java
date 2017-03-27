@@ -11,7 +11,7 @@
 package org.eclipse.che.api.workspace.shared.dto;
 
 import org.eclipse.che.api.core.factory.FactoryParameter;
-import org.eclipse.che.api.core.model.workspace.EnvironmentRecipe;
+import org.eclipse.che.api.core.model.workspace.config.EnvironmentRecipe;
 import org.eclipse.che.dto.shared.DTO;
 
 import static org.eclipse.che.api.core.factory.FactoryParameter.Obligation.MANDATORY;

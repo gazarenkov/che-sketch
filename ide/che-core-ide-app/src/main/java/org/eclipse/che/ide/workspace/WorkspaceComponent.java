@@ -17,7 +17,6 @@ import com.google.web.bindery.event.shared.EventBus;
 
 import org.eclipse.che.api.core.model.workspace.Workspace;
 import org.eclipse.che.api.core.model.workspace.WorkspaceStatus;
-import org.eclipse.che.api.machine.shared.dto.SnapshotDto;
 import org.eclipse.che.api.promises.client.Operation;
 import org.eclipse.che.api.promises.client.OperationException;
 import org.eclipse.che.api.promises.client.PromiseError;
@@ -42,13 +41,12 @@ import org.eclipse.che.ide.context.BrowserQueryFieldRenderer;
 import org.eclipse.che.ide.dto.DtoFactory;
 import org.eclipse.che.ide.rest.DtoUnmarshallerFactory;
 import org.eclipse.che.ide.ui.loaders.LoaderPresenter;
+import org.eclipse.che.ide.util.loging.Log;
 import org.eclipse.che.ide.websocket.MessageBus;
 import org.eclipse.che.ide.websocket.MessageBusProvider;
 import org.eclipse.che.ide.websocket.events.ConnectionOpenedHandler;
 import org.eclipse.che.ide.workspace.create.CreateWorkspacePresenter;
 import org.eclipse.che.ide.workspace.start.StartWorkspacePresenter;
-
-import java.util.List;
 
 import static org.eclipse.che.ide.api.notification.StatusNotification.DisplayMode.FLOAT_MODE;
 import static org.eclipse.che.ide.ui.loaders.LoaderPresenter.Phase.STARTING_WORKSPACE_RUNTIME;
@@ -76,7 +74,7 @@ public abstract class WorkspaceComponent implements Component, WsAgentStateHandl
     private final Provider<MachineManager> machineManagerProvider;
     private final MessageBusProvider       messageBusProvider;
     private final WorkspaceEventsHandler   workspaceEventsHandler;
-    private final LoaderPresenter          loader;
+    protected final LoaderPresenter          loader;
 
     protected Callback<Component, Exception> callback;
     protected boolean                        needToReloadComponents;
@@ -175,7 +173,12 @@ public abstract class WorkspaceComponent implements Component, WsAgentStateHandl
         if (messageBus != null) {
             messageBus.cancelReconnection();
         }
+
+        Log.info(WorkspaceComponent.class, "handleWorkspaceEvents " + messageBus);
+
         messageBus = messageBusProvider.createMessageBus();
+
+        Log.info(WorkspaceComponent.class, "handleWorkspaceEvents 2 " + messageBus);
 
         messageBus.addOnOpenHandler(new ConnectionOpenedHandler() {
             @Override
@@ -185,6 +188,9 @@ public abstract class WorkspaceComponent implements Component, WsAgentStateHandl
                 messageBus.removeOnOpenHandler(this);
 
                 setCurrentWorkspace(workspace);
+
+
+
                 workspaceEventsHandler.trackWorkspaceEvents(workspace, callback);
 
                 final WorkspaceStatus workspaceStatus = workspace.getStatus();
@@ -203,11 +209,11 @@ public abstract class WorkspaceComponent implements Component, WsAgentStateHandl
                         });
                         break;
                     default:
-                        if (checkForShapshots) {
-                            checkWorkspaceForSnapshots(workspace);
-                        } else {
+//                        if (checkForShapshots) {
+//                            checkWorkspaceForSnapshots(workspace);
+//                        } else {
                             startWorkspaceById(workspace.getId(), workspace.getConfig().getDefaultEnv(), restoreFromSnapshot);
-                        }
+//                        }
                 }
             }
         });
@@ -254,16 +260,16 @@ public abstract class WorkspaceComponent implements Component, WsAgentStateHandl
      *         workspace
      */
     private void checkWorkspaceForSnapshots(final Workspace workspace) {
-        workspaceServiceClient.getSnapshot(workspace.getId()).then(new Operation<List<SnapshotDto>>() {
-            @Override
-            public void apply(List<SnapshotDto> snapshots) throws OperationException {
-                if (snapshots.isEmpty()) {
-                    startWorkspaceById(workspace.getId(), workspace.getConfig().getDefaultEnv(), false);
-                } else {
-                    showRecoverWorkspaceConfirmDialog(workspace);
-                }
-            }
-        });
+//        workspaceServiceClient.getSnapshot(workspace.getId()).then(new Operation<List<SnapshotDto>>() {
+//            @Override
+//            public void apply(List<SnapshotDto> snapshots) throws OperationException {
+//                if (snapshots.isEmpty()) {
+//                    startWorkspaceById(workspace.getId(), workspace.getConfig().getDefaultEnv(), false);
+//                } else {
+//                    showRecoverWorkspaceConfirmDialog(workspace);
+//                }
+//            }
+//        });
     }
 
     /**

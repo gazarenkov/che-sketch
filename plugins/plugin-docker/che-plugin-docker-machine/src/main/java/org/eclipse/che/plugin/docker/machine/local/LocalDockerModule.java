@@ -17,11 +17,10 @@ import com.google.inject.multibindings.MapBinder;
 import com.google.inject.multibindings.Multibinder;
 import com.google.inject.name.Names;
 
-import org.eclipse.che.api.environment.server.MachineService;
 import org.eclipse.che.api.machine.server.spi.Instance;
 import org.eclipse.che.api.machine.server.spi.InstanceProcess;
 import org.eclipse.che.plugin.docker.machine.DockerInstance;
-import org.eclipse.che.plugin.docker.machine.DockerInstanceRuntimeInfo;
+import org.eclipse.che.plugin.docker.machine.DockerInstanceRuntime;
 import org.eclipse.che.plugin.docker.machine.DockerProcess;
 import org.eclipse.che.plugin.docker.machine.ServerEvaluationStrategy;
 import org.eclipse.che.plugin.docker.machine.node.DockerNode;
@@ -40,13 +39,13 @@ public class LocalDockerModule extends AbstractModule {
 
     @Override
     protected void configure() {
-        bind(MachineService.class);
+      //  bind(MachineService.class);
 
         install(new FactoryModuleBuilder()
                         .implement(Instance.class, DockerInstance.class)
                         .implement(InstanceProcess.class, DockerProcess.class)
                         .implement(DockerNode.class, LocalDockerNode.class)
-                        .implement(DockerInstanceRuntimeInfo.class, DockerInstanceRuntimeInfo.class)
+                        .implement(DockerInstanceRuntime.class, DockerInstanceRuntime.class)
                         .build(org.eclipse.che.plugin.docker.machine.DockerMachineFactory.class));
 
         MapBinder<String, ServerEvaluationStrategy> strategies = MapBinder.newMapBinder(binder(),

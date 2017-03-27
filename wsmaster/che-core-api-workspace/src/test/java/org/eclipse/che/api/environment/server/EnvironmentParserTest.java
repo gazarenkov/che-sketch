@@ -13,13 +13,13 @@ package org.eclipse.che.api.environment.server;
 import com.google.common.collect.ImmutableMap;
 
 import org.eclipse.che.api.core.ServerException;
-import org.eclipse.che.api.core.model.workspace.Environment;
+import org.eclipse.che.api.core.model.workspace.config.Environment;
 import org.eclipse.che.api.environment.server.model.CheServiceBuildContextImpl;
 import org.eclipse.che.api.environment.server.model.CheServiceImpl;
 import org.eclipse.che.api.environment.server.model.CheServicesEnvironmentImpl;
 import org.eclipse.che.api.workspace.server.model.impl.EnvironmentImpl;
 import org.eclipse.che.api.workspace.server.model.impl.EnvironmentRecipeImpl;
-import org.eclipse.che.api.workspace.server.model.impl.ExtendedMachineImpl;
+import org.eclipse.che.api.workspace.server.model.impl.MachineConfig2Impl;
 import org.eclipse.che.api.workspace.server.model.impl.ServerConf2Impl;
 import org.mockito.Mock;
 import org.mockito.testng.MockitoTestNGListener;
@@ -67,7 +67,7 @@ public class EnvironmentParserTest {
     @Mock
     private EnvironmentRecipeImpl                      recipe;
     @Mock
-    private ExtendedMachineImpl                        machine;
+    private MachineConfig2Impl                         machine;
     @Mock
     private TypeSpecificEnvironmentParser              envParser;
     @Mock
@@ -79,9 +79,9 @@ public class EnvironmentParserTest {
     @Mock
     private CheServiceImpl                             cheService2;
     @Mock
-    private ExtendedMachineImpl                        extendedMachine1;
+    private MachineConfig2Impl                         extendedMachine1;
     @Mock
-    private ExtendedMachineImpl                        extendedMachine2;
+    private MachineConfig2Impl                         extendedMachine2;
 
     private EnvironmentParser parser;
 
@@ -163,13 +163,13 @@ public class EnvironmentParserTest {
     @Test
     public void shouldOverrideMemoryLimitFromExtendedMachineInComposeEnv() throws Exception {
         // given
-        HashMap<String, ExtendedMachineImpl> machines = new HashMap<>();
-        machines.put("machine1", new ExtendedMachineImpl(emptyList(),
-                                                         emptyMap(),
-                                                         singletonMap("memoryLimitBytes", "101010")));
-        machines.put("machine2", new ExtendedMachineImpl(emptyList(),
-                                                         emptyMap(),
-                                                         emptyMap()));
+        HashMap<String, MachineConfig2Impl> machines = new HashMap<>();
+        machines.put("machine1", new MachineConfig2Impl(emptyList(),
+                                                        emptyMap(),
+                                                        singletonMap("memoryLimitBytes", "101010")));
+        machines.put("machine2", new MachineConfig2Impl(emptyList(),
+                                                        emptyMap(),
+                                                        emptyMap()));
         EnvironmentImpl environment = new EnvironmentImpl(new EnvironmentRecipeImpl("compose",
                                                                                     "application/x-yaml",
                                                                                     "content",
@@ -193,10 +193,10 @@ public class EnvironmentParserTest {
     @Test(expectedExceptions = IllegalArgumentException.class,
           expectedExceptionsMessageRegExp = "Value of attribute 'memoryLimitBytes' of machine 'machine1' is illegal")
     public void shouldThrowExceptionInCaseFailedParseMemoryLimit() throws ServerException {
-        HashMap<String, ExtendedMachineImpl> machines = new HashMap<>();
-        machines.put("machine1", new ExtendedMachineImpl(emptyList(),
-                                                         emptyMap(),
-                                                         singletonMap("memoryLimitBytes", "here should be memory size number")));
+        HashMap<String, MachineConfig2Impl> machines = new HashMap<>();
+        machines.put("machine1", new MachineConfig2Impl(emptyList(),
+                                                        emptyMap(),
+                                                        singletonMap("memoryLimitBytes", "here should be memory size number")));
         EnvironmentImpl environment = new EnvironmentImpl(new EnvironmentRecipeImpl("compose",
                                                                                     "application/x-yaml",
                                                                                     "content",
@@ -625,7 +625,7 @@ public class EnvironmentParserTest {
                                                          Map<String, String> expectedLabels) {
         EnvironmentImpl environmentConfig = createDockerfileEnvConfig();
 
-        ExtendedMachineImpl extendedMachine = getMachine(environmentConfig);
+        MachineConfig2Impl extendedMachine = getMachine(environmentConfig);
         extendedMachine.setServers(servers);
 
         CheServicesEnvironmentImpl parsedCheEnv = new CheServicesEnvironmentImpl();
@@ -640,7 +640,7 @@ public class EnvironmentParserTest {
                                                           Map<String, String> expectedLabels) {
         EnvironmentImpl environmentConfig = createDockerimageEnvConfig();
 
-        ExtendedMachineImpl extendedMachine = getMachine(environmentConfig);
+        MachineConfig2Impl extendedMachine = getMachine(environmentConfig);
         extendedMachine.setServers(servers);
 
         CheServicesEnvironmentImpl parsedCheEnv = new CheServicesEnvironmentImpl();
@@ -658,14 +658,14 @@ public class EnvironmentParserTest {
         CheServicesEnvironmentImpl expectedEnv = createCheServicesEnv(expectedLabels, expectedExpose);
 
         EnvironmentImpl environmentConfig = createCompose1MachineEnvConfig();
-        ExtendedMachineImpl extendedMachine = getMachine(environmentConfig);
+        MachineConfig2Impl extendedMachine = getMachine(environmentConfig);
         extendedMachine.setServers(new HashMap<>(servers));
         return asList(environmentConfig,
                       expectedEnv,
                       cheComposeEnv);
     }
 
-    private static ExtendedMachineImpl getMachine(EnvironmentImpl environmentConfig) {
+    private static MachineConfig2Impl getMachine(EnvironmentImpl environmentConfig) {
         return environmentConfig.getMachines().values().iterator().next();
     }
 
@@ -689,9 +689,9 @@ public class EnvironmentParserTest {
                                                              recipeContent,
                                                              recipeLocation),
                                    singletonMap(machineName,
-                                                new ExtendedMachineImpl(emptyList(),
-                                                                        emptyMap(),
-                                                                        emptyMap())));
+                                                new MachineConfig2Impl(emptyList(),
+                                                                       emptyMap(),
+                                                                       emptyMap())));
     }
 
     private static EnvironmentImpl createDockerimageEnvConfig() {
@@ -704,16 +704,16 @@ public class EnvironmentParserTest {
                                                              null,
                                                              image),
                                    singletonMap(machineName,
-                                                new ExtendedMachineImpl(emptyList(),
-                                                                        emptyMap(),
-                                                                        emptyMap())));
+                                                new MachineConfig2Impl(emptyList(),
+                                                                       emptyMap(),
+                                                                       emptyMap())));
     }
 
     private static EnvironmentImpl createCompose1MachineEnvConfig() {
-        Map<String, ExtendedMachineImpl> machines = new HashMap<>();
-        machines.put(DEFAULT_MACHINE_NAME, new ExtendedMachineImpl(emptyList(),
-                                                                   emptyMap(),
-                                                                   emptyMap()));
+        Map<String, MachineConfig2Impl> machines = new HashMap<>();
+        machines.put(DEFAULT_MACHINE_NAME, new MachineConfig2Impl(emptyList(),
+                                                                  emptyMap(),
+                                                                  emptyMap()));
         return new EnvironmentImpl(new EnvironmentRecipeImpl("compose",
                                                              "application/x-yaml",
                                                              "content",

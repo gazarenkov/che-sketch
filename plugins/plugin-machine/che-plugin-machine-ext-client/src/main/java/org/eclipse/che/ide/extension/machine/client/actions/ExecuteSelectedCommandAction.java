@@ -13,11 +13,11 @@ package org.eclipse.che.ide.extension.machine.client.actions;
 import com.google.inject.Inject;
 import com.google.inject.Singleton;
 
-import org.eclipse.che.api.core.model.machine.Machine;
 import org.eclipse.che.ide.api.action.AbstractPerspectiveAction;
 import org.eclipse.che.ide.api.action.ActionEvent;
 import org.eclipse.che.ide.api.command.CommandImpl;
 import org.eclipse.che.ide.api.command.CommandManager;
+import org.eclipse.che.ide.api.machine.MachineEntity;
 import org.eclipse.che.ide.extension.machine.client.MachineLocalizationConstant;
 import org.eclipse.che.ide.extension.machine.client.MachineResources;
 
@@ -60,7 +60,7 @@ public class ExecuteSelectedCommandAction extends AbstractPerspectiveAction {
     @Override
     public void actionPerformed(ActionEvent e) {
         CommandImpl command = selectCommandAction.getSelectedCommand();
-        Machine machine = selectCommandAction.getSelectedMachine();
+        MachineEntity machine = selectCommandAction.getSelectedMachine();
 
         if (command != null && machine != null) {
             commandManager.executeCommand(command, machine);

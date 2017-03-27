@@ -16,23 +16,22 @@ import com.google.inject.Inject;
 import com.google.inject.Singleton;
 import com.google.web.bindery.event.shared.EventBus;
 
-import org.eclipse.che.api.core.model.machine.Machine;
-import org.eclipse.che.api.core.model.machine.MachineConfig;
+import org.eclipse.che.api.core.model.workspace.runtime.MachineRuntime;
 import org.eclipse.che.api.core.model.workspace.Workspace;
 import org.eclipse.che.api.core.model.workspace.WorkspaceRuntime;
-import org.eclipse.che.api.machine.shared.dto.MachineDto;
 import org.eclipse.che.commons.annotation.Nullable;
 import org.eclipse.che.ide.api.app.AppContext;
 import org.eclipse.che.ide.api.event.ActivePartChangedEvent;
 import org.eclipse.che.ide.api.event.ActivePartChangedHandler;
 import org.eclipse.che.ide.api.machine.MachineEntity;
+import org.eclipse.che.ide.api.machine.MachineEntityImpl;
+import org.eclipse.che.ide.api.machine.events.MachineStateEvent;
 import org.eclipse.che.ide.api.parts.base.BasePresenter;
 import org.eclipse.che.ide.api.workspace.event.WorkspaceStartedEvent;
 import org.eclipse.che.ide.api.workspace.event.WorkspaceStoppedEvent;
 import org.eclipse.che.ide.extension.machine.client.MachineLocalizationConstant;
 import org.eclipse.che.ide.extension.machine.client.MachineResources;
 import org.eclipse.che.ide.extension.machine.client.inject.factories.EntityFactory;
-import org.eclipse.che.ide.api.machine.events.MachineStateEvent;
 import org.eclipse.che.ide.extension.machine.client.perspective.widgets.machine.appliance.MachineAppliancePresenter;
 import org.vectomatic.dom.svg.ui.SVGResource;
 
@@ -43,7 +42,6 @@ import java.util.List;
 import java.util.Map;
 
 import static java.util.Collections.emptyList;
-import static org.eclipse.che.api.core.model.machine.MachineStatus.RUNNING;
 
 /**
  * The class contains business logic to control displaying of machines on special view.
@@ -128,19 +126,20 @@ public class MachinePanelPresenter extends BasePresenter implements MachinePanel
             return emptyList();
         }
 
-        List<? extends Machine> runtimeMachines = workspaceRuntime.getMachines();
+        Map<String, ? extends MachineRuntime> runtimeMachines = workspaceRuntime.getMachines();
         List<MachineEntity> machines = new ArrayList<>(runtimeMachines.size());
-        for (Machine machine : runtimeMachines) {
-            if (machine instanceof MachineDto) {
-                MachineEntity machineEntity = entityFactory.createMachine((MachineDto)machine);
+        for (String machineId : runtimeMachines.keySet()) {
+            //if (machine instanceof MachineDto) {
+                MachineEntity machineEntity = new MachineEntityImpl(appContext.getWorkspace(), machineId);
+                        //entityFactory.createMachine((MachineRuntimeDto)machine);
                 machines.add(machineEntity);
-            }
+            //}
 
         }
         return machines;
     }
 
-    private MachineTreeNode addNodeToTree(Machine machine) {
+    private MachineTreeNode addNodeToTree(MachineEntity machine) {
         MachineTreeNode machineNode = entityFactory.createMachineNode(rootNode, machine, null);
 
         existingMachineNodes.put(machine.getId(), machineNode);
@@ -175,24 +174,24 @@ public class MachinePanelPresenter extends BasePresenter implements MachinePanel
             return;
         }
 
-        if (RUNNING == selectedMachine.getStatus()) {
+//        if (RUNNING == selectedMachine.getStatus()) {
             isMachineRunning = true;
 
             cachedMachines.put(selectedMachine.getId(), selectedMachine);
 
             appliance.showAppliance(selectedMachine);
-        } else {
-            isMachineRunning = false;
-
-            final MachineConfig machineConfig = selectedMachine.getConfig();
-            final boolean isDevMachine = machineConfig.isDev();
-            final String machineName = machineConfig.getName();
-
-            // we show the loader for dev machine so this message isn't necessary for dev machine
-            if (!isDevMachine) {
-                appliance.showStub(locale.unavailableMachineStarting(machineName));
-            }
-        }
+//        } else {
+//            isMachineRunning = false;
+//
+//            final MachineConfig machineConfig = selectedMachine.getConfig();
+//            final boolean isDevMachine = machineConfig.isDev();
+//            final String machineName = machineConfig.getName();
+//
+//            // we show the loader for dev machine so this message isn't necessary for dev machine
+//            if (!isDevMachine) {
+//                appliance.showStub(locale.unavailableMachineStarting(machineName));
+//            }
+//        }
     }
 
     /** {@inheritDoc} */
@@ -273,7 +272,7 @@ public class MachinePanelPresenter extends BasePresenter implements MachinePanel
      */
     @Override
     public void onMachineDestroyed(MachineStateEvent event) {
-        Machine machine = event.getMachine();
+        MachineEntity machine = event.getMachine();
 
         MachineTreeNode deletedNode = existingMachineNodes.get(machine.getId());
 

@@ -11,7 +11,7 @@
 package org.eclipse.che.api.agent.server;
 
 import org.eclipse.che.api.core.ServerException;
-import org.eclipse.che.api.core.model.machine.Machine;
+import org.eclipse.che.api.core.model.workspace.runtime.MachineRuntime;
 import org.eclipse.che.api.workspace.shared.dto.WsAgentHealthStateDto;
 
 /**
@@ -43,5 +43,5 @@ public interface WsAgentHealthChecker {
      * @throws ServerException
      *         if internal server error occurred
      */
-    WsAgentHealthStateDto check(Machine machine) throws ServerException;
+    WsAgentHealthStateDto check(MachineRuntime machine) throws ServerException;
 }

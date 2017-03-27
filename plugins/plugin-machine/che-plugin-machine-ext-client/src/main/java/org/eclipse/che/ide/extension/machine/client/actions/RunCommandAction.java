@@ -61,7 +61,7 @@ public class RunCommandAction extends Action {
 
         final CommandImpl command = selectCommandAction.getCommandByName(name);
         if (command != null) {
-            commandManager.executeCommand(command, appContext.getDevMachine().getDescriptor());
+            commandManager.executeCommand(command, appContext.getDevMachine());
         }
     }
 

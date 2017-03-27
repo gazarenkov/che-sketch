@@ -10,11 +10,8 @@
  *******************************************************************************/
 package org.eclipse.che.ide.api.machine;
 
-import org.eclipse.che.api.core.model.machine.Command;
 import org.eclipse.che.api.machine.shared.dto.MachineDto;
-import org.eclipse.che.api.machine.shared.dto.MachineProcessDto;
 import org.eclipse.che.api.promises.client.Promise;
-import org.eclipse.che.commons.annotation.Nullable;
 
 import javax.validation.constraints.NotNull;
 import java.util.List;

@@ -16,8 +16,8 @@ import com.google.inject.Inject;
 import com.google.inject.Singleton;
 
 import org.eclipse.che.api.core.model.machine.Machine;
+import org.eclipse.che.api.core.model.workspace.runtime.MachineRuntime;
 import org.eclipse.che.api.core.model.workspace.Workspace;
-import org.eclipse.che.api.machine.shared.dto.MachineDto;
 import org.eclipse.che.api.machine.shared.dto.recipe.RecipeDescriptor;
 import org.eclipse.che.api.promises.client.Operation;
 import org.eclipse.che.api.promises.client.OperationException;
@@ -26,9 +26,10 @@ import org.eclipse.che.api.promises.client.js.Promises;
 import org.eclipse.che.ide.api.app.AppContext;
 import org.eclipse.che.ide.api.debug.DebugConfiguration;
 import org.eclipse.che.ide.api.debug.DebugConfigurationPage;
+import org.eclipse.che.ide.api.machine.MachineEntity;
+import org.eclipse.che.ide.api.machine.MachineEntityImpl;
 import org.eclipse.che.ide.api.machine.RecipeServiceClient;
 import org.eclipse.che.ide.dto.DtoFactory;
-import org.eclipse.che.ide.extension.machine.client.inject.factories.EntityFactory;
 import org.eclipse.che.ide.extension.machine.client.command.macros.CurrentProjectPathMacro;
 import org.eclipse.che.ide.json.JsonHelper;
 
@@ -52,7 +53,7 @@ public class GdbConfigurationPagePresenter implements GdbConfigurationPageView.A
 
     private final GdbConfigurationPageView view;
     private final AppContext               appContext;
-    private final EntityFactory            entityFactory;
+    //private final EntityFactory            entityFactory;
     private final RecipeServiceClient      recipeServiceClient;
     private final DtoFactory               dtoFactory;
     private final CurrentProjectPathMacro  currentProjectPathMacro;
@@ -67,12 +68,12 @@ public class GdbConfigurationPagePresenter implements GdbConfigurationPageView.A
     public GdbConfigurationPagePresenter(GdbConfigurationPageView view,
                                          AppContext appContext,
                                          DtoFactory dtoFactory,
-                                         EntityFactory entityFactory,
+     //                                    EntityFactory entityFactory,
                                          RecipeServiceClient recipeServiceClient,
                                          CurrentProjectPathMacro currentProjectPathMacro) {
         this.view = view;
         this.appContext = appContext;
-        this.entityFactory = entityFactory;
+        //this.entityFactory = entityFactory;
         this.recipeServiceClient = recipeServiceClient;
         this.dtoFactory = dtoFactory;
         this.currentProjectPathMacro = currentProjectPathMacro;
@@ -117,38 +118,41 @@ public class GdbConfigurationPagePresenter implements GdbConfigurationPageView.A
         view.setPortEnableState(!devHost);
         view.setHostEnableState(!devHost);
 
-        List<Machine> machines = getMachines();
+        List<MachineEntity> machines = getMachines();
         if (!machines.isEmpty()) {
             setHosts(machines);
         }
     }
 
-    private void setHosts(List<Machine> machines) {
-        List<Promise<RecipeDescriptor>> recipePromises = new ArrayList<>(machines.size());
-        for (Machine machine : machines) {
-            String location = machine.getConfig().getSource().getLocation();
-            String recipeId = getRecipeId(location);
-            recipePromises.add(recipeServiceClient.getRecipe(recipeId));
-        }
+    private void setHosts(List<MachineEntity> machines) {
 
-        @SuppressWarnings("unchecked")
-        final Promise<RecipeDescriptor>[] recipePromisesArray = (Promise<RecipeDescriptor>[])recipePromises.toArray();
-        setHostsList(recipePromisesArray, machines);
+        // TODO
+//        List<Promise<RecipeDescriptor>> recipePromises = new ArrayList<>(machines.size());
+//        for (MachineEntity machine : machines) {
+//            String location = machine.getConfig().getSource().getLocation();
+//            String recipeId = getRecipeId(location);
+//            recipePromises.add(recipeServiceClient.getRecipe(recipeId));
+//        }
+//
+//        @SuppressWarnings("unchecked")
+//        final Promise<RecipeDescriptor>[] recipePromisesArray = (Promise<RecipeDescriptor>[])recipePromises.toArray();
+//        setHostsList(recipePromisesArray, machines);
     }
 
-    private List<Machine> getMachines() {
+    private List<MachineEntity> getMachines() {
         Workspace workspace = appContext.getWorkspace();
         if (workspace == null || workspace.getRuntime() == null) {
             return emptyList();
         }
 
-        List<? extends Machine> runtimeMachines = workspace.getRuntime().getMachines();
-        List<Machine> machines = new ArrayList<>(runtimeMachines.size());
-        for (Machine currentMachine : runtimeMachines) {
-            if (currentMachine instanceof MachineDto) {
-                Machine machine = entityFactory.createMachine((MachineDto)currentMachine);
+        Map<String, ? extends MachineRuntime> runtimeMachines = workspace.getRuntime().getMachines();
+        List<MachineEntity> machines = new ArrayList<>(runtimeMachines.size());
+        for (String currentMachine : runtimeMachines.keySet()) {
+           // if (currentMachine instanceof MachineDto) {
+                MachineEntity machine = new MachineEntityImpl(appContext.getWorkspace(), currentMachine);
+                        //entityFactory.createMachine((MachineRuntimeDto)currentMachine);
                 machines.add(machine);
-            }
+           // }
         }
         return machines;
     }

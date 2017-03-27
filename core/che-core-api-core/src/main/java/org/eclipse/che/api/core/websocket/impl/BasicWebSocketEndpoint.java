@@ -75,8 +75,8 @@ public class BasicWebSocketEndpoint {
 
     @OnError
     public void onError(Throwable t, @PathParam("endpoint-id") String endpointId) {
-        LOG.info("Web socket session error");
-        LOG.debug("Endpoint: {}", endpointId);
-        LOG.debug("Error: {}", t);
+        LOG.error("Web socket session error");
+        LOG.error("Endpoint: {}", endpointId);
+        LOG.error("Error: {}", t);
     }
 }

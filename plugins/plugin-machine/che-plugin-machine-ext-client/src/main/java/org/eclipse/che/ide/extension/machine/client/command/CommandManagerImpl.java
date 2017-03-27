@@ -12,10 +12,8 @@ package org.eclipse.che.ide.extension.machine.client.command;
 
 import com.google.inject.Inject;
 
-import org.eclipse.che.api.core.model.machine.Command;
-import org.eclipse.che.api.core.model.machine.Machine;
+import org.eclipse.che.api.core.model.workspace.config.Command;
 import org.eclipse.che.api.machine.shared.dto.CommandDto;
-import org.eclipse.che.api.machine.shared.dto.MachineProcessDto;
 import org.eclipse.che.api.promises.client.Function;
 import org.eclipse.che.api.promises.client.FunctionException;
 import org.eclipse.che.api.promises.client.Operation;
@@ -29,15 +27,13 @@ import org.eclipse.che.ide.api.command.CommandPage;
 import org.eclipse.che.ide.api.command.CommandType;
 import org.eclipse.che.ide.api.command.CommandTypeRegistry;
 import org.eclipse.che.ide.api.machine.ExecAgentCommandManager;
-import org.eclipse.che.ide.api.machine.MachineServiceClient;
+import org.eclipse.che.ide.api.machine.MachineEntity;
 import org.eclipse.che.ide.api.macro.MacroProcessor;
 import org.eclipse.che.ide.api.workspace.WorkspaceServiceClient;
 import org.eclipse.che.ide.dto.DtoFactory;
 import org.eclipse.che.ide.extension.machine.client.outputspanel.console.CommandConsoleFactory;
 import org.eclipse.che.ide.extension.machine.client.outputspanel.console.CommandOutputConsole;
 import org.eclipse.che.ide.extension.machine.client.processes.panel.ProcessesPanelPresenter;
-import org.eclipse.che.ide.util.UUID;
-import org.eclipse.che.ide.util.loging.Log;
 
 import java.util.ArrayList;
 import java.util.Collections;
@@ -214,7 +210,7 @@ public class CommandManagerImpl implements CommandManager {
     }
 
     @Override
-    public void executeCommand(final CommandImpl command, final Machine machine) {
+    public void executeCommand(final CommandImpl command, final MachineEntity machine) {
         final String name = command.getName();
         final String type = command.getType();
         final String commandLine = command.getCommandLine();

@@ -14,6 +14,8 @@ import com.google.gwt.json.client.JSONArray;
 import com.google.gwt.json.client.JSONParser;
 import com.google.inject.Singleton;
 
+import org.eclipse.che.ide.util.loging.Log;
+
 import java.util.ArrayList;
 import java.util.HashMap;
 import java.util.List;
@@ -119,7 +121,13 @@ public class DtoFactory {
     }
 
     private <T> DtoProvider<T> getDtoProvider(Class<T> dtoInterface) {
+
+        Log.info(DtoFactory.class, "getDtoProvider " + dtoInterface);
+
         DtoProvider<?> dtoProvider = dtoInterface2Providers.get(dtoInterface);
+
+        Log.info(DtoFactory.class, "getDtoProvider " + dtoProvider);
+
         if (dtoProvider == null) {
             throw new IllegalArgumentException("Unknown DTO type " + dtoInterface);
         }

@@ -11,7 +11,7 @@
 package org.eclipse.che.plugin.docker.machine.local.provider;
 
 import org.eclipse.che.plugin.docker.client.DockerConnectorConfiguration;
-import org.eclipse.che.plugin.docker.machine.DockerInstanceRuntimeInfo;
+import org.eclipse.che.plugin.docker.machine.DockerInstanceRuntime;
 
 import javax.inject.Inject;
 import javax.inject.Provider;
@@ -30,7 +30,7 @@ public class CheDockerExtraHostProvider implements Provider<Set<String>> {
     public CheDockerExtraHostProvider(DockerConnectorConfiguration dockerConnectorConfiguration) {
         // add Che server to hosts list
         String cheHost = dockerConnectorConfiguration.getDockerHostIp();
-        extraHosts = Collections.singleton(DockerInstanceRuntimeInfo.CHE_HOST.concat(":").concat(cheHost));
+        extraHosts = Collections.singleton(DockerInstanceRuntime.CHE_HOST.concat(":").concat(cheHost));
     }
 
     @Override

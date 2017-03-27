@@ -10,8 +10,8 @@
  *******************************************************************************/
 package org.eclipse.che.ide.api.machine;
 
-import org.eclipse.che.api.core.model.machine.Machine;
-import org.eclipse.che.api.core.rest.shared.dto.Link;
+import org.eclipse.che.api.core.model.workspace.runtime.ServerRuntime;
+import org.eclipse.che.api.core.model.workspace.Workspace;
 import org.eclipse.che.api.machine.shared.Constants;
 import org.eclipse.che.ide.util.loging.Log;
 
@@ -28,22 +28,39 @@ public class DevMachine extends MachineEntityImpl {
 
 
 
-    public DevMachine(@NotNull Machine devMachineDescriptor) {
-        super(devMachineDescriptor);
+    public DevMachine(@NotNull Workspace workspace, String machineName) {
+        super(workspace, machineName);
     }
 
     public String getWsAgentWebSocketUrl() {
-        for (Link link : machineLinks) {
-            if (Constants.WSAGENT_WEBSOCKET_REFERENCE.equals(link.getRel())) {
-                return link.getHref();
-            }
+
+        ServerRuntime ws = machineRuntime.getServers().get(Constants.WSAGENT_WEBSOCKET_REFERENCE);
+        if(ws == null) {
+            final String message = "Server " + Constants.WSAGENT_WEBSOCKET_REFERENCE + " not defined in DevMachine ";
+            Log.error(getClass(), message);
+            throw new RuntimeException(message);
         }
-        //should not be
-        final String message = "Reference " + Constants.WSAGENT_WEBSOCKET_REFERENCE + " not found in DevMachine description";
-        Log.error(getClass(), message);
-        throw new RuntimeException(message);
+        return ws.getUrl();
+
+//        for (Link link : machineLinks) {
+//            if (Constants.WSAGENT_WEBSOCKET_REFERENCE.equals(link.getRel())) {
+//                return link.getHref();
+//            }
+//        }
+//        //should not be
+//        final String message = "Reference " + Constants.WSAGENT_WEBSOCKET_REFERENCE + " not found in DevMachine description";
+//        Log.error(getClass(), message);
+//        throw new RuntimeException(message);
     }
 
+    public String getProjectsRoot() {
+
+        if(getProperties().containsKey("projectsRoot"))
+            return getProperties().get("projectsRoot");
+
+        throw new RuntimeException("No projects root found in Dev Machine " + machineName);
+
+    }
 
 
     /**
@@ -69,8 +86,9 @@ public class DevMachine extends MachineEntityImpl {
 
     /** Returns address (protocol://host:port) of the Workspace Agent. */
     public String getAddress() {
-        final MachineServer server = getServer(Constants.WSAGENT_REFERENCE);
-        return server.getProtocol() + "://" + server.getAddress();
+        return getServer(Constants.WSAGENT_REFERENCE).getUrl();
+//        final MachineServer server = getServer(Constants.WSAGENT_REFERENCE);
+//        return server.getProtocol() + "://" + server.getAddress();
     }
 
 }

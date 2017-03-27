@@ -28,6 +28,8 @@ import java.util.Set;
  *
  * @author gazarenkov
  * @author Alexander Garagatyi
+ *
+ * @deprecated
  */
 public interface InstanceProvider {
     /**

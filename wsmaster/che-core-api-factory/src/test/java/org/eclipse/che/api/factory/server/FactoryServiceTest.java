@@ -21,7 +21,7 @@ import com.jayway.restassured.response.Response;
 import org.eclipse.che.api.core.BadRequestException;
 import org.eclipse.che.api.core.NotFoundException;
 import org.eclipse.che.api.core.model.factory.Factory;
-import org.eclipse.che.api.core.model.project.ProjectConfig;
+import org.eclipse.che.api.core.model.workspace.config.ProjectConfig;
 import org.eclipse.che.api.core.model.user.User;
 import org.eclipse.che.api.core.model.workspace.WorkspaceConfig;
 import org.eclipse.che.api.core.model.workspace.WorkspaceStatus;
@@ -40,7 +40,7 @@ import org.eclipse.che.api.user.server.model.impl.UserImpl;
 import org.eclipse.che.api.workspace.server.WorkspaceManager;
 import org.eclipse.che.api.workspace.server.model.impl.EnvironmentImpl;
 import org.eclipse.che.api.workspace.server.model.impl.EnvironmentRecipeImpl;
-import org.eclipse.che.api.workspace.server.model.impl.ExtendedMachineImpl;
+import org.eclipse.che.api.workspace.server.model.impl.MachineConfig2Impl;
 import org.eclipse.che.api.workspace.server.model.impl.ProjectConfigImpl;
 import org.eclipse.che.api.workspace.server.model.impl.ServerConf2Impl;
 import org.eclipse.che.api.workspace.server.model.impl.SourceStorageImpl;
@@ -778,7 +778,7 @@ public class FactoryServiceTest {
         environmentRecipe.setContentType("compose");
         environmentRecipe.setLocation("location");
         final EnvironmentImpl env = new EnvironmentImpl();
-        final ExtendedMachineImpl extendedMachine = new ExtendedMachineImpl();
+        final MachineConfig2Impl extendedMachine = new MachineConfig2Impl();
         extendedMachine.setAgents(singletonList("agent"));
         extendedMachine.setAttributes(singletonMap("att1", "value"));
         extendedMachine.setServers(singletonMap("agent", new ServerConf2Impl("5555",

@@ -13,7 +13,7 @@ package org.eclipse.che.plugin.jdb.server;
 import com.google.common.collect.ImmutableMap;
 
 import org.eclipse.che.api.core.ServerException;
-import org.eclipse.che.api.core.model.project.ProjectConfig;
+import org.eclipse.che.api.core.model.workspace.config.ProjectConfig;
 import org.eclipse.che.api.core.notification.EventService;
 import org.eclipse.che.api.debug.shared.model.Breakpoint;
 import org.eclipse.che.api.debug.shared.model.DebuggerInfo;
@@ -288,7 +288,6 @@ public class JavaDebuggerTest {
         FileWatcherNotificationHandler fileWatcherNotificationHandler = new DefaultFileWatcherNotificationHandler(vfsProvider);
         FileTreeWatcher fileTreeWatcher = new FileTreeWatcher(root, new HashSet<>(), fileWatcherNotificationHandler);
         ProjectManager projectManager = new ProjectManager(vfsProvider,
-                                                           eventService,
                                                            projectTypeRegistry,
                                                            projectRegistry,
                                                            projectHandlerRegistry,

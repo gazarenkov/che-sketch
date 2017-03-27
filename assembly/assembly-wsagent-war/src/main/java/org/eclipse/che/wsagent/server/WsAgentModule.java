@@ -41,7 +41,6 @@ import org.eclipse.che.api.user.server.spi.PreferenceDao;
 import org.eclipse.che.commons.lang.Pair;
 import org.eclipse.che.git.impl.jgit.JGitConnectionFactory;
 import org.eclipse.che.inject.DynaModule;
-import org.eclipse.che.plugin.java.server.rest.WsAgentURLProvider;
 import org.eclipse.che.security.oauth.RemoteOAuthTokenProvider;
 
 import javax.inject.Named;
@@ -81,8 +80,8 @@ public class WsAgentModule extends AbstractModule {
         bind(ApiEndpointAccessibilityChecker.class);
         bind(WsAgentAnalyticsAddresser.class);
 
-        bind(String.class).annotatedWith(Names.named("wsagent.endpoint"))
-                          .toProvider(WsAgentURLProvider.class);
+//        bind(String.class).annotatedWith(Names.named("wsagent.endpoint"))
+//                          .toProvider(WsAgentURLProvider.class);
 
         configureJsonRpc();
         configureWebSocket();

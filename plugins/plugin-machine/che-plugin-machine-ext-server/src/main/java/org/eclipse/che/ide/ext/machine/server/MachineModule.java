@@ -12,7 +12,7 @@ package org.eclipse.che.ide.ext.machine.server;
 
 import com.google.inject.AbstractModule;
 
-import org.eclipse.che.api.workspace.server.RecipeScriptDownloadService;
+//import org.eclipse.che.api.workspace.server.RecipeScriptDownloadService;
 import org.eclipse.che.ide.ext.machine.server.ssh.KeysInjector;
 import org.eclipse.che.ide.ext.machine.server.ssh.WorkspaceSshKeys;
 import org.eclipse.che.inject.DynaModule;
@@ -24,6 +24,6 @@ public class MachineModule extends AbstractModule {
     protected void configure() {
         bind(KeysInjector.class).asEagerSingleton();
         bind(WorkspaceSshKeys.class).asEagerSingleton();
-        bind(RecipeScriptDownloadService.class);
+//        bind(RecipeScriptDownloadService.class);
     }
 }

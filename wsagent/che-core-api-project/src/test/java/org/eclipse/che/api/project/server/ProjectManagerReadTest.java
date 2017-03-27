@@ -10,7 +10,7 @@
  *******************************************************************************/
 package org.eclipse.che.api.project.server;
 
-import org.eclipse.che.api.core.model.project.ProjectConfig;
+import org.eclipse.che.api.core.model.workspace.config.ProjectConfig;
 import org.eclipse.che.api.project.server.handlers.ProjectHandlerRegistry;
 import org.eclipse.che.api.project.server.type.BaseProjectType;
 import org.eclipse.che.api.project.server.type.ProjectTypeRegistry;
@@ -75,7 +75,7 @@ public class ProjectManagerReadTest extends WsAgentTestBase {
         projectRegistry = new ProjectRegistry(workspaceHolder, vfsProvider, projectTypeRegistry, projectHandlerRegistry, eventService);
         projectRegistry.initProjects();
 
-        pm = new ProjectManager(vfsProvider, null, projectTypeRegistry, projectRegistry, projectHandlerRegistry,
+        pm = new ProjectManager(vfsProvider, projectTypeRegistry, projectRegistry, projectHandlerRegistry,
                                 null, fileWatcherNotificationHandler, fileTreeWatcher, workspaceHolder, fileWatcherManager);
         pm.initWatcher();
     }

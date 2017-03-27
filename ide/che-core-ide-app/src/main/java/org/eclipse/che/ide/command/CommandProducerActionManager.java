@@ -16,9 +16,6 @@ import com.google.inject.Singleton;
 import com.google.web.bindery.event.shared.EventBus;
 
 import org.eclipse.che.api.core.model.machine.Machine;
-import org.eclipse.che.api.machine.shared.dto.MachineDto;
-import org.eclipse.che.api.promises.client.Operation;
-import org.eclipse.che.api.promises.client.OperationException;
 import org.eclipse.che.ide.Resources;
 import org.eclipse.che.ide.api.action.Action;
 import org.eclipse.che.ide.api.action.ActionEvent;
@@ -28,6 +25,7 @@ import org.eclipse.che.ide.api.app.AppContext;
 import org.eclipse.che.ide.api.command.CommandProducer;
 import org.eclipse.che.ide.api.component.Component;
 import org.eclipse.che.ide.api.constraints.Constraints;
+import org.eclipse.che.ide.api.machine.MachineEntity;
 import org.eclipse.che.ide.api.machine.MachineServiceClient;
 import org.eclipse.che.ide.api.machine.events.MachineStateEvent;
 import org.eclipse.che.ide.api.machine.events.WsAgentStateEvent;
@@ -64,10 +62,10 @@ public class CommandProducerActionManager implements MachineStateEvent.Handler, 
     private final MachineServiceClient         machineServiceClient;
     private final Resources                    resources;
 
-    private final List<Machine>                            machines;
+    private final List<MachineEntity>                      machines;
     private final Set<CommandProducer>                     commandProducers;
     private final Map<Action, DefaultActionGroup>          actionsToActionGroups;
-    private final Map<Machine, List<Action>>               actionsByMachines;
+    private final Map<MachineEntity, List<Action>>               actionsByMachines;
     private final Map<CommandProducer, DefaultActionGroup> producersToActionGroups;
 
     private DefaultActionGroup commandActionsPopUpGroup;
@@ -119,14 +117,14 @@ public class CommandProducerActionManager implements MachineStateEvent.Handler, 
 
     @Override
     public void start(final Callback<Component, Exception> callback) {
-        machineServiceClient.getMachines(appContext.getWorkspaceId()).then(new Operation<List<MachineDto>>() {
-            @Override
-            public void apply(List<MachineDto> arg) throws OperationException {
-                machines.addAll(arg);
-
-                callback.onSuccess(CommandProducerActionManager.this);
-            }
-        });
+//        machineServiceClient.getMachines(appContext.getWorkspaceId()).then(new Operation<List<MachineDto>>() {
+//            @Override
+//            public void apply(List<MachineDto> arg) throws OperationException {
+//                machines.addAll(arg);
+//
+//                callback.onSuccess(CommandProducerActionManager.this);
+//            }
+//        });
     }
 
     @Override
@@ -135,16 +133,16 @@ public class CommandProducerActionManager implements MachineStateEvent.Handler, 
 
     @Override
     public void onMachineRunning(MachineStateEvent event) {
-        machines.add(event.getMachine());
-
-        createActionsForMachine(event.getMachine());
+//        machines.add(event.getMachine());
+//
+//        createActionsForMachine(event.getMachine());
     }
 
     @Override
     public void onMachineDestroyed(MachineStateEvent event) {
-        machines.remove(event.getMachine());
-
-        removeActionsForMachine(event.getMachine());
+//        machines.remove(event.getMachine());
+//
+//        removeActionsForMachine(event.getMachine());
     }
 
     @Override
@@ -163,7 +161,7 @@ public class CommandProducerActionManager implements MachineStateEvent.Handler, 
         Action action;
 
         if (producer.getMachineTypes().isEmpty()) {
-            action = commandProducerActionFactory.create(producer.getName(), producer, appContext.getDevMachine().getDescriptor());
+            action = commandProducerActionFactory.create(producer.getName(), producer, appContext.getDevMachine());
 
             actionManager.registerAction(producer.getName(), action);
         } else {
@@ -173,7 +171,7 @@ public class CommandProducerActionManager implements MachineStateEvent.Handler, 
 
             actionManager.registerAction(producer.getName(), action);
 
-            for (Machine machine : machines) {
+            for (MachineEntity machine : machines) {
                 createActionsForMachine(machine);
             }
         }
@@ -185,10 +183,10 @@ public class CommandProducerActionManager implements MachineStateEvent.Handler, 
      * Creates actions for that {@link CommandProducer}s
      * which are applicable for the given machine's type.
      */
-    private void createActionsForMachine(Machine machine) {
+    private void createActionsForMachine(MachineEntity machine) {
         for (CommandProducer commandProducer : commandProducers) {
-            if (commandProducer.getMachineTypes().contains(machine.getConfig().getType())) {
-                CommandProducerAction machineAction = commandProducerActionFactory.create(machine.getConfig().getName(),
+            if (commandProducer.getMachineTypes().contains(machine.getType())) {
+                CommandProducerAction machineAction = commandProducerActionFactory.create(machine.getDisplayName(),
                                                                                           commandProducer,
                                                                                           machine);
                 List<Action> actionList = actionsByMachines.get(machine);
@@ -198,7 +196,7 @@ public class CommandProducerActionManager implements MachineStateEvent.Handler, 
                 }
                 actionList.add(machineAction);
 
-                actionManager.registerAction(machine.getConfig().getName(), machineAction);
+                actionManager.registerAction(machine.getDisplayName(), machineAction);
 
                 DefaultActionGroup actionGroup = producersToActionGroups.get(commandProducer);
                 if (actionGroup != null) {

@@ -87,7 +87,7 @@ export class GetSshDataAction {
                 return ssh.getPair("workspace", foundWorkspaceDTO.getId());
             }).then((sshPairDto : org.eclipse.che.api.ssh.shared.dto.SshPairDto) => {
 
-                let runtime : org.eclipse.che.api.machine.shared.dto.MachineRuntimeInfoDto = foundWorkspaceDTO.getRuntime().getDevMachine().getRuntime();
+                let runtime : org.eclipse.che.api.machine.shared.dto.MachineRuntimeDto = foundWorkspaceDTO.getRuntime().getDevMachine().getRuntime();
                 let user : string = runtime.getProperties().get("config.user");
                 if (user === "") {
                     // user is root if not defined

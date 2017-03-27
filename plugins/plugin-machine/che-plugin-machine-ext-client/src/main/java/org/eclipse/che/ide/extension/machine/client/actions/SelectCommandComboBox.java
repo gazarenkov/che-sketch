@@ -18,9 +18,10 @@ import com.google.web.bindery.event.shared.EventBus;
 
 import org.eclipse.che.api.core.model.machine.Machine;
 import org.eclipse.che.api.core.model.machine.MachineConfig;
+import org.eclipse.che.api.core.model.workspace.runtime.MachineRuntime;
 import org.eclipse.che.api.core.model.workspace.Workspace;
 import org.eclipse.che.api.core.model.workspace.WorkspaceRuntime;
-import org.eclipse.che.api.machine.shared.dto.MachineDto;
+import org.eclipse.che.api.machine.shared.dto.MachineRuntimeDto;
 import org.eclipse.che.commons.annotation.Nullable;
 import org.eclipse.che.ide.api.action.AbstractPerspectiveAction;
 import org.eclipse.che.ide.api.action.ActionEvent;
@@ -34,6 +35,8 @@ import org.eclipse.che.ide.api.command.CommandManager;
 import org.eclipse.che.ide.api.command.CommandType;
 import org.eclipse.che.ide.api.command.CommandTypeRegistry;
 import org.eclipse.che.ide.api.machine.MachineEntity;
+import org.eclipse.che.ide.api.machine.MachineEntityImpl;
+import org.eclipse.che.ide.api.machine.events.MachineStateEvent;
 import org.eclipse.che.ide.api.machine.events.WsAgentStateEvent;
 import org.eclipse.che.ide.api.machine.events.WsAgentStateHandler;
 import org.eclipse.che.ide.api.workspace.event.WorkspaceStartedEvent;
@@ -41,7 +44,6 @@ import org.eclipse.che.ide.api.workspace.event.WorkspaceStoppedEvent;
 import org.eclipse.che.ide.extension.machine.client.MachineLocalizationConstant;
 import org.eclipse.che.ide.extension.machine.client.MachineResources;
 import org.eclipse.che.ide.extension.machine.client.inject.factories.EntityFactory;
-import org.eclipse.che.ide.api.machine.events.MachineStateEvent;
 import org.eclipse.che.ide.ui.dropdown.DropDownListFactory;
 import org.eclipse.che.ide.ui.dropdown.DropDownWidget;
 import org.vectomatic.dom.svg.ui.SVGImage;
@@ -79,7 +81,7 @@ public class SelectCommandComboBox extends AbstractPerspectiveAction implements 
 
     private final MachineLocalizationConstant locale;
     private final MachineResources            resources;
-    private final Map<String, Machine>        registeredMachineMap;
+    private final Map<String, MachineEntity>        registeredMachineMap;
     private final ActionManager               actionManager;
     private final EntityFactory               entityFactory;
     private final CommandManager              commandManager;
@@ -268,7 +270,7 @@ public class SelectCommandComboBox extends AbstractPerspectiveAction implements 
     }
 
     @Nullable
-    Machine getSelectedMachine() {
+    MachineEntity getSelectedMachine() {
         if (machinesListWidget.getSelectedId() == null) {
             return null;
         }
@@ -310,11 +312,13 @@ public class SelectCommandComboBox extends AbstractPerspectiveAction implements 
             return emptyList();
         }
 
-        List<? extends Machine> runtimeMachines = workspaceRuntime.getMachines();
+        Map<String, ? extends MachineRuntime> runtimeMachines = workspaceRuntime.getMachines();
         List<MachineEntity> machines = new ArrayList<>(runtimeMachines.size());
-        for (Machine machine : runtimeMachines) {
-            if (machine instanceof MachineDto) {
-                MachineEntity machineEntity = entityFactory.createMachine((MachineDto)machine);
+        for (Map.Entry<String, ? extends MachineRuntime> machine : runtimeMachines.entrySet()) {
+            if (machine instanceof MachineRuntimeDto) {
+
+                MachineEntity machineEntity = new MachineEntityImpl(appContext.getWorkspace(), machine.getKey());
+                        //entityFactory.createMachine((MachineRuntimeDto)machine);
                 machines.add(machineEntity);
             }
 
@@ -339,14 +343,14 @@ public class SelectCommandComboBox extends AbstractPerspectiveAction implements 
 
     @Override
     public void onMachineRunning(MachineStateEvent event) {
-        Machine machine = event.getMachine();
+        MachineEntity machine = event.getMachine();
 
         addMachineAction(machine);
     }
 
     @Override
     public void onMachineDestroyed(MachineStateEvent event) {
-        Machine machine = event.getMachine();
+        MachineEntity machine = event.getMachine();
 
         final String machineId = machine.getId();
 
@@ -354,7 +358,7 @@ public class SelectCommandComboBox extends AbstractPerspectiveAction implements 
             return;
         }
 
-        if (machine.getConfig().getName().equals(machinesListWidget.getSelectedName())) {
+        if (machine.getDisplayName().equals(machinesListWidget.getSelectedName())) {
             machinesListWidget.selectElement(null, null);
         }
 
@@ -369,11 +373,11 @@ public class SelectCommandComboBox extends AbstractPerspectiveAction implements 
         updateMachineActions();
     }
 
-    private void addMachineAction(Machine machine) {
+    private void addMachineAction(MachineEntity machine) {
         registeredMachineMap.put(machine.getId(), machine);
         updateMachineActions();
 
-        machinesListWidget.selectElement(machine.getId(), machine.getConfig().getName());
+        machinesListWidget.selectElement(machine.getId(), machine.getDisplayName());
     }
 
     private void updateMachineActions() {

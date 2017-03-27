@@ -24,7 +24,7 @@ import org.eclipse.che.api.promises.client.Promise;
 import org.eclipse.che.api.promises.client.PromiseError;
 import org.eclipse.che.api.workspace.shared.dto.EnvironmentDto;
 import org.eclipse.che.api.workspace.shared.dto.EnvironmentRecipeDto;
-import org.eclipse.che.api.workspace.shared.dto.ExtendedMachineDto;
+import org.eclipse.che.api.workspace.shared.dto.MachineConfig2Dto;
 import org.eclipse.che.api.workspace.shared.dto.WorkspaceConfigDto;
 import org.eclipse.che.api.workspace.shared.dto.WorkspaceDto;
 import org.eclipse.che.commons.test.mockito.answer.SelfReturningAnswer;
@@ -104,20 +104,20 @@ public class CreateWorkspacePresenterTest {
     private MachineLimitsDto                limitsDto;
 
     //DTOs
-    private MachineConfigDto   machineConfigDto;
-    private WorkspaceConfigDto workspaceConfigDto;
+    private MachineConfigDto     machineConfigDto;
+    private WorkspaceConfigDto   workspaceConfigDto;
     @Mock
-    private MachineDto         machineDto;
+    private MachineDto           machineDto;
     @Mock
-    private MachineSourceDto   machineSourceDto;
+    private MachineSourceDto     machineSourceDto;
     // Mocks too
     private EnvironmentDto       environmentDto;
     private EnvironmentRecipeDto environmentRecipeDto;
-    private ExtendedMachineDto   extendedMachineDto;
+    private MachineConfig2Dto    extendedMachineDto;
     @Mock
-    private CommandDto         commandDto;
+    private CommandDto           commandDto;
     @Mock
-    private WorkspaceDto  usersWorkspaceDto;
+    private WorkspaceDto         usersWorkspaceDto;
 
     @Captor
     private ArgumentCaptor<Operation<List<RecipeDescriptor>>> recipeOperation;
@@ -153,8 +153,8 @@ public class CreateWorkspacePresenterTest {
         when(dtoFactory.createDto(EnvironmentDto.class)).thenReturn(environmentDto);
         environmentRecipeDto = mock(EnvironmentRecipeDto.class, new SelfReturningAnswer());
         when(dtoFactory.createDto(EnvironmentRecipeDto.class)).thenReturn(environmentRecipeDto);
-        extendedMachineDto = mock(ExtendedMachineDto.class, new SelfReturningAnswer());
-        when(dtoFactory.createDto(ExtendedMachineDto.class)).thenReturn(extendedMachineDto);
+        extendedMachineDto = mock(MachineConfig2Dto.class, new SelfReturningAnswer());
+        when(dtoFactory.createDto(MachineConfig2Dto.class)).thenReturn(extendedMachineDto);
 
         when(wsComponentProvider.get()).thenReturn(workspaceComponent);
 

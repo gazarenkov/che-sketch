@@ -14,13 +14,14 @@ import com.google.inject.Inject;
 import com.google.inject.Singleton;
 import com.google.web.bindery.event.shared.EventBus;
 
-import org.eclipse.che.api.machine.shared.dto.MachineDto;
+import org.eclipse.che.api.machine.shared.dto.MachineRuntimeDto;
 import org.eclipse.che.api.promises.client.Operation;
 import org.eclipse.che.api.promises.client.OperationException;
 import org.eclipse.che.api.workspace.shared.dto.WorkspaceDto;
 import org.eclipse.che.api.workspace.shared.dto.WorkspaceRuntimeDto;
 import org.eclipse.che.ide.api.app.AppContext;
 import org.eclipse.che.ide.api.machine.MachineEntity;
+import org.eclipse.che.ide.api.machine.MachineEntityImpl;
 import org.eclipse.che.ide.api.machine.events.MachineStateEvent;
 import org.eclipse.che.ide.api.notification.NotificationManager;
 import org.eclipse.che.ide.api.workspace.WorkspaceServiceClient;
@@ -28,11 +29,12 @@ import org.eclipse.che.ide.api.workspace.event.MachineStatusChangedEvent;
 import org.eclipse.che.ide.extension.machine.client.MachineLocalizationConstant;
 import org.eclipse.che.ide.extension.machine.client.inject.factories.EntityFactory;
 
-import static org.eclipse.che.ide.api.notification.StatusNotification.DisplayMode.EMERGE_MODE;
-import static org.eclipse.che.ide.api.notification.StatusNotification.Status.FAIL;
+import java.util.Map;
+
 import static org.eclipse.che.ide.api.machine.events.MachineStateEvent.MachineAction.CREATING;
 import static org.eclipse.che.ide.api.machine.events.MachineStateEvent.MachineAction.RUNNING;
-import org.eclipse.che.ide.util.loging.Log;
+import static org.eclipse.che.ide.api.notification.StatusNotification.DisplayMode.EMERGE_MODE;
+import static org.eclipse.che.ide.api.notification.StatusNotification.Status.FAIL;
 
 /**
  * Notifies about changing machine state.
@@ -98,9 +100,10 @@ public class MachineStatusHandler implements MachineStatusChangedEvent.Handler {
     }
 
     private MachineEntity getMachine(String machineId, WorkspaceRuntimeDto workspaceRuntime) {
-        for (MachineDto machineDto : workspaceRuntime.getMachines()) {
-            if (machineId.equals(machineDto.getId())) {
-                return entityFactory.createMachine(machineDto);
+        for (Map.Entry<String, MachineRuntimeDto> machineDto : workspaceRuntime.getMachines().entrySet()) {
+            if (machineId.equals(machineDto.getKey())) {
+                return  new MachineEntityImpl(appContext.getWorkspace(), machineId);
+                //return entityFactory.createMachine(machineDto.getValue());
             }
         }
         notificationManager.notify(locale.failedToFindMachine(machineId));

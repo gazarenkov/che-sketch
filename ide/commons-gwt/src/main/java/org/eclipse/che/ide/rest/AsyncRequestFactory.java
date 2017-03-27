@@ -18,6 +18,7 @@ import com.google.inject.Singleton;
 import org.eclipse.che.ide.MimeType;
 import org.eclipse.che.ide.dto.DtoFactory;
 import org.eclipse.che.ide.dto.JsonSerializable;
+import org.eclipse.che.ide.util.loging.Log;
 
 import java.util.List;
 
@@ -212,6 +213,8 @@ public class AsyncRequestFactory {
      */
     protected AsyncRequest doCreateRequest(RequestBuilder.Method method, String url, Object dtoBody, boolean async) {
         Preconditions.checkNotNull(method, "Request method should not be a null");
+
+        Log.info(AsyncRequestFactory.class, "" + method + " " + url);
 
         AsyncRequest asyncRequest = new AsyncRequest(method, url, async);
         if (dtoBody != null) {

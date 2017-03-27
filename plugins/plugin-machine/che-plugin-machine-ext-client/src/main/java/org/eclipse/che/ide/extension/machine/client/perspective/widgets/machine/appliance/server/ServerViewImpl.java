@@ -22,6 +22,7 @@ import com.google.inject.Inject;
 
 import org.eclipse.che.ide.extension.machine.client.MachineLocalizationConstant;
 import org.eclipse.che.ide.extension.machine.client.TableResources;
+import org.eclipse.che.ide.rest.UrlBuilder;
 
 import javax.validation.constraints.NotNull;
 import java.util.List;
@@ -59,6 +60,8 @@ public class ServerViewImpl extends Composite implements ServerView {
         CellTable<ServerEntity> table = new CellTable<>(0, tableResources);
         table.setLoadingIndicator(null);
 
+
+
         TextColumn<ServerEntity> ref = new TextColumn<ServerEntity>() {
             @Override
             public String getValue(ServerEntity server) {
@@ -69,14 +72,15 @@ public class ServerViewImpl extends Composite implements ServerView {
         TextColumn<ServerEntity> exposedPort = new TextColumn<ServerEntity>() {
             @Override
             public String getValue(ServerEntity server) {
-                return server.getPort();
+
+                return new UrlBuilder(server.getUrl()).getPort();
             }
         };
 
         TextColumn<ServerEntity> address = new TextColumn<ServerEntity>() {
             @Override
             public String getValue(ServerEntity server) {
-                return server.getAddress();
+                return new UrlBuilder(server.getUrl()).getHost();
             }
         };
 

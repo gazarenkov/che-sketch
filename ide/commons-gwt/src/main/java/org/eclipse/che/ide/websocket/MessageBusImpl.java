@@ -10,7 +10,8 @@
  *******************************************************************************/
 package org.eclipse.che.ide.websocket;
 
-import static com.google.gwt.user.client.Window.Location.getHost;
+import org.eclipse.che.ide.rest.UrlBuilder;
+
 import static com.google.gwt.user.client.Window.Location.getProtocol;
 
 /**
@@ -21,8 +22,17 @@ import static com.google.gwt.user.client.Window.Location.getProtocol;
  */
 public class MessageBusImpl extends AbstractMessageBus {
 
+    private static UrlBuilder MB_URL;
+
+    static {
+        MB_URL = new UrlBuilder(getRestContext());
+        MB_URL.setPath("/websocket/1");
+        MB_URL.setProtocol(getProtocol().equals("https:") ? "wss" : "ws");
+    };
+
     public MessageBusImpl() {
-        super((getProtocol().equals("https:") ? "wss://" : "ws://") + getHost() + getRestContext() + "/ws");
+        //super((getProtocol().equals("https:") ? "wss://" : "ws://") + getHost() + getRestContext() + "/ws");
+        super(MB_URL.getUrl());
     }
 
     private static native String getRestContext() /*-{

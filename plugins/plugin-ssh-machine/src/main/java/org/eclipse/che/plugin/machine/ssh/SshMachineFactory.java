@@ -12,7 +12,7 @@ package org.eclipse.che.plugin.machine.ssh;
 
 import com.google.inject.assistedinject.Assisted;
 
-import org.eclipse.che.api.core.model.machine.Command;
+import org.eclipse.che.api.core.model.workspace.config.Command;
 import org.eclipse.che.api.core.model.machine.Machine;
 import org.eclipse.che.api.core.util.LineConsumer;
 import org.eclipse.che.api.machine.server.exception.MachineException;

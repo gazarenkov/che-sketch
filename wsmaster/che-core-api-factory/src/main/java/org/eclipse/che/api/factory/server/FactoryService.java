@@ -27,7 +27,7 @@ import org.eclipse.che.api.core.ForbiddenException;
 import org.eclipse.che.api.core.NotFoundException;
 import org.eclipse.che.api.core.ServerException;
 import org.eclipse.che.api.core.model.factory.Factory;
-import org.eclipse.che.api.core.model.project.ProjectConfig;
+import org.eclipse.che.api.core.model.workspace.config.ProjectConfig;
 import org.eclipse.che.api.core.model.user.User;
 import org.eclipse.che.api.core.rest.Service;
 import org.eclipse.che.api.factory.server.builder.FactoryBuilder;
@@ -151,7 +151,8 @@ public class FactoryService extends Service {
     public FactoryDto saveFactory(Iterator<FileItem> formData) throws ForbiddenException,
                                                                       ConflictException,
                                                                       BadRequestException,
-                                                                      ServerException {
+                                                                      ServerException,
+                                                                      NotFoundException {
         try {
             final Set<FactoryImage> images = new HashSet<>();
             FactoryDto factory = null;
@@ -203,7 +204,7 @@ public class FactoryService extends Service {
     public FactoryDto saveFactory(FactoryDto factory) throws BadRequestException,
                                                                 ServerException,
                                                                 ForbiddenException,
-                                                                ConflictException {
+                                                                ConflictException, NotFoundException {
         requiredNotNull(factory, "Factory configuration");
         factoryBuilder.checkValid(factory);
         processDefaults(factory);

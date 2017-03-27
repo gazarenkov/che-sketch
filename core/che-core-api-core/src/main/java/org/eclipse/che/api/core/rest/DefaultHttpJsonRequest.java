@@ -73,6 +73,11 @@ public class DefaultHttpJsonRequest implements HttpJsonRequest {
     private List<Pair<String, ?>> queryParams;
     private String                authorizationHeaderValue;
 
+
+    public static HttpJsonRequest create(String url) {
+        return new DefaultHttpJsonRequest(url);
+    }
+
     protected DefaultHttpJsonRequest(String url, String method) {
         this.url = requireNonNull(url, "Required non-null url");
         this.method = method;

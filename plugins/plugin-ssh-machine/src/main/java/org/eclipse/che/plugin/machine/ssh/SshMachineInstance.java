@@ -13,14 +13,15 @@ package org.eclipse.che.plugin.machine.ssh;
 import com.google.inject.assistedinject.Assisted;
 
 import org.eclipse.che.api.core.NotFoundException;
-import org.eclipse.che.api.core.model.machine.Command;
+import org.eclipse.che.api.core.model.workspace.config.Command;
 import org.eclipse.che.api.core.model.machine.Machine;
 import org.eclipse.che.api.core.model.machine.MachineSource;
 import org.eclipse.che.api.core.model.machine.ServerConf;
+import org.eclipse.che.api.core.model.workspace.runtime.ServerRuntime;
 import org.eclipse.che.api.core.util.LineConsumer;
 import org.eclipse.che.api.machine.server.exception.MachineException;
-import org.eclipse.che.api.machine.server.model.impl.MachineRuntimeInfoImpl;
-import org.eclipse.che.api.machine.server.model.impl.ServerImpl;
+import org.eclipse.che.api.machine.server.model.impl.MachineRuntimeImpl;
+import org.eclipse.che.api.machine.server.model.impl.ServerRuntimeImpl;
 import org.eclipse.che.api.machine.server.spi.Instance;
 import org.eclipse.che.api.machine.server.spi.InstanceNode;
 import org.eclipse.che.api.machine.server.spi.InstanceProcess;
@@ -60,7 +61,7 @@ public class SshMachineInstance extends AbstractInstance {
     private final Set<ServerConf>                             machinesServers;
     private final ConcurrentHashMap<Integer, InstanceProcess> machineProcesses;
 
-    private MachineRuntimeInfoImpl machineRuntime;
+    private MachineRuntimeImpl machineRuntime;
 
     @Inject
     public SshMachineInstance(@Assisted Machine machine,
@@ -84,18 +85,18 @@ public class SshMachineInstance extends AbstractInstance {
     }
 
     @Override
-    public MachineRuntimeInfoImpl getRuntime() {
+    public MachineRuntimeImpl getRuntime() {
         // lazy initialization
         if (machineRuntime == null) {
             synchronized (this) {
                 if (machineRuntime == null) {
                     UriBuilder uriBuilder = UriBuilder.fromUri("http://" + sshClient.getHost());
 
-                    final Map<String, ServerImpl> servers = new HashMap<>();
+                    final Map<String, ServerRuntime> servers = new HashMap<>();
                     for (ServerConf serverConf : machinesServers) {
                         servers.put(serverConf.getPort(), serverConfToServer(serverConf, uriBuilder.clone()));
                     }
-                    machineRuntime = new MachineRuntimeInfoImpl(emptyMap(), emptyMap(), servers);
+                    machineRuntime = new MachineRuntimeImpl(emptyMap(), servers);
                 }
             }
             // todo get env from client
@@ -193,7 +194,7 @@ public class SshMachineInstance extends AbstractInstance {
         sshClient.copy(sourcePath, targetPath);
     }
 
-    private ServerImpl serverConfToServer(ServerConf serverConf, UriBuilder uriBuilder) {
+    private ServerRuntime serverConfToServer(ServerConf serverConf, UriBuilder uriBuilder) {
         String port = serverConf.getPort().split("/")[0];
         uriBuilder.port(Integer.parseInt(port));
         if (serverConf.getPath() != null) {
@@ -201,11 +202,13 @@ public class SshMachineInstance extends AbstractInstance {
         }
         URI serverUri = uriBuilder.build();
 
-        return new ServerImpl(serverConf.getRef(),
-                              serverConf.getProtocol(),
-                              serverUri.getHost() + ":" + serverUri.getPort(),
-                              serverConf.getProtocol() != null ? serverUri.toString() : null,
-                              null);
+        return new ServerRuntimeImpl(serverUri.toString());
+
+//        return new ServerImpl(serverConf.getRef(),
+//                              serverConf.getProtocol(),
+//                              serverUri.getHost() + ":" + serverUri.getPort(),
+//                              serverConf.getProtocol() != null ? serverUri.toString() : null,
+//                              null);
     }
 
 }

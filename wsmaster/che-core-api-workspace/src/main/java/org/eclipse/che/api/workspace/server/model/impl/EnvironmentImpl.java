@@ -10,9 +10,9 @@
  *******************************************************************************/
 package org.eclipse.che.api.workspace.server.model.impl;
 
-import org.eclipse.che.api.core.model.workspace.Environment;
-import org.eclipse.che.api.core.model.workspace.EnvironmentRecipe;
-import org.eclipse.che.api.core.model.workspace.ExtendedMachine;
+import org.eclipse.che.api.core.model.workspace.config.Environment;
+import org.eclipse.che.api.core.model.workspace.config.EnvironmentRecipe;
+import org.eclipse.che.api.core.model.workspace.config.MachineConfig2;
 
 import javax.persistence.CascadeType;
 import javax.persistence.Column;
@@ -50,12 +50,12 @@ public class EnvironmentImpl implements Environment {
     @OneToMany(cascade = CascadeType.ALL, orphanRemoval = true, fetch = FetchType.EAGER)
     @JoinColumn(name = "machines_id")
     @MapKeyColumn(name = "machines_key")
-    private Map<String, ExtendedMachineImpl> machines;
+    private Map<String, MachineConfig2Impl> machines;
 
     public EnvironmentImpl() {}
 
     public EnvironmentImpl(EnvironmentRecipe recipe,
-                           Map<String, ? extends ExtendedMachine> machines) {
+                           Map<String, ? extends MachineConfig2> machines) {
         if (recipe != null) {
             this.recipe = new EnvironmentRecipeImpl(recipe);
         }
@@ -63,7 +63,7 @@ public class EnvironmentImpl implements Environment {
             this.machines = machines.entrySet()
                                     .stream()
                                     .collect(Collectors.toMap(Map.Entry::getKey,
-                                                              entry -> new ExtendedMachineImpl(entry.getValue())));
+                                                              entry -> new MachineConfig2Impl(entry.getValue())));
         }
     }
 
@@ -76,7 +76,7 @@ public class EnvironmentImpl implements Environment {
                                        .entrySet()
                                        .stream()
                                        .collect(Collectors.toMap(Map.Entry::getKey,
-                                                                 entry -> new ExtendedMachineImpl(entry.getValue())));
+                                                                 entry -> new MachineConfig2Impl(entry.getValue())));
         }
     }
 
@@ -89,14 +89,14 @@ public class EnvironmentImpl implements Environment {
     }
 
     @Override
-    public Map<String, ExtendedMachineImpl> getMachines() {
+    public Map<String, MachineConfig2Impl> getMachines() {
         if (machines == null) {
             machines = new HashMap<>();
         }
         return machines;
     }
 
-    public void setMachines(Map<String, ExtendedMachineImpl> machines) {
+    public void setMachines(Map<String, MachineConfig2Impl> machines) {
         this.machines = machines;
     }
 

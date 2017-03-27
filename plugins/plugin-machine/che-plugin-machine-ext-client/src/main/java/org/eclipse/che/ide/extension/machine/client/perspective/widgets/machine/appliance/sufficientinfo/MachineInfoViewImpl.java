@@ -64,7 +64,7 @@ public class MachineInfoViewImpl extends Composite implements MachineInfoView {
     public void updateInfo(MachineEntity machine) {
         name.setText(machine.getDisplayName());
         machineId.setText(machine.getId());
-        status.setText(String.valueOf(machine.getStatus()));
+        //status.setText(String.valueOf(machine.getStatus()));
         type.setText(machine.getType());
         dev.setText(String.valueOf(machine.isDev()));
     }

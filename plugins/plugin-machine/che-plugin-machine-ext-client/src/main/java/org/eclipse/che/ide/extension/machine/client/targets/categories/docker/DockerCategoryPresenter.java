@@ -14,9 +14,6 @@ import com.google.gwt.user.client.ui.AcceptsOneWidget;
 import com.google.inject.Inject;
 import com.google.web.bindery.event.shared.EventBus;
 
-import org.eclipse.che.api.promises.client.Operation;
-import org.eclipse.che.api.promises.client.OperationException;
-import org.eclipse.che.api.promises.client.PromiseError;
 import org.eclipse.che.ide.api.dialogs.CancelCallback;
 import org.eclipse.che.ide.api.dialogs.ConfirmCallback;
 import org.eclipse.che.ide.api.dialogs.DialogFactory;
@@ -24,17 +21,10 @@ import org.eclipse.che.ide.api.machine.MachineEntity;
 import org.eclipse.che.ide.api.machine.MachineServiceClient;
 import org.eclipse.che.ide.api.notification.NotificationManager;
 import org.eclipse.che.ide.extension.machine.client.MachineLocalizationConstant;
-import org.eclipse.che.ide.api.machine.events.MachineStateEvent;
 import org.eclipse.che.ide.extension.machine.client.targets.CategoryPage;
 import org.eclipse.che.ide.extension.machine.client.targets.Target;
 import org.eclipse.che.ide.extension.machine.client.targets.TargetManager;
 import org.eclipse.che.ide.extension.machine.client.targets.TargetsTreeManager;
-
-import static org.eclipse.che.api.core.model.machine.MachineStatus.RUNNING;
-import static org.eclipse.che.ide.api.notification.StatusNotification.DisplayMode.FLOAT_MODE;
-import static org.eclipse.che.ide.api.notification.StatusNotification.Status.FAIL;
-import static org.eclipse.che.ide.api.notification.StatusNotification.Status.SUCCESS;
-import static org.eclipse.che.ide.api.machine.events.MachineStateEvent.MachineAction.DESTROYED;
 
 /**
  * Docker type page presenter.
@@ -111,11 +101,11 @@ public class DockerCategoryPresenter implements CategoryPage, TargetManager, Doc
             return false;
         }
 
-        target.setOwner(machine.getOwner());
-        target.setType(machine.getConfig().getType());
-        target.setSourceType(machine.getConfig().getSource().getType());
-        target.setSourceContent(machine.getConfig().getSource().getContent());
-        target.setSource(machine.getConfig().getSource().getLocation());
+        //target.setOwner(machine.getOwner());
+        target.setType(machine.getType());
+        //target.setSourceType(machine.getConfig().getSource().getType());
+        //target.setSourceContent(machine.getConfig().getSource().getContent());
+        //target.setSource(machine.getConfig().getSource().getLocation());
 
         return true;
     }
@@ -140,25 +130,25 @@ public class DockerCategoryPresenter implements CategoryPage, TargetManager, Doc
     private void destroyTargetMachine(final Target target) {
         final MachineEntity machine = this.getMachineByName(target.getName());
 
-        if (machine == null || machine.getStatus() != RUNNING) {
-            return;
-        }
-
-        machineService.destroyMachine(machine.getWorkspaceId(),
-                                      machine.getId()).then(new Operation<Void>() {
-            @Override
-            public void apply(Void arg) throws OperationException {
-                eventBus.fireEvent(new MachineStateEvent(machine, DESTROYED));
-                notificationManager.notify(machineLocale.targetsViewDisconnectSuccess(target.getName()), SUCCESS, FLOAT_MODE);
-                updateTargets(null);
-            }
-        }).catchError(new Operation<PromiseError>() {
-            @Override
-            public void apply(PromiseError arg) throws OperationException {
-                notificationManager.notify(machineLocale.targetsViewDisconnectError(target.getName()), FAIL, FLOAT_MODE);
-                updateTargets(target.getName());
-            }
-        });
+//        if (machine == null || machine.getStatus() != RUNNING) {
+//            return;
+//        }
+//
+//        machineService.destroyMachine(machine.getWorkspaceId(),
+//                                      machine.getId()).then(new Operation<Void>() {
+//            @Override
+//            public void apply(Void arg) throws OperationException {
+//                eventBus.fireEvent(new MachineStateEvent(machine, DESTROYED));
+//                notificationManager.notify(machineLocale.targetsViewDisconnectSuccess(target.getName()), SUCCESS, FLOAT_MODE);
+//                updateTargets(null);
+//            }
+//        }).catchError(new Operation<PromiseError>() {
+//            @Override
+//            public void apply(PromiseError arg) throws OperationException {
+//                notificationManager.notify(machineLocale.targetsViewDisconnectError(target.getName()), FAIL, FLOAT_MODE);
+//                updateTargets(target.getName());
+//            }
+//        });
     }
 
     @Override

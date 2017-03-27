@@ -12,10 +12,10 @@ package org.eclipse.che.api.factory.server.impl;
 
 import org.eclipse.che.api.core.BadRequestException;
 import org.eclipse.che.api.core.ForbiddenException;
+import org.eclipse.che.api.core.NotFoundException;
 import org.eclipse.che.api.core.ServerException;
 import org.eclipse.che.api.factory.server.FactoryCreateValidator;
 import org.eclipse.che.api.factory.shared.dto.FactoryDto;
-import org.eclipse.che.api.user.server.spi.PreferenceDao;
 import org.eclipse.che.api.workspace.server.WorkspaceValidator;
 
 import javax.inject.Inject;
@@ -36,7 +36,8 @@ public class FactoryCreateValidatorImpl extends FactoryBaseValidator implements 
     @Override
     public void validateOnCreate(FactoryDto factory) throws BadRequestException,
                                                             ServerException,
-                                                            ForbiddenException {
+                                                            ForbiddenException,
+                                                            NotFoundException {
         validateProjects(factory);
         validateCurrentTimeAfterSinceUntil(factory);
         validateProjectActions(factory);

@@ -14,10 +14,7 @@ import com.google.inject.Inject;
 import com.google.inject.Singleton;
 import com.google.web.bindery.event.shared.EventBus;
 
-import org.eclipse.che.api.core.model.machine.MachineConfig;
 import org.eclipse.che.api.core.model.machine.MachineSource;
-import org.eclipse.che.api.machine.shared.dto.MachineConfigDto;
-import org.eclipse.che.api.machine.shared.dto.MachineLimitsDto;
 import org.eclipse.che.api.machine.shared.dto.MachineSourceDto;
 import org.eclipse.che.api.promises.client.Operation;
 import org.eclipse.che.api.promises.client.OperationException;
@@ -62,17 +59,17 @@ public class MachineManagerImpl implements MachineManager {
 
     @Override
     public void restartMachine(final MachineEntity machineState) {
-        destroyMachine(machineState).then(new Operation<Void>() {
-            @Override
-            public void apply(Void arg) throws OperationException {
-                final MachineConfig machineConfig = machineState.getConfig();
-                final MachineSource machineSource = machineConfig.getSource();
-                final String displayName = machineConfig.getName();
-                final boolean isDev = machineConfig.isDev();
-
-                startMachine(asDto(machineSource), displayName, isDev, "docker");
-            }
-        });
+//        destroyMachine(machineState).then(new Operation<Void>() {
+//            @Override
+//            public void apply(Void arg) throws OperationException {
+//                //final MachineConfig machineConfig = machineState.getConfig();
+//                final MachineSource machineSource = machineConfig.getSource();
+//                final String displayName = machineConfig.getName();
+//                final boolean isDev = machineConfig.isDev();
+//
+//                startMachine(asDto(machineSource), displayName, isDev, "docker");
+//            }
+//        });
     }
 
     /**
@@ -129,23 +126,23 @@ public class MachineManagerImpl implements MachineManager {
                               final boolean isDev,
                               final String machineType) {
 
-        MachineLimitsDto limitsDto = dtoFactory.createDto(MachineLimitsDto.class).withRam(1024);
-        if (isDev) {
-            limitsDto.withRam(3072);
-        }
-
-        MachineConfigDto configDto = dtoFactory.createDto(MachineConfigDto.class)
-                                               .withDev(isDev)
-                                               .withName(displayName)
-                                               .withSource(machineSourceDto)
-                                               .withLimits(limitsDto)
-                                               .withType(machineType);
-        workspaceServiceClient.createMachine(appContext.getWorkspaceId(), configDto);
+//        MachineLimitsDto limitsDto = dtoFactory.createDto(MachineLimitsDto.class).withRam(1024);
+//        if (isDev) {
+//            limitsDto.withRam(3072);
+//        }
+//
+//        MachineConfigDto configDto = dtoFactory.createDto(MachineConfigDto.class)
+//                                               .withDev(isDev)
+//                                               .withName(displayName)
+//                                               .withSource(machineSourceDto)
+//                                               .withLimits(limitsDto)
+//                                               .withType(machineType);
+//        workspaceServiceClient.createMachine(appContext.getWorkspaceId(), configDto);
     }
 
     @Override
     public Promise<Void> destroyMachine(final MachineEntity machineState) {
-        return machineServiceClient.destroyMachine(machineState.getWorkspaceId(),
+        return machineServiceClient.destroyMachine(appContext.getWorkspaceId(),
                                                    machineState.getId()).then(new Operation<Void>() {
             @Override
             public void apply(Void arg) throws OperationException {

@@ -22,8 +22,8 @@ import com.google.inject.Provider;
 import com.google.inject.name.Named;
 
 /**
- * Provides {@code ServerEvaluationStrategies}. Intended to be injected into {@link DockerInstanceRuntimeInfo}
- * instances to aid in {@link DockerInstanceRuntimeInfo#getServers()}
+ * Provides {@code ServerEvaluationStrategies}. Intended to be injected into {@link DockerInstanceRuntime}
+ * instances to aid in {@link DockerInstanceRuntime#getServers()}
  *
  * <p>Strategy to be used is selected by property {@code che.docker.server_evaluation_strategy}, which should
  * refer to a strategy bound in {@link LocalDockerModule}. If the strategy cannot be found, the default will

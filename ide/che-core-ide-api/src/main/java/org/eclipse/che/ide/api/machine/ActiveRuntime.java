@@ -10,55 +10,64 @@
  *******************************************************************************/
 package org.eclipse.che.ide.api.machine;
 
-import org.eclipse.che.api.core.model.machine.Machine;
+import org.eclipse.che.api.core.model.workspace.Workspace;
 import org.eclipse.che.api.core.model.workspace.WorkspaceRuntime;
 
 import java.util.ArrayList;
 import java.util.List;
+import java.util.Set;
 
 /**
  * @author Vitalii Parfonov
  */
 
-public class ActiveRuntime implements WorkspaceRuntime {
+public class ActiveRuntime /*implements WorkspaceRuntime*/ {
 
     protected WorkspaceRuntime workspaceRuntime;
     private String id;
-    private String rootFolder;
+//    private String rootFolder;
     private DevMachine devMachine;
     private List<MachineEntity> machines;
 
-    public ActiveRuntime(WorkspaceRuntime workspaceRuntime) {
-        this.workspaceRuntime = workspaceRuntime;
+    public ActiveRuntime(Workspace workspace) {
+        this.workspaceRuntime = workspace.getRuntime();
         if (workspaceRuntime != null) {
             id = workspaceRuntime.getActiveEnv();
-            rootFolder = workspaceRuntime.getRootFolder();
-            devMachine = new DevMachine(workspaceRuntime.getDevMachine());
+            //rootFolder = workspaceRuntime.getRootFolder();
+            //devMachine = new DevMachine(workspaceRuntime.getDevMachine());
             machines = new ArrayList<>();
-            for(Machine machine : workspaceRuntime.getMachines()) {
-                machines.add(new MachineEntityImpl(machine));
+            Set<String> keys = workspace.getConfig().getEnvironments().get(id).getMachines().keySet();
+
+
+            for(String machineName : keys) {
+                machines.add(new MachineEntityImpl(workspace, machineName));
             }
         }
     }
 
 
-    @Override
+
+//    @Override
     public String getActiveEnv() {
         return id;
     }
 
-    @Override
-    public String getRootFolder() {
-        return rootFolder;
-    }
+//    @Override
+//    public String getRootFolder() {
+//        return rootFolder;
+//    }
 
-    @Override
+    //@Override
     public DevMachine getDevMachine() {
+
         return devMachine;
     }
 
-    @Override
+    //@Override
     public List<MachineEntity> getMachines() {
         return machines;
     }
+
+
+
 }

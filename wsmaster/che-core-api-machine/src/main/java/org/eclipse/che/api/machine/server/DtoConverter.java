@@ -14,21 +14,23 @@ import org.eclipse.che.api.core.model.machine.Machine;
 import org.eclipse.che.api.core.model.machine.MachineConfig;
 import org.eclipse.che.api.core.model.machine.MachineLimits;
 import org.eclipse.che.api.core.model.machine.MachineProcess;
-import org.eclipse.che.api.core.model.machine.MachineRuntimeInfo;
+import org.eclipse.che.api.core.model.workspace.runtime.MachineRuntime;
 import org.eclipse.che.api.core.model.machine.MachineSource;
 import org.eclipse.che.api.core.model.machine.Server;
 import org.eclipse.che.api.core.model.machine.ServerConf;
 import org.eclipse.che.api.core.model.machine.ServerProperties;
+import org.eclipse.che.api.core.model.workspace.runtime.ServerRuntime;
 import org.eclipse.che.api.core.model.machine.Snapshot;
 import org.eclipse.che.api.machine.shared.dto.MachineConfigDto;
 import org.eclipse.che.api.machine.shared.dto.MachineDto;
 import org.eclipse.che.api.machine.shared.dto.MachineLimitsDto;
 import org.eclipse.che.api.machine.shared.dto.MachineProcessDto;
-import org.eclipse.che.api.machine.shared.dto.MachineRuntimeInfoDto;
+import org.eclipse.che.api.machine.shared.dto.MachineRuntimeDto;
 import org.eclipse.che.api.machine.shared.dto.MachineSourceDto;
 import org.eclipse.che.api.machine.shared.dto.ServerConfDto;
 import org.eclipse.che.api.machine.shared.dto.ServerDto;
 import org.eclipse.che.api.machine.shared.dto.ServerPropertiesDto;
+import org.eclipse.che.api.machine.shared.dto.ServerRuntimeDto;
 import org.eclipse.che.api.machine.shared.dto.SnapshotDto;
 
 import java.util.Map;
@@ -90,28 +92,29 @@ public final class DtoConverter {
     }
 
     /**
-     * Converts {@link MachineRuntimeInfo} to {@link MachineRuntimeInfoDto}.
+     * Converts {@link MachineRuntime} to {@link MachineRuntimeDto}.
      */
-    private static MachineRuntimeInfoDto asDto(MachineRuntimeInfo runtime) {
-        final Map<String, ServerDto> servers = runtime.getServers()
-                                                      .entrySet()
-                                                      .stream()
-                                                      .collect(toMap(Map.Entry::getKey, entry -> asDto(entry.getValue())));
+    private static MachineRuntimeDto asDto(MachineRuntime runtime) {
+        final Map<String, ServerRuntimeDto>servers = runtime.getServers()
+                                                            .entrySet()
+                                                            .stream()
+                                                            .collect(toMap(Map.Entry::getKey, entry -> asDto(entry.getValue())));
 
-        return newDto(MachineRuntimeInfoDto.class).withEnvVariables(runtime.getEnvVariables())
-                                                  .withProperties(runtime.getProperties())
-                                                  .withServers(servers);
+        return newDto(MachineRuntimeDto.class)//.withEnvVariables(runtime.getEnvVariables())
+                                              .withProperties(runtime.getProperties())
+                                              .withServers(servers);
     }
 
     /**
      * Converts {@link Server} to {@link ServerDto}.
      */
-    public static ServerDto asDto(Server server) {
-        return newDto(ServerDto.class).withAddress(server.getAddress())
-                       .withRef(server.getRef())
-                       .withProtocol(server.getProtocol())
-                       .withUrl(server.getUrl())
-                       .withProperties(server.getProperties() == null ? null : asDto(server.getProperties()));
+    public static ServerRuntimeDto asDto(ServerRuntime server) {
+        return newDto(ServerRuntimeDto.class).withUrl(server.getUrl());
+                     //  .withAddress(server.getAddress())
+                     //  .withRef(server.getRef())
+                     //  .withProtocol(server.getProtocol())
+                     //  .withUrl(server.getUrl())
+                     //  .withProperties(server.getProperties() == null ? null : asDto(server.getProperties()));
     }
 
     /**

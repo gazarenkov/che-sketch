@@ -14,11 +14,12 @@ import com.google.gwt.user.client.ui.AcceptsOneWidget;
 import com.google.inject.Inject;
 import com.google.inject.Singleton;
 
-import org.eclipse.che.api.core.model.machine.Server;
+import org.eclipse.che.api.core.model.workspace.runtime.ServerRuntime;
 import org.eclipse.che.ide.api.app.AppContext;
 import org.eclipse.che.ide.api.debug.DebugConfiguration;
 import org.eclipse.che.ide.api.debug.DebugConfigurationPage;
 import org.eclipse.che.ide.api.machine.MachineEntity;
+import org.eclipse.che.ide.rest.UrlBuilder;
 import org.eclipse.che.ide.util.Pair;
 
 import javax.validation.constraints.NotNull;
@@ -81,20 +82,24 @@ public class JavaDebugConfigurationPagePresenter implements JavaDebugConfigurati
     /** Extracts list of ports available for connecting to the remote debugger. */
     private List<Pair<String, String>> extractPortsList(final MachineEntity machine) {
         List<Pair<String, String>> ports = new ArrayList<>();
-        if (machine == null || machine.getRuntime() == null) {
+        if (machine == null /*|| machine.getRuntime() == null*/) {
             return ports;
         }
 
-        Map<String, ? extends Server> servers = machine.getRuntime().getServers();
-        for (Map.Entry<String, ? extends Server> entry : servers.entrySet()) {
-            String port = entry.getKey();
-            if (port.endsWith("/tcp")) {
-                String portWithoutTcp = port.substring(0, port.length() - 4);
-                String description = portWithoutTcp + " (" + entry.getValue().getRef() + ")";
-                Pair<String, String> pair = new Pair<>(description, portWithoutTcp);
-
-                ports.add(pair);
-            }
+        Map<String, ? extends ServerRuntime> servers = machine.getServers();
+        for (Map.Entry<String, ? extends ServerRuntime> entry : servers.entrySet()) {
+            UrlBuilder url = new UrlBuilder(entry.getValue().getUrl());
+            String port = url.getPort();
+            String description = port + " (" + entry.getKey() + ")";
+            Pair<String, String> pair = new Pair<>(description, port);
+            ports.add(pair);
+//            if (port.endsWith("/tcp")) {
+//                String portWithoutTcp = port.substring(0, port.length() - 4);
+//                String description = portWithoutTcp + " (" + entry.getValue().getRef() + ")";
+//                Pair<String, String> pair = new Pair<>(description, portWithoutTcp);
+//
+//                ports.add(pair);
+//            }
         }
 
         return ports;

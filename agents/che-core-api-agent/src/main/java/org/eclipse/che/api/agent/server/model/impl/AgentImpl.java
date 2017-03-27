@@ -11,7 +11,7 @@
 package org.eclipse.che.api.agent.server.model.impl;
 
 import org.eclipse.che.api.agent.shared.model.Agent;
-import org.eclipse.che.api.core.model.workspace.ServerConf2;
+import org.eclipse.che.api.core.model.workspace.config.ServerConf2;
 
 import java.util.ArrayList;
 import java.util.HashMap;

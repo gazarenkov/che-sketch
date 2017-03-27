@@ -225,7 +225,7 @@ public class WorkspaceEventsHandlerTest {
         MachineDto devMachine = mock(MachineDto.class);
         when(devMachine.getWorkspaceId()).thenReturn(WORKSPACE_ID);
         when(devMachine.getId()).thenReturn(MACHINE_NAME);
-        when(runtime.getDevMachine()).thenReturn(devMachine);
+        //when(runtime.getDevMachine()).thenReturn(devMachine);
         when(runtime.getActiveEnv()).thenReturn(ACTIVE_ENV);
         when(workspace.getConfig()).thenReturn(workspaceConfig);
         Map<String, EnvironmentDto> environments = new HashMap<>(3);
@@ -374,7 +374,7 @@ public class WorkspaceEventsHandlerTest {
         MachineDto devMachine = mock(MachineDto.class);
         when(devMachine.getWorkspaceId()).thenReturn(WORKSPACE_ID);
         when(devMachine.getId()).thenReturn(MACHINE_NAME);
-        when(runtime.getDevMachine()).thenReturn(devMachine);
+        //when(runtime.getDevMachine()).thenReturn(devMachine);
         when(runtime.getActiveEnv()).thenReturn(ACTIVE_ENV);
         when(workspace.getConfig()).thenReturn(workspaceConfig);
         Map<String, EnvironmentDto> environments = new HashMap<>(3);

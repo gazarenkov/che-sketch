@@ -10,7 +10,7 @@
  *******************************************************************************/
 package org.eclipse.che.api.agent.shared.model;
 
-import org.eclipse.che.api.core.model.workspace.ServerConf2;
+import org.eclipse.che.api.core.model.workspace.config.ServerConf2;
 
 import java.util.List;
 import java.util.Map;

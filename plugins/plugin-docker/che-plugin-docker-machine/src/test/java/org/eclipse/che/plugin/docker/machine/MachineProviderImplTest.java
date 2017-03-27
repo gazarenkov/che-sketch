@@ -821,8 +821,8 @@ public class MachineProviderImplTest {
         ArgumentCaptor<CreateContainerParams> argumentCaptor = ArgumentCaptor.forClass(CreateContainerParams.class);
         verify(dockerConnector).createContainer(argumentCaptor.capture());
         assertTrue(asList(argumentCaptor.getValue().getContainerConfig().getEnv())
-                           .contains(DockerInstanceRuntimeInfo.CHE_WORKSPACE_ID + "=" + wsId),
-                   "Workspace Id variable is missing. Required " + DockerInstanceRuntimeInfo.CHE_WORKSPACE_ID + "=" +
+                           .contains(DockerInstanceRuntime.CHE_WORKSPACE_ID + "=" + wsId),
+                   "Workspace Id variable is missing. Required " + DockerInstanceRuntime.CHE_WORKSPACE_ID + "=" +
                    wsId +
                    ". Found " + Arrays.toString(argumentCaptor.getValue().getContainerConfig().getEnv()));
     }
@@ -834,8 +834,8 @@ public class MachineProviderImplTest {
         ArgumentCaptor<CreateContainerParams> argumentCaptor = ArgumentCaptor.forClass(CreateContainerParams.class);
         verify(dockerConnector).createContainer(argumentCaptor.capture());
         assertTrue(asList(argumentCaptor.getValue().getContainerConfig().getEnv())
-                           .contains(DockerInstanceRuntimeInfo.CHE_WORKSPACE_ID + "=" + wsId),
-                   "Workspace Id variable is missing. Required " + DockerInstanceRuntimeInfo.CHE_WORKSPACE_ID + "=" +
+                           .contains(DockerInstanceRuntime.CHE_WORKSPACE_ID + "=" + wsId),
+                   "Workspace Id variable is missing. Required " + DockerInstanceRuntime.CHE_WORKSPACE_ID + "=" +
                    wsId +
                    ". Found " + Arrays.toString(argumentCaptor.getValue().getContainerConfig().getEnv()));
     }
@@ -847,8 +847,8 @@ public class MachineProviderImplTest {
         ArgumentCaptor<CreateContainerParams> argumentCaptor = ArgumentCaptor.forClass(CreateContainerParams.class);
         verify(dockerConnector).createContainer(argumentCaptor.capture());
         assertFalse(asList(argumentCaptor.getValue().getContainerConfig().getEnv())
-                            .contains(DockerInstanceRuntimeInfo.CHE_WORKSPACE_ID + "=" + wsId),
-                    "Non dev machine should not contains " + DockerInstanceRuntimeInfo.CHE_WORKSPACE_ID);
+                            .contains(DockerInstanceRuntime.CHE_WORKSPACE_ID + "=" + wsId),
+                    "Non dev machine should not contains " + DockerInstanceRuntime.CHE_WORKSPACE_ID);
     }
 
     @Test
@@ -858,8 +858,8 @@ public class MachineProviderImplTest {
         Set<String> expectedEnv = new HashSet<>();
         expectedEnv.addAll(commonEnv);
         expectedEnv.addAll(devEnv);
-        expectedEnv.add(DockerInstanceRuntimeInfo.USER_TOKEN + "=" + USER_TOKEN);
-        expectedEnv.add(DockerInstanceRuntimeInfo.CHE_WORKSPACE_ID + "=" + WORKSPACE_ID);
+        expectedEnv.add(DockerInstanceRuntime.USER_TOKEN + "=" + USER_TOKEN);
+        expectedEnv.add(DockerInstanceRuntime.CHE_WORKSPACE_ID + "=" + WORKSPACE_ID);
 
         provider = new MachineProviderBuilder().setDevMachineEnvVars(devEnv)
                                                .setAllMachineEnvVars(commonEnv)
@@ -905,8 +905,8 @@ public class MachineProviderImplTest {
         Set<String> expectedEnv = new HashSet<>();
         expectedEnv.addAll(commonEnv);
         expectedEnv.addAll(devEnv);
-        expectedEnv.add(DockerInstanceRuntimeInfo.USER_TOKEN + "=" + USER_TOKEN);
-        expectedEnv.add(DockerInstanceRuntimeInfo.CHE_WORKSPACE_ID + "=" + WORKSPACE_ID);
+        expectedEnv.add(DockerInstanceRuntime.USER_TOKEN + "=" + USER_TOKEN);
+        expectedEnv.add(DockerInstanceRuntime.CHE_WORKSPACE_ID + "=" + WORKSPACE_ID);
 
         provider = new MachineProviderBuilder().setDevMachineEnvVars(devEnv)
                                                .setAllMachineEnvVars(commonEnv)

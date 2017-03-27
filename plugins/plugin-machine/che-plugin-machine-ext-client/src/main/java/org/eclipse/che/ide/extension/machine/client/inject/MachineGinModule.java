@@ -34,9 +34,9 @@ import org.eclipse.che.ide.extension.machine.client.command.macros.CurrentProjec
 import org.eclipse.che.ide.extension.machine.client.command.macros.CurrentProjectRelativePathMacro;
 import org.eclipse.che.ide.extension.machine.client.command.macros.DevMachineHostNameMacro;
 import org.eclipse.che.ide.extension.machine.client.inject.factories.EntityFactory;
+import org.eclipse.che.ide.extension.machine.client.inject.factories.MachineItem;
 import org.eclipse.che.ide.extension.machine.client.inject.factories.TerminalFactory;
 import org.eclipse.che.ide.extension.machine.client.inject.factories.WidgetsFactory;
-import org.eclipse.che.ide.extension.machine.client.machine.MachineItem;
 import org.eclipse.che.ide.extension.machine.client.machine.MachineManagerImpl;
 import org.eclipse.che.ide.extension.machine.client.machine.create.CreateMachineView;
 import org.eclipse.che.ide.extension.machine.client.machine.create.CreateMachineViewImpl;

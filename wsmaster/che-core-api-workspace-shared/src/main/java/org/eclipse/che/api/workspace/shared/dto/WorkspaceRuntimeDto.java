@@ -11,40 +11,53 @@
 package org.eclipse.che.api.workspace.shared.dto;
 
 import org.eclipse.che.api.core.model.workspace.WorkspaceRuntime;
-import org.eclipse.che.api.core.rest.shared.dto.Hyperlinks;
-import org.eclipse.che.api.core.rest.shared.dto.Link;
-import org.eclipse.che.api.machine.shared.dto.MachineDto;
+import org.eclipse.che.api.machine.shared.dto.MachineRuntimeDto;
 import org.eclipse.che.dto.shared.DTO;
 
-import java.util.List;
+import java.util.Map;
 
 /**
  * @author Alexander Garagatyi
  */
 @DTO
-public interface WorkspaceRuntimeDto extends WorkspaceRuntime, Hyperlinks {
+public interface WorkspaceRuntimeDto extends WorkspaceRuntime {
+
+    @Override
+    String getActiveEnv();
 
     void setActiveEnv(String activeEnv);
 
     WorkspaceRuntimeDto withActiveEnv(String activeEnvName);
 
+//    @Override
+//    MachineDto getDevMachine();
+
+//    void setDevMachine(MachineDto machine);
+
+//    WorkspaceRuntimeDto withDevMachine(MachineDto machine);
+
     @Override
-    MachineDto getDevMachine();
+    Map<String, MachineRuntimeDto> getMachines();
 
-    void setDevMachine(MachineDto machine);
+    void setMachines(Map<String, MachineRuntimeDto> machines);
 
-    WorkspaceRuntimeDto withDevMachine(MachineDto machine);
+    WorkspaceRuntimeDto withMachines(Map<String, MachineRuntimeDto> machines);
 
     @Override
-    List<MachineDto> getMachines();
+    String getOwner();
 
-    void setMachines(List<MachineDto> list);
+    WorkspaceRuntimeDto withOwner(String owner);
 
-    WorkspaceRuntimeDto withMachines(List<MachineDto> machines);
+    String getUserToken();
 
-    void setRootFolder(String rootFolder);
+    WorkspaceRuntimeDto withUserToken(String userToken);
 
-    WorkspaceRuntimeDto withRootFolder(String rootFolder);
+    void setUserToken(String userToken);
 
-    WorkspaceRuntimeDto withLinks(List<Link> links);
+
+    //    void setRootFolder(String rootFolder);
+//
+//    WorkspaceRuntimeDto withRootFolder(String rootFolder);
+
+//    WorkspaceRuntimeDto withLinks(List<Link> links);
 }

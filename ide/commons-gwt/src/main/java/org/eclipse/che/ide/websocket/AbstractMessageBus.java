@@ -30,6 +30,7 @@ import org.eclipse.che.ide.websocket.rest.RequestCallback;
 import org.eclipse.che.ide.websocket.rest.SubscriptionHandler;
 
 import java.util.ArrayList;
+import java.util.Date;
 import java.util.HashMap;
 import java.util.List;
 import java.util.Map;
@@ -47,11 +48,11 @@ abstract class AbstractMessageBus implements MessageBus {
     private final static String MESSAGE_TYPE_HEADER_NAME  = "x-everrest-websocket-message-type";
 
     /** Timer for sending heartbeat pings to prevent autoclosing an idle WebSocket connection. */
-    private final Timer                                    heartbeatTimer;
+    //private final Timer                                    heartbeatTimer;
     /** Timer for reconnecting WebSocket. */
     private final Timer                                    reconnectionTimer;
     private final Message                                  heartbeatMessage;
-    private final String                                   wsConnectionUrl;
+    protected final String                                   wsConnectionUrl;
     private final List<String>                             messages2send;
     /** Map of the message identifier to the {@link org.eclipse.che.ide.websocket.events.ReplyHandler}. */
     private final Map<String, RequestCallback>             requestCallbackMap;
@@ -87,31 +88,34 @@ abstract class AbstractMessageBus implements MessageBus {
             initialize();
         }
 
-        this.heartbeatTimer = new Timer() {
-            @Override
-            public void run() {
-                Message message = getHeartbeatMessage();
-                try {
-                    send(message, null);
-                } catch (WebSocketException e) {
-                    if (getReadyState() == ReadyState.CLOSED) {
-                        wsListener.onClose(new WebSocketClosedEvent());
-                    } else {
-                        Log.error(AbstractMessageBus.class, e);
-                    }
-                }
-            }
-        };
+//        this.heartbeatTimer = new Timer() {
+//            @Override
+//            public void run() {
+//                Message message = getHeartbeatMessage();
+//                try {
+//                    send(message, null);
+//                } catch (WebSocketException e) {
+//                    if (getReadyState() == ReadyState.CLOSED) {
+//                        wsListener.onClose(new WebSocketClosedEvent());
+//                    } else {
+//                        Log.error(AbstractMessageBus.class, e);
+//                    }
+//                }
+//            }
+//        };
 
         this.reconnectionTimer = new Timer() {
             @Override
             public void run() {
                 if (reconnectionAttemptsCounter == MAX_RECONNECTION_ATTEMPTS) {
                     cancel();
+                    Log.error(AbstractMessageBus.class, "The maximum number of reconnection attempts has been reached " + MAX_RECONNECTION_ATTEMPTS);
                     reconnectionCallback.onFailure(new Exception("The maximum number of reconnection attempts has been reached"));
                     return;
                 }
                 reconnectionAttemptsCounter++;
+
+                Log.info(AbstractMessageBus.class, "Trying to reconnect " + reconnectionAttemptsCounter + " time. Maximum: " + MAX_RECONNECTION_ATTEMPTS);
                 initialize();
             }
         };
@@ -122,8 +126,44 @@ abstract class AbstractMessageBus implements MessageBus {
         reconnectionTimer.cancel();
     }
 
+//    private static native void check(String url) /*-{
+//
+//      _websocket = new WebSocket(url);
+//
+//      _websocket.onclose = function(evt) {
+//         if (evt.code == 3001) {
+//           console.log('ws closed');
+//           _websocket = null;
+//         } else {
+//           _websocket = null;
+//           console.log('ws connection error, code ' + evt.code + ' ' + url);
+//         }
+//         //return false;
+//      };
+//
+//      //return true;
+//    }-*/;
+
     private void initialize() {
+
+        Log.info(AbstractMessageBus.class, "initialize " + wsConnectionUrl + " " + new Date(System.currentTimeMillis()));
+
+
+//        check(wsConnectionUrl);
+
+//        if(!check(wsConnectionUrl)) {
+//            Log.error(AbstractMessageBus.class, "WebSocket check()  error: " + wsConnectionUrl);
+//            return;
+//        }
+
         ws = WebSocket.create(wsConnectionUrl);
+
+        Log.info(AbstractMessageBus.class, "initialize " + ws + " " + new Date(System.currentTimeMillis()));
+
+//        if(ws == null) {
+//            Log.error(AbstractMessageBus.class, "WebSocket create() error: " + wsConnectionUrl);
+//        }
+
         wsListener = new WsListener();
         ws.setOnMessageHandler(this);
         ws.setOnOpenHandler(wsListener);
@@ -515,7 +555,7 @@ abstract class AbstractMessageBus implements MessageBus {
 
         @Override
         public void onClose(final WebSocketClosedEvent event) {
-            heartbeatTimer.cancel();
+            //heartbeatTimer.cancel();
 
             reconnectionCallback = new AsyncCallback() {
                 @Override
@@ -559,7 +599,7 @@ abstract class AbstractMessageBus implements MessageBus {
             reconnectionTimer.cancel();
 
             reconnectionAttemptsCounter = 0;
-            heartbeatTimer.scheduleRepeating(HEARTBEAT_PERIOD);
+//            heartbeatTimer.scheduleRepeating(HEARTBEAT_PERIOD);
             connectionOpenedHandlers.dispatch(new ListenerManager.Dispatcher<ConnectionOpenedHandler>() {
                 @Override
                 public void dispatch(ConnectionOpenedHandler listener) {

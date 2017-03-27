@@ -23,6 +23,7 @@ import org.eclipse.che.api.promises.client.Promise;
 import org.eclipse.che.api.promises.client.callback.CallbackPromiseHelper;
 import org.eclipse.che.ide.commons.exception.JobNotFoundException;
 import org.eclipse.che.ide.commons.exception.ServerException;
+import org.eclipse.che.ide.util.loging.Log;
 
 import static com.google.gwt.http.client.Response.SC_ACCEPTED;
 import static com.google.gwt.http.client.Response.SC_NOT_FOUND;
@@ -159,6 +160,7 @@ public class AsyncRequest {
                 send(new AsyncRequestCallback<R>(unmarshaller) {
                     @Override
                     protected void onSuccess(R result) {
+                        Log.info(AsyncRequest.class, "onSuccess: " + result.toString());
                         callback.onSuccess(result);
                     }
 

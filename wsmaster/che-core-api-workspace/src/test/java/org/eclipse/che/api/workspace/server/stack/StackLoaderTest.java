@@ -23,7 +23,7 @@ import org.eclipse.che.api.workspace.server.model.impl.stack.StackImpl;
 import org.eclipse.che.api.workspace.server.spi.StackDao;
 import org.eclipse.che.api.workspace.shared.dto.EnvironmentDto;
 import org.eclipse.che.api.workspace.shared.dto.EnvironmentRecipeDto;
-import org.eclipse.che.api.workspace.shared.dto.ExtendedMachineDto;
+import org.eclipse.che.api.workspace.shared.dto.MachineConfig2Dto;
 import org.eclipse.che.api.workspace.shared.dto.ProjectConfigDto;
 import org.eclipse.che.api.workspace.shared.dto.ProjectProblemDto;
 import org.eclipse.che.api.workspace.shared.dto.ServerConf2Dto;
@@ -153,10 +153,10 @@ public class StackLoaderTest {
         servers.put("server1Ref", newDto(ServerConf2Dto.class).withPort("8080/tcp")
                                                               .withProtocol("http")
                                                               .withProperties(singletonMap("key", "value")));
-        Map<String, ExtendedMachineDto> machines = new HashMap<>();
-        machines.put("someMachineName", newDto(ExtendedMachineDto.class).withAgents(Arrays.asList("agent1", "agent2"))
-                                                                        .withServers(servers)
-                                                                        .withAttributes(singletonMap("memoryLimitBytes", "" + 512L * 1024L * 1024L)));
+        Map<String, MachineConfig2Dto> machines = new HashMap<>();
+        machines.put("someMachineName", newDto(MachineConfig2Dto.class).withAgents(Arrays.asList("agent1", "agent2"))
+                                                                       .withServers(servers)
+                                                                       .withAttributes(singletonMap("memoryLimitBytes", "" + 512L * 1024L * 1024L)));
 
         EnvironmentDto environmentDto = newDto(EnvironmentDto.class).withRecipe(environmentRecipe)
                                                                     .withMachines(machines);

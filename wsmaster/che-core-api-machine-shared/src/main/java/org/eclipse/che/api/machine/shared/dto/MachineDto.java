@@ -40,9 +40,9 @@ public interface MachineDto extends Machine, Hyperlinks {
     MachineDto withStatus(MachineStatus machineStatus);
 
     @Override
-    MachineRuntimeInfoDto getRuntime();
+    MachineRuntimeDto getRuntime();
 
-    MachineDto withRuntime(MachineRuntimeInfoDto machineRuntime);
+    MachineDto withRuntime(MachineRuntimeDto machineRuntime);
 
     List<Link> getLinks();
 

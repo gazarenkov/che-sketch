@@ -10,7 +10,7 @@
  *******************************************************************************/
 package org.eclipse.che.ide.api.command;
 
-import org.eclipse.che.api.core.model.machine.Command;
+import org.eclipse.che.api.core.model.workspace.config.Command;
 
 import java.util.Collections;
 import java.util.Map;

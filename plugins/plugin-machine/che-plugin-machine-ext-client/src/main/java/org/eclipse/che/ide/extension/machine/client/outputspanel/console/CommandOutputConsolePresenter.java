@@ -15,7 +15,6 @@ import com.google.inject.Inject;
 import com.google.inject.assistedinject.Assisted;
 import com.google.web.bindery.event.shared.EventBus;
 
-import org.eclipse.che.api.core.model.machine.Machine;
 import org.eclipse.che.api.machine.shared.dto.MachineProcessDto;
 import org.eclipse.che.api.machine.shared.dto.execagent.ProcessKillResponseDto;
 import org.eclipse.che.api.machine.shared.dto.execagent.ProcessSubscribeResponseDto;
@@ -28,6 +27,7 @@ import org.eclipse.che.api.promises.client.OperationException;
 import org.eclipse.che.ide.api.command.CommandImpl;
 import org.eclipse.che.ide.api.command.CommandManager;
 import org.eclipse.che.ide.api.machine.ExecAgentCommandManager;
+import org.eclipse.che.ide.api.machine.MachineEntity;
 import org.eclipse.che.ide.api.macro.MacroProcessor;
 import org.eclipse.che.ide.extension.machine.client.MachineResources;
 import org.eclipse.che.ide.extension.machine.client.processes.ProcessFinishedEvent;
@@ -50,7 +50,7 @@ public class CommandOutputConsolePresenter implements CommandOutputConsole, Outp
     private final MachineResources        resources;
     private final CommandImpl             command;
     private final EventBus                eventBus;
-    private final Machine                 machine;
+    private final MachineEntity           machine;
     private final CommandManager          commandManager;
     private final ExecAgentCommandManager execAgentCommandManager;
 
@@ -73,7 +73,7 @@ public class CommandOutputConsolePresenter implements CommandOutputConsole, Outp
                                          EventBus eventBus,
                                          ExecAgentCommandManager execAgentCommandManager,
                                          @Assisted CommandImpl command,
-                                         @Assisted Machine machine) {
+                                         @Assisted MachineEntity machine) {
         this.view = view;
         this.resources = resources;
         this.execAgentCommandManager = execAgentCommandManager;

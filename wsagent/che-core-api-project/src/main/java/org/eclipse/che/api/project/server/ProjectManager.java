@@ -19,10 +19,9 @@ import org.eclipse.che.api.core.NotFoundException;
 import org.eclipse.che.api.core.ServerException;
 import org.eclipse.che.api.core.UnauthorizedException;
 import org.eclipse.che.api.core.model.project.NewProjectConfig;
-import org.eclipse.che.api.core.model.project.ProjectConfig;
-import org.eclipse.che.api.core.model.project.SourceStorage;
+import org.eclipse.che.api.core.model.workspace.config.ProjectConfig;
+import org.eclipse.che.api.core.model.workspace.config.SourceStorage;
 import org.eclipse.che.api.core.model.project.type.ProjectType;
-import org.eclipse.che.api.core.notification.EventService;
 import org.eclipse.che.api.core.util.LineConsumerFactory;
 import org.eclipse.che.api.project.server.RegisteredProject.Problem;
 import org.eclipse.che.api.project.server.handlers.CreateProjectHandler;
@@ -49,7 +48,6 @@ import org.eclipse.che.commons.lang.concurrent.LoggingUncaughtExceptionHandler;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 
-import javax.annotation.PostConstruct;
 import javax.annotation.PreDestroy;
 import javax.inject.Inject;
 import javax.inject.Singleton;
@@ -88,7 +86,6 @@ public class ProjectManager {
 
     @Inject
     public ProjectManager(VirtualFileSystemProvider vfsProvider,
-                          EventService eventService,
                           ProjectTypeRegistry projectTypeRegistry,
                           ProjectRegistry projectRegistry,
                           ProjectHandlerRegistry handlers,
@@ -114,7 +111,6 @@ public class ProjectManager {
                                                                           .setDaemon(true).build());
     }
 
-    @PostConstruct
     void initWatcher() throws IOException {
         FileWatcherNotificationListener defaultListener =
                 new FileWatcherNotificationListener(file -> !(file.getPath().toString().contains(".che")
@@ -432,9 +428,6 @@ public class ProjectManager {
 
         projectRegistry.fireInitHandlers(project);
 
-        // TODO move to register?
-        reindexProject(project);
-
         return project;
     }
 
@@ -750,31 +743,5 @@ public class ProjectManager {
         }
 
         return (FileEntry)entry;
-    }
-
-    /**
-     * Some importers don't use virtual file system API and changes are not indexed.
-     * Force searcher to reindex project to fix such issues.
-     *
-     * @param project
-     *
-     * @throws ServerException
-     */
-    private void reindexProject(final RegisteredProject project) throws ServerException {
-        final VirtualFile file = project.getBaseFolder().getVirtualFile();
-        executor.execute(() -> {
-            try {
-                final Searcher searcher;
-                try {
-                    searcher = getSearcher();
-                } catch (NotFoundException e) {
-                    LOG.warn(e.getLocalizedMessage());
-                    return;
-                }
-                searcher.add(file);
-            } catch (Exception e) {
-                LOG.warn(format("Project: %s", project.getPath()), e.getMessage());
-            }
-        });
     }
 }

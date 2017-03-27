@@ -15,9 +15,9 @@ import org.eclipse.che.api.agent.server.exception.AgentException;
 import org.eclipse.che.api.agent.server.impl.AgentSorter;
 import org.eclipse.che.api.agent.shared.model.Agent;
 import org.eclipse.che.api.agent.shared.model.AgentKey;
-import org.eclipse.che.api.core.model.workspace.Environment;
-import org.eclipse.che.api.core.model.workspace.ExtendedMachine;
-import org.eclipse.che.api.core.model.workspace.ServerConf2;
+import org.eclipse.che.api.core.model.workspace.config.Environment;
+import org.eclipse.che.api.core.model.workspace.config.MachineConfig2;
+import org.eclipse.che.api.core.model.workspace.config.ServerConf2;
 import org.eclipse.che.api.environment.server.model.CheServiceImpl;
 import org.eclipse.che.api.environment.server.model.CheServicesEnvironmentImpl;
 import org.eclipse.che.commons.annotation.Nullable;
@@ -78,10 +78,10 @@ public class AgentConfigApplier {
      */
     public void apply(Environment envConfig,
                       CheServicesEnvironmentImpl internalEnv) throws AgentException {
-        for (Map.Entry<String, ? extends ExtendedMachine> machineEntry : envConfig.getMachines()
-                                                                                  .entrySet()) {
+        for (Map.Entry<String, ? extends MachineConfig2> machineEntry : envConfig.getMachines()
+                                                                                 .entrySet()) {
             String machineName = machineEntry.getKey();
-            ExtendedMachine machineConf = machineEntry.getValue();
+            MachineConfig2 machineConf = machineEntry.getValue();
             CheServiceImpl internalMachine = internalEnv.getServices().get(machineName);
 
             apply(machineConf, internalMachine);
@@ -98,7 +98,7 @@ public class AgentConfigApplier {
      * @throws AgentException
      *         if any error occurs
      */
-    public void apply(@Nullable ExtendedMachine machineConf,
+    public void apply(@Nullable MachineConfig2 machineConf,
                       CheServiceImpl machine) throws AgentException {
         if (machineConf != null) {
             for (AgentKey agentKey : sorter.sort(machineConf.getAgents())) {
@@ -118,7 +118,7 @@ public class AgentConfigApplier {
             service.getLabels().put("che:server:" + conf.getPort() + ":protocol", conf.getProtocol());
             service.getLabels().put("che:server:" + conf.getPort() + ":ref", ref);
 
-            String path = conf.getProperties().get("path");
+            String path = conf.getPath();
             if (!isNullOrEmpty(path)) {
                 service.getLabels().put("che:server:" + conf.getPort() + ":path", path);
             }

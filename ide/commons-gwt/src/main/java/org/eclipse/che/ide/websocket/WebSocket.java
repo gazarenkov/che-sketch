@@ -10,11 +10,12 @@
  *******************************************************************************/
 package org.eclipse.che.ide.websocket;
 
+import com.google.gwt.core.client.JavaScriptObject;
+
 import org.eclipse.che.ide.websocket.events.ConnectionClosedHandler;
 import org.eclipse.che.ide.websocket.events.ConnectionErrorHandler;
 import org.eclipse.che.ide.websocket.events.ConnectionOpenedHandler;
 import org.eclipse.che.ide.websocket.events.MessageReceivedHandler;
-import com.google.gwt.core.client.JavaScriptObject;
 
 
 /**
@@ -35,7 +36,21 @@ public class WebSocket extends JavaScriptObject {
      * @return the created {@link WebSocket} object
      */
     public static native WebSocket create(String url) /*-{
-       return new WebSocket(url);
+
+      _websocket = new WebSocket(url);
+
+      _websocket.onclose = function(evt) {
+         if (evt.code == 3001) {
+           console.log('ws closed');
+           _websocket = null;
+         } else {
+           _websocket = null;
+           alert('ws connection error, code ' + evt.code);
+         }
+      };
+
+
+      return _websocket;
     }-*/;
 
     /**

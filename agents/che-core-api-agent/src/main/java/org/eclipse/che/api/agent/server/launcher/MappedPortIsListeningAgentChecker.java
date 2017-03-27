@@ -11,12 +11,10 @@
 package org.eclipse.che.api.agent.server.launcher;
 
 import org.eclipse.che.api.agent.shared.model.Agent;
-import org.eclipse.che.api.core.model.machine.Server;
+import org.eclipse.che.api.core.model.workspace.runtime.ServerRuntime;
 import org.eclipse.che.api.machine.server.exception.MachineException;
 import org.eclipse.che.api.machine.server.spi.Instance;
 import org.eclipse.che.api.machine.server.spi.InstanceProcess;
-
-import java.net.Socket;
 
 /**
  * Verifies that agent was started successfully by checking that specified local port is listened in a machine.
@@ -33,17 +31,19 @@ public class MappedPortIsListeningAgentChecker implements AgentLaunchingChecker 
 
     @Override
     public boolean isLaunched(Agent agent, InstanceProcess process, Instance machine) throws MachineException {
-        Server server = machine.getRuntime().getServers().get(exposedPort);
-        if (server != null) {
-            try {
-                String[] hostPort = server.getProperties().getInternalAddress().split(":");
-                try (@SuppressWarnings("unused") Socket socket = new Socket(hostPort[0],
-                                                                            Integer.parseInt(hostPort[1]))) {
-                    return true;
-                }
-            } catch (Exception ignored) {
-            }
-        }
+        ServerRuntime server = machine.getRuntime().getServers().get(exposedPort);
+//        if (server != null) {
+//            try {
+//
+//                // ???
+//                String[] hostPort = server.getProperties().getInternalAddress().split(":");
+//                try (@SuppressWarnings("unused") Socket socket = new Socket(hostPort[0],
+//                                                                            Integer.parseInt(hostPort[1]))) {
+//                    return true;
+//                }
+//            } catch (Exception ignored) {
+//            }
+//        }
         return false;
     }
 }

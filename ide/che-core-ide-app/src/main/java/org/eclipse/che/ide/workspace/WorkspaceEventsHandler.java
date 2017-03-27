@@ -18,7 +18,6 @@ import com.google.inject.Provider;
 import com.google.inject.Singleton;
 import com.google.web.bindery.event.shared.EventBus;
 
-import org.eclipse.che.api.core.model.machine.Machine;
 import org.eclipse.che.api.core.model.workspace.WorkspaceRuntime;
 import org.eclipse.che.api.core.rest.shared.dto.Link;
 import org.eclipse.che.api.core.rest.shared.dto.LinkParameter;
@@ -37,6 +36,7 @@ import org.eclipse.che.ide.actions.WorkspaceSnapshotCreator;
 import org.eclipse.che.ide.api.component.Component;
 import org.eclipse.che.ide.api.dialogs.ConfirmCallback;
 import org.eclipse.che.ide.api.dialogs.DialogFactory;
+import org.eclipse.che.ide.api.machine.DevMachine;
 import org.eclipse.che.ide.api.machine.ExecAgentCommandManager;
 import org.eclipse.che.ide.api.machine.MachineManager;
 import org.eclipse.che.ide.api.machine.OutputMessageUnmarshaller;
@@ -217,7 +217,7 @@ public class WorkspaceEventsHandler {
      *
      * @param devMachine
      */
-    private void restoreDevMachineLogs(final Machine devMachine) {
+    private void restoreDevMachineLogs(final DevMachine devMachine) {
         if (devMachine != null) {
             final String devMachineId = devMachine.getId();
             execAgentCommandManager.getProcesses(devMachineId, false).then(new Operation<List<GetProcessesResponseDto>>() {
@@ -305,7 +305,10 @@ public class WorkspaceEventsHandler {
             return;
         }
 
-        restoreDevMachineLogs(workspace.getRuntime().getDevMachine()); //try to restore logs if workspace already started
+        DevMachine devMachine = new DevMachine(workspace, wsMachineName);
+        restoreDevMachineLogs(devMachine);
+
+        //restoreDevMachineLogs(workspace.getRuntime().getDevMachine()); //try to restore logs if workspace already started
                                                                        // and dev machine provide some output
         wsAgentLogChannel = "workspace:" + workspace.getId() + ":ext-server:output";
         wsAgentLogSubscriptionHandler = new WsAgentOutputSubscriptionHandler(wsMachineName);
@@ -487,9 +490,9 @@ public class WorkspaceEventsHandler {
     }
 
     private class ProcessLogsOperation implements Operation<List<GetProcessLogsResponseDto>> {
-        private final Machine devMachine;
+        private final DevMachine devMachine;
 
-        public ProcessLogsOperation(Machine devMachine) {
+        public ProcessLogsOperation(DevMachine devMachine) {
             this.devMachine = devMachine;
         }
 
@@ -497,7 +500,7 @@ public class WorkspaceEventsHandler {
         public void apply(List<GetProcessLogsResponseDto> logs) throws OperationException {
             for (GetProcessLogsResponseDto log : logs) {
                 String fixedLog = log.getText().replaceAll("\\[STDOUT\\] ", "");
-                String machineName = devMachine.getConfig().getName();
+                String machineName = devMachine.getDisplayName();
                 EnvironmentOutputEvent event = new EnvironmentOutputEvent(fixedLog, machineName);
 
                 eventBus.fireEvent(event);

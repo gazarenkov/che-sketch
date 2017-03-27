@@ -15,7 +15,7 @@ import com.google.inject.Guice;
 import com.google.inject.Injector;
 import com.google.inject.multibindings.Multibinder;
 
-import org.eclipse.che.api.core.model.project.SourceStorage;
+import org.eclipse.che.api.core.model.workspace.config.SourceStorage;
 import org.eclipse.che.api.project.server.FolderEntry;
 import org.eclipse.che.api.project.server.importer.ProjectImporter;
 import org.eclipse.che.api.project.server.type.ProjectTypeDef;
@@ -129,7 +129,7 @@ public class SubversionProjectImporterTest {
     }
 
     /**
-     * Test for {@link SubversionProjectImporter#importSources(org.eclipse.che.api.project.server.FolderEntry, org.eclipse.che.api.core.model.project.SourceStorage, org.eclipse.che.api.core.util.LineConsumerFactory)}
+     * Test for {@link SubversionProjectImporter#importSources(org.eclipse.che.api.project.server.FolderEntry, SourceStorage, org.eclipse.che.api.core.util.LineConsumerFactory)}
      * invalid url.
      *
      * @throws Exception if anything goes wrong
@@ -154,7 +154,7 @@ public class SubversionProjectImporterTest {
     }
 
     /**
-     * Test for {@link SubversionProjectImporter#importSources(org.eclipse.che.api.project.server.FolderEntry, org.eclipse.che.api.core.model.project.SourceStorage, org.eclipse.che.api.core.util.LineConsumerFactory)}
+     * Test for {@link SubversionProjectImporter#importSources(org.eclipse.che.api.project.server.FolderEntry, SourceStorage, org.eclipse.che.api.core.util.LineConsumerFactory)}
      * with a valid url.
      *
      * @throws Exception if anything goes wrong

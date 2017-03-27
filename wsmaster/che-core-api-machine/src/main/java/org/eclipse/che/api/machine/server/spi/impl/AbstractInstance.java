@@ -13,7 +13,7 @@ package org.eclipse.che.api.machine.server.spi.impl;
 import org.eclipse.che.api.core.model.machine.Machine;
 import org.eclipse.che.api.core.model.machine.MachineStatus;
 import org.eclipse.che.api.machine.server.model.impl.MachineImpl;
-import org.eclipse.che.api.machine.server.model.impl.MachineRuntimeInfoImpl;
+import org.eclipse.che.api.machine.server.model.impl.MachineRuntimeImpl;
 import org.eclipse.che.api.machine.server.spi.Instance;
 
 /**
@@ -35,5 +35,5 @@ public abstract class AbstractInstance extends MachineImpl implements Instance {
     }
 
     @Override
-    public abstract MachineRuntimeInfoImpl getRuntime();
+    public abstract MachineRuntimeImpl getRuntime();
 }

@@ -10,27 +10,21 @@
  *******************************************************************************/
 package org.eclipse.che.ide.extension.machine.client.targets.categories.ssh;
 
-import com.google.gwt.user.client.Timer;
 import com.google.gwt.user.client.ui.AcceptsOneWidget;
 import com.google.inject.Inject;
 import com.google.web.bindery.event.shared.EventBus;
 
 import org.eclipse.che.api.machine.shared.dto.MachineConfigDto;
-import org.eclipse.che.api.machine.shared.dto.MachineDto;
 import org.eclipse.che.api.machine.shared.dto.MachineLimitsDto;
 import org.eclipse.che.api.machine.shared.dto.MachineSourceDto;
 import org.eclipse.che.api.machine.shared.dto.event.MachineStatusEvent;
 import org.eclipse.che.api.machine.shared.dto.recipe.NewRecipe;
 import org.eclipse.che.api.machine.shared.dto.recipe.RecipeDescriptor;
 import org.eclipse.che.api.machine.shared.dto.recipe.RecipeUpdate;
-import org.eclipse.che.api.promises.client.Function;
-import org.eclipse.che.api.promises.client.FunctionException;
 import org.eclipse.che.api.promises.client.Operation;
 import org.eclipse.che.api.promises.client.OperationException;
 import org.eclipse.che.api.promises.client.Promise;
 import org.eclipse.che.api.promises.client.PromiseError;
-import org.eclipse.che.api.workspace.shared.dto.WorkspaceDto;
-import org.eclipse.che.api.workspace.shared.dto.WorkspaceRuntimeDto;
 import org.eclipse.che.ide.api.app.AppContext;
 import org.eclipse.che.ide.api.dialogs.CancelCallback;
 import org.eclipse.che.ide.api.dialogs.ConfirmCallback;
@@ -45,7 +39,6 @@ import org.eclipse.che.ide.api.workspace.event.MachineStatusChangedEvent;
 import org.eclipse.che.ide.dto.DtoFactory;
 import org.eclipse.che.ide.extension.machine.client.MachineLocalizationConstant;
 import org.eclipse.che.ide.extension.machine.client.inject.factories.EntityFactory;
-import org.eclipse.che.ide.api.machine.events.MachineStateEvent;
 import org.eclipse.che.ide.extension.machine.client.targets.CategoryPage;
 import org.eclipse.che.ide.extension.machine.client.targets.Target;
 import org.eclipse.che.ide.extension.machine.client.targets.TargetManager;
@@ -54,12 +47,9 @@ import org.eclipse.che.ide.extension.machine.client.targets.TargetsTreeManager;
 import java.util.ArrayList;
 import java.util.List;
 
-import static org.eclipse.che.api.core.model.machine.MachineStatus.RUNNING;
 import static org.eclipse.che.ide.api.notification.StatusNotification.DisplayMode.FLOAT_MODE;
-import static org.eclipse.che.ide.api.notification.StatusNotification.Status.FAIL;
 import static org.eclipse.che.ide.api.notification.StatusNotification.Status.PROGRESS;
 import static org.eclipse.che.ide.api.notification.StatusNotification.Status.SUCCESS;
-import static org.eclipse.che.ide.api.machine.events.MachineStateEvent.MachineAction.DESTROYED;
 
 /**
  * SSH type page presenter.
@@ -466,28 +456,28 @@ public class SshCategoryPresenter implements CategoryPage, TargetManager, SshVie
      *         machine to destroy
      */
     private void disconnect(final MachineEntity machine) {
-        if (machine == null || machine.getStatus() != RUNNING) {
-            updateTargets(null);
-            return;
-        }
-        sshView.setConnectButtonText(null);
-
-        machineService.destroyMachine(machine.getWorkspaceId(),
-                                      machine.getId()).then(new Operation<Void>() {
-            @Override
-            public void apply(Void arg) throws OperationException {
-                eventBus.fireEvent(new MachineStateEvent(machine, DESTROYED));
-
-                notificationManager.notify(machineLocale.targetsViewDisconnectSuccess(selectedTarget.getName()), SUCCESS, FLOAT_MODE);
-                updateTargets(null);
-            }
-        }).catchError(new Operation<PromiseError>() {
-            @Override
-            public void apply(PromiseError arg) throws OperationException {
-                notificationManager.notify(machineLocale.targetsViewDisconnectError(selectedTarget.getName()), FAIL, FLOAT_MODE);
-                updateTargets(null);
-            }
-        });
+//        if (machine == null || machine.getStatus() != RUNNING) {
+//            updateTargets(null);
+//            return;
+//        }
+//        sshView.setConnectButtonText(null);
+//
+//        machineService.destroyMachine(machine.getWorkspaceId(),
+//                                      machine.getId()).then(new Operation<Void>() {
+//            @Override
+//            public void apply(Void arg) throws OperationException {
+//                eventBus.fireEvent(new MachineStateEvent(machine, DESTROYED));
+//
+//                notificationManager.notify(machineLocale.targetsViewDisconnectSuccess(selectedTarget.getName()), SUCCESS, FLOAT_MODE);
+//                updateTargets(null);
+//            }
+//        }).catchError(new Operation<PromiseError>() {
+//            @Override
+//            public void apply(PromiseError arg) throws OperationException {
+//                notificationManager.notify(machineLocale.targetsViewDisconnectError(selectedTarget.getName()), FAIL, FLOAT_MODE);
+//                updateTargets(null);
+//            }
+//        });
     }
 
     @Override
@@ -510,31 +500,31 @@ public class SshCategoryPresenter implements CategoryPage, TargetManager, SshVie
     private void deleteTarget(final Target target) {
         final MachineEntity machine = this.getMachineByName(target.getName());
 
-        if (machine == null || machine.getStatus() != RUNNING) {
-            deleteTargetRecipe(target);
-            return;
-        }
-
-        if (target.getRecipe() == null) {
-            disconnect(machine);
-            return;
-        }
-
-        machineService.destroyMachine(machine.getWorkspaceId(),
-                                      machine.getId()).then(new Operation<Void>() {
-            @Override
-            public void apply(Void arg) throws OperationException {
-                eventBus.fireEvent(new MachineStateEvent(machine, DESTROYED));
-                notificationManager.notify(machineLocale.targetsViewDisconnectSuccess(target.getName()), SUCCESS, FLOAT_MODE);
-                deleteTargetRecipe(target);
-            }
-        }).catchError(new Operation<PromiseError>() {
-            @Override
-            public void apply(PromiseError arg) throws OperationException {
-                notificationManager.notify(machineLocale.targetsViewDisconnectError(target.getName()), FAIL, FLOAT_MODE);
-                updateTargets(target.getName());
-            }
-        });
+//        if (machine == null || machine.getStatus() != RUNNING) {
+//            deleteTargetRecipe(target);
+//            return;
+//        }
+//
+//        if (target.getRecipe() == null) {
+//            disconnect(machine);
+//            return;
+//        }
+//
+//        machineService.destroyMachine(machine.getWorkspaceId(),
+//                                      machine.getId()).then(new Operation<Void>() {
+//            @Override
+//            public void apply(Void arg) throws OperationException {
+//                eventBus.fireEvent(new MachineStateEvent(machine, DESTROYED));
+//                notificationManager.notify(machineLocale.targetsViewDisconnectSuccess(target.getName()), SUCCESS, FLOAT_MODE);
+//                deleteTargetRecipe(target);
+//            }
+//        }).catchError(new Operation<PromiseError>() {
+//            @Override
+//            public void apply(PromiseError arg) throws OperationException {
+//                notificationManager.notify(machineLocale.targetsViewDisconnectError(target.getName()), FAIL, FLOAT_MODE);
+//                updateTargets(target.getName());
+//            }
+//        });
     }
 
     /**
@@ -573,49 +563,49 @@ public class SshCategoryPresenter implements CategoryPage, TargetManager, SshVie
         // There is a little bug in machine service on the server side.
         // The machine info is updated with a little delay after running a machine.
         // Using timer must fix the problem.
-        new Timer() {
-            @Override
-            public void run() {
-                getMachine(workspaceId, machineId).then(new Operation<MachineEntity>() {
-                    @Override
-                    public void apply(MachineEntity machine) throws OperationException {
-                        if (machine != null && machine.getStatus() == RUNNING) {
-                            final String machineName = machine.getConfig().getName();
-                            connectNotification.setTitle(machineLocale.targetsViewConnectSuccess(machineName));
-                            connectNotification.setStatus(StatusNotification.Status.SUCCESS);
-                            updateTargets(machineName);
-                        } else {
-                            onConnectingFailed(null);
-                        }
-                    }
-                }).catchError(new Operation<PromiseError>() {
-                    @Override
-                    public void apply(PromiseError arg) throws OperationException {
-                        onConnectingFailed(null);
-                    }
-                });
-            }
-        }.schedule(500);
+//        new Timer() {
+//            @Override
+//            public void run() {
+//                getMachine(workspaceId, machineId).then(new Operation<MachineEntity>() {
+//                    @Override
+//                    public void apply(MachineEntity machine) throws OperationException {
+//                        if (machine != null && machine.getStatus() == RUNNING) {
+//                            final String machineName = machine.getConfig().getName();
+//                            connectNotification.setTitle(machineLocale.targetsViewConnectSuccess(machineName));
+//                            connectNotification.setStatus(StatusNotification.Status.SUCCESS);
+//                            updateTargets(machineName);
+//                        } else {
+//                            onConnectingFailed(null);
+//                        }
+//                    }
+//                }).catchError(new Operation<PromiseError>() {
+//                    @Override
+//                    public void apply(PromiseError arg) throws OperationException {
+//                        onConnectingFailed(null);
+//                    }
+//                });
+//            }
+//        }.schedule(500);
     }
 
-    private Promise<MachineEntity> getMachine(final String workspaceId, final String machineId) {
-        return workspaceServiceClient.getWorkspace(workspaceId).then(new Function<WorkspaceDto, MachineEntity>() {
-            @Override
-            public MachineEntity apply(WorkspaceDto workspace) throws FunctionException {
-                WorkspaceRuntimeDto workspaceRuntime = workspace.getRuntime();
-                if (workspaceRuntime == null) {
-                    return null;
-                }
-
-                for (MachineDto machineDto : workspaceRuntime.getMachines()) {
-                    if (machineId.equals(machineDto.getId())) {
-                        return entityFactory.createMachine(machineDto);
-                    }
-                }
-                return null;
-            }
-        });
-    }
+//    private Promise<MachineEntity> getMachine(final String workspaceId, final String machineId) {
+//        return workspaceServiceClient.getWorkspace(workspaceId).then(new Function<WorkspaceDto, MachineEntity>() {
+//            @Override
+//            public MachineEntity apply(WorkspaceDto workspace) throws FunctionException {
+//                WorkspaceRuntimeDto workspaceRuntime = workspace.getRuntime();
+//                if (workspaceRuntime == null) {
+//                    return null;
+//                }
+//
+//                for (MachineDto machineDto : workspaceRuntime.getMachines()) {
+//                    if (machineId.equals(machineDto.getId())) {
+//                        return entityFactory.createMachine(machineDto);
+//                    }
+//                }
+//                return null;
+//            }
+//        });
+//    }
 
     /**
      * Handles connecting error and displays an error message.

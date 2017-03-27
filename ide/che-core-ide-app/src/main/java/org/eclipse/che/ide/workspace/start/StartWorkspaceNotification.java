@@ -20,15 +20,11 @@ import com.google.gwt.user.client.ui.CheckBox;
 import com.google.gwt.user.client.ui.Widget;
 import com.google.inject.Inject;
 import com.google.inject.Singleton;
-import org.eclipse.che.api.machine.shared.dto.SnapshotDto;
-import org.eclipse.che.api.promises.client.Operation;
-import org.eclipse.che.api.promises.client.OperationException;
+
 import org.eclipse.che.ide.api.component.Component;
 import org.eclipse.che.ide.api.workspace.WorkspaceServiceClient;
 import org.eclipse.che.ide.ui.loaders.LoaderPresenter;
 import org.eclipse.che.ide.workspace.WorkspaceComponentProvider;
-
-import java.util.List;
 
 /**
  * Toast notification appearing on the top of the IDE and containing a proposal message to start
@@ -76,18 +72,18 @@ public class StartWorkspaceNotification {
     public void show(String workspaceID) {
         this.workspaceID = workspaceID;
 
-        workspaceServiceClient.getSnapshot(workspaceID).then(new Operation<List<SnapshotDto>>() {
-            @Override
-            public void apply(List<SnapshotDto> snapshots) throws OperationException {
-                Widget widget = uiBinder.createAndBindUi(StartWorkspaceNotification.this);
-
-                if (snapshots.isEmpty()) {
-                    restore.setVisible(false);
-                }
-
-                loader.show(LoaderPresenter.Phase.WORKSPACE_STOPPED, widget);
-            }
-        });
+//        workspaceServiceClient.getSnapshot(workspaceID).then(new Operation<List<SnapshotDto>>() {
+//            @Override
+//            public void apply(List<SnapshotDto> snapshots) throws OperationException {
+//                Widget widget = uiBinder.createAndBindUi(StartWorkspaceNotification.this);
+//
+//                if (snapshots.isEmpty()) {
+//                    restore.setVisible(false);
+//                }
+//
+//                loader.show(LoaderPresenter.Phase.WORKSPACE_STOPPED, widget);
+//            }
+//        });
     }
 
     /**

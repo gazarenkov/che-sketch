@@ -235,7 +235,7 @@ public class WsAgentStateController implements ConnectionOpenedHandler, Connecti
 
         @Override
         public void accepted() {
-            workspaceServiceClient.stop(devMachine.getWorkspaceId()).then(new Operation<Void>() {
+            workspaceServiceClient.stop(devMachine.getWorkspace()).then(new Operation<Void>() {
                 @Override
                 public void apply(Void arg) throws OperationException {
                     if (reload) {

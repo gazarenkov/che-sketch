@@ -10,7 +10,7 @@
  *******************************************************************************/
 package org.eclipse.che.ide.api.command;
 
-import org.eclipse.che.api.core.model.machine.Machine;
+import org.eclipse.che.ide.api.machine.MachineEntity;
 
 import java.util.Set;
 
@@ -41,7 +41,7 @@ public interface CommandProducer {
      * Target for command execution will be provided through {@code machine} parameter.
      * Called when user performs corresponded action.
      */
-    CommandImpl createCommand(Machine machine);
+    CommandImpl createCommand(MachineEntity machine);
 
     /**
      * Returns machine types for restricting machines where command may be executed.

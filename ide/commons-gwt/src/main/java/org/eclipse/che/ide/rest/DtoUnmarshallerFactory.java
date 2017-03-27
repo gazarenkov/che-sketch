@@ -11,6 +11,8 @@
 package org.eclipse.che.ide.rest;
 
 import org.eclipse.che.ide.dto.DtoFactory;
+import org.eclipse.che.ide.util.loging.Log;
+
 import com.google.inject.Inject;
 import com.google.inject.Singleton;
 
@@ -41,6 +43,7 @@ public class DtoUnmarshallerFactory {
      * @see org.eclipse.che.dto.shared.DTO
      */
     public <T> org.eclipse.che.ide.rest.Unmarshallable<T> newUnmarshaller(Class<T> dtoType) {
+        Log.info(DtoUnmarshallerFactory.class, "newUnmarshaller: " + dtoType + " " + dtoFactory);
         return new DtoUnmarshaller<>(dtoType, dtoFactory);
     }
 

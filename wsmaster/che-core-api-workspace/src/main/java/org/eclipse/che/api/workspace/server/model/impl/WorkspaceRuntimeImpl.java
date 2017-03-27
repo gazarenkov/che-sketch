@@ -10,16 +10,11 @@
  *******************************************************************************/
 package org.eclipse.che.api.workspace.server.model.impl;
 
-import org.eclipse.che.api.core.model.machine.Machine;
+import org.eclipse.che.api.core.model.workspace.runtime.MachineRuntime;
 import org.eclipse.che.api.core.model.workspace.WorkspaceRuntime;
-import org.eclipse.che.api.machine.server.model.impl.MachineImpl;
 
-import java.util.ArrayList;
-import java.util.Collection;
-import java.util.List;
+import java.util.Map;
 import java.util.Objects;
-
-import static java.util.stream.Collectors.toList;
 
 /**
  * Data object for {@link WorkspaceRuntime}.
@@ -29,35 +24,27 @@ import static java.util.stream.Collectors.toList;
 public class WorkspaceRuntimeImpl implements WorkspaceRuntime {
 
     private final String activeEnv;
+    private String                  owner;
+    private String                  userToken;
+    private Map<String, ? extends MachineRuntime> machines;
 
-    private String            rootFolder;
-    private MachineImpl       devMachine;
-    private List<MachineImpl> machines;
-
-    public WorkspaceRuntimeImpl(String activeEnv) {
-        this.activeEnv = activeEnv;
-    }
+//    public WorkspaceRuntimeImpl(String activeEnv) {
+//        this.activeEnv = activeEnv;
+//    }
 
     public WorkspaceRuntimeImpl(String activeEnv,
-                                String rootFolder,
-                                Collection<? extends Machine> machines,
-                                Machine devMachine) {
+                                Map<String, ? extends MachineRuntime> machines,
+                                String owner) {
         this.activeEnv = activeEnv;
-        this.rootFolder = rootFolder;
-        if (devMachine != null) {
-            this.devMachine = new MachineImpl(devMachine);
-        }
-        this.machines = machines.stream()
-                                .map(MachineImpl::new)
-                                .collect(toList());
+        this.machines = machines;
+        this.owner = owner;
+//        this.userToken = userToken;
     }
 
-    public WorkspaceRuntimeImpl(WorkspaceRuntime runtime) {
-        this(runtime.getActiveEnv(),
-             runtime.getRootFolder(),
-             runtime.getMachines(),
-             runtime.getDevMachine());
-    }
+//    public WorkspaceRuntimeImpl(WorkspaceRuntime runtime) {
+//        this(runtime.getActiveEnv(),
+//             runtime.getMachines());
+//    }
 
     @Override
     public String getActiveEnv() {
@@ -65,33 +52,21 @@ public class WorkspaceRuntimeImpl implements WorkspaceRuntime {
     }
 
     @Override
-    public String getRootFolder() {
-        return rootFolder;
+    public String getOwner() {
+        return owner;
     }
 
-    public void setRootFolder(String rootFolder) {
-        this.rootFolder = rootFolder;
+    public String getUserToken() {
+        return userToken;
     }
 
-    @Override
-    public MachineImpl getDevMachine() {
-        return devMachine;
-    }
-
-    public void setDevMachine(MachineImpl devMachine) {
-        this.devMachine = devMachine;
+    public void setUserToken(String userToken) {
+        this.userToken = userToken;
     }
 
     @Override
-    public List<MachineImpl> getMachines() {
-        if (machines == null) {
-            machines = new ArrayList<>();
-        }
+    public Map<String, ? extends MachineRuntime> getMachines() {
         return machines;
-    }
-
-    public void setMachines(List<MachineImpl> machines) {
-        this.machines = machines;
     }
 
     @Override
@@ -100,16 +75,16 @@ public class WorkspaceRuntimeImpl implements WorkspaceRuntime {
         if (!(o instanceof WorkspaceRuntimeImpl)) return false;
         WorkspaceRuntimeImpl that = (WorkspaceRuntimeImpl)o;
         return Objects.equals(activeEnv, that.activeEnv) &&
-               Objects.equals(rootFolder, that.rootFolder) &&
-               Objects.equals(devMachine, that.devMachine) &&
+//               Objects.equals(rootFolder, that.rootFolder) &&
+//               Objects.equals(devMachine, that.devMachine) &&
                Objects.equals(machines, that.machines);
     }
 
     @Override
     public int hashCode() {
         return Objects.hash(activeEnv,
-                            rootFolder,
-                            devMachine,
+//                            rootFolder,
+//                            devMachine,
                             machines);
     }
 
@@ -117,8 +92,8 @@ public class WorkspaceRuntimeImpl implements WorkspaceRuntime {
     public String toString() {
         return "WorkspaceRuntimeImpl{" +
                "activeEnv='" + activeEnv + '\'' +
-               ", rootFolder='" + rootFolder + '\'' +
-               ", devMachine=" + devMachine +
+//               ", rootFolder='" + rootFolder + '\'' +
+//               ", devMachine=" + devMachine +
                ", machines=" + machines +
                '}';
     }

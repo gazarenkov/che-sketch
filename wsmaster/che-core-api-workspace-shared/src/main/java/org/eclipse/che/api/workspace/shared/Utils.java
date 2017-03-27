@@ -10,8 +10,8 @@
  *******************************************************************************/
 package org.eclipse.che.api.workspace.shared;
 
-import org.eclipse.che.api.core.model.workspace.Environment;
-import org.eclipse.che.api.core.model.workspace.ExtendedMachine;
+import org.eclipse.che.api.core.model.workspace.config.Environment;
+import org.eclipse.che.api.core.model.workspace.config.MachineConfig2;
 
 import java.util.List;
 import java.util.Map;
@@ -32,7 +32,7 @@ public class Utils {
      * @return dev machine name or {@code null} if dev machine is not found in environment
      */
     public static String getDevMachineName(Environment envConfig) {
-        for (Map.Entry<String, ? extends ExtendedMachine> entry : envConfig.getMachines().entrySet()) {
+        for (Map.Entry<String, ? extends MachineConfig2> entry : envConfig.getMachines().entrySet()) {
             List<String> agents = entry.getValue().getAgents();
             if (agents != null && agents.contains("org.eclipse.che.ws-agent")) {
                 return entry.getKey();

@@ -10,22 +10,26 @@
  *******************************************************************************/
 package org.eclipse.che.api.workspace.server;
 
-import org.eclipse.che.api.core.model.machine.Command;
+import org.eclipse.che.api.core.model.workspace.config.Command;
+import org.eclipse.che.api.core.model.workspace.config.MachineConfig2;
+import org.eclipse.che.api.core.model.workspace.runtime.MachineRuntime;
+import org.eclipse.che.api.core.model.workspace.runtime.ServerRuntime;
 import org.eclipse.che.api.core.model.machine.Snapshot;
-import org.eclipse.che.api.core.model.project.ProjectConfig;
-import org.eclipse.che.api.core.model.project.SourceStorage;
-import org.eclipse.che.api.core.model.workspace.Environment;
-import org.eclipse.che.api.core.model.workspace.ExtendedMachine;
-import org.eclipse.che.api.core.model.workspace.ServerConf2;
+import org.eclipse.che.api.core.model.workspace.config.ProjectConfig;
+import org.eclipse.che.api.core.model.workspace.config.SourceStorage;
+import org.eclipse.che.api.core.model.workspace.config.Environment;
+import org.eclipse.che.api.core.model.workspace.config.ServerConf2;
 import org.eclipse.che.api.core.model.workspace.Workspace;
 import org.eclipse.che.api.core.model.workspace.WorkspaceConfig;
 import org.eclipse.che.api.core.model.workspace.WorkspaceRuntime;
 import org.eclipse.che.api.machine.shared.dto.CommandDto;
+import org.eclipse.che.api.machine.shared.dto.MachineRuntimeDto;
+import org.eclipse.che.api.machine.shared.dto.ServerRuntimeDto;
 import org.eclipse.che.api.machine.shared.dto.SnapshotDto;
 import org.eclipse.che.api.workspace.server.model.impl.stack.StackImpl;
 import org.eclipse.che.api.workspace.shared.dto.EnvironmentDto;
 import org.eclipse.che.api.workspace.shared.dto.EnvironmentRecipeDto;
-import org.eclipse.che.api.workspace.shared.dto.ExtendedMachineDto;
+import org.eclipse.che.api.workspace.shared.dto.MachineConfig2Dto;
 import org.eclipse.che.api.workspace.shared.dto.ProjectConfigDto;
 import org.eclipse.che.api.workspace.shared.dto.ServerConf2Dto;
 import org.eclipse.che.api.workspace.shared.dto.SourceStorageDto;
@@ -37,7 +41,10 @@ import org.eclipse.che.api.workspace.shared.dto.stack.StackDto;
 import org.eclipse.che.api.workspace.shared.dto.stack.StackSourceDto;
 import org.eclipse.che.api.workspace.shared.stack.Stack;
 import org.eclipse.che.api.workspace.shared.stack.StackSource;
+import org.eclipse.che.commons.env.EnvironmentContext;
+import org.eclipse.che.commons.subject.Subject;
 
+import java.util.HashMap;
 import java.util.List;
 import java.util.Map;
 
@@ -54,13 +61,15 @@ public final class DtoConverter {
 
     /** Converts {@link Workspace} to {@link WorkspaceDto}. */
     public static WorkspaceDto asDto(Workspace workspace) {
+        Subject subject = EnvironmentContext.getCurrent().getSubject();
+        WorkspaceRuntimeDto runtimeDto = asDto(workspace.getRuntime()).withUserToken(subject.getToken());
         return newDto(WorkspaceDto.class).withId(workspace.getId())
                                          .withStatus(workspace.getStatus())
                                          .withNamespace(workspace.getNamespace())
                                          .withTemporary(workspace.isTemporary())
                                          .withAttributes(workspace.getAttributes())
                                          .withConfig(asDto(workspace.getConfig()))
-                                         .withRuntime(asDto(workspace.getRuntime()));
+                                         .withRuntime(runtimeDto);
     }
 
     /** Converts {@link WorkspaceConfig} to {@link WorkspaceConfigDto}. */
@@ -164,9 +173,9 @@ public final class DtoConverter {
         return envDto;
     }
 
-    /** Converts {@link ExtendedMachine} to {@link ExtendedMachineDto}. */
-    public static ExtendedMachineDto asDto(ExtendedMachine machine) {
-        ExtendedMachineDto machineDto = newDto(ExtendedMachineDto.class).withAgents(machine.getAgents());
+    /** Converts {@link MachineConfig2} to {@link MachineConfig2Dto}. */
+    public static MachineConfig2Dto asDto(MachineConfig2 machine) {
+        MachineConfig2Dto machineDto = newDto(MachineConfig2Dto.class).withAgents(machine.getAgents());
         if (machine.getServers() != null) {
             machineDto.setServers(machine.getServers()
                                          .entrySet()
@@ -184,7 +193,7 @@ public final class DtoConverter {
     public static ServerConf2Dto asDto(ServerConf2 serverConf) {
         return newDto(ServerConf2Dto.class).withPort(serverConf.getPort())
                                            .withProtocol(serverConf.getProtocol())
-                                           .withProperties(serverConf.getProperties());
+                                           .withPath(serverConf.getPath());
     }
 
     /** Converts {@link WorkspaceRuntime} to {@link WorkspaceRuntimeDto}. */
@@ -192,15 +201,40 @@ public final class DtoConverter {
         if (runtime == null) {
             return null;
         }
-        final WorkspaceRuntimeDto runtimeDto = newDto(WorkspaceRuntimeDto.class).withActiveEnv(runtime.getActiveEnv())
-                                                                                .withRootFolder(runtime.getRootFolder());
-        runtimeDto.withMachines(runtime.getMachines()
-                                       .stream()
-                                       .map(org.eclipse.che.api.machine.server.DtoConverter::asDto)
-                                       .collect(toList()));
-        if (runtime.getDevMachine() != null) {
-            runtimeDto.withDevMachine(org.eclipse.che.api.machine.server.DtoConverter.asDto(runtime.getDevMachine()));
+        final WorkspaceRuntimeDto runtimeDto = newDto(WorkspaceRuntimeDto.class).withActiveEnv(runtime.getActiveEnv());
+//                                                                                .withRootFolder(runtime.getRootFolder());
+
+
+        Map <String, ? extends MachineRuntime> machines = runtime.getMachines();
+        Map <String, MachineRuntimeDto> machineDtos = new HashMap<>();
+        for(Map.Entry <String, ? extends MachineRuntime> m : machines.entrySet()) {
+
+            Map <String, ServerRuntimeDto>serverDtos = new HashMap<>();
+            for(Map.Entry <String, ? extends ServerRuntime> s : m.getValue().getServers().entrySet()) {
+                ServerRuntimeDto sDto = newDto(ServerRuntimeDto.class).withUrl(s.getValue().getUrl());
+                        //.withAddress(s.getValue().getAddress())
+                        //                                .withProtocol(s.getValue().getProtocol())
+                        //                                .withRef(s.getValue().getRef())
+                        //                                .withUrl(s.getValue().getUrl());
+                // TODO properties?
+                                                        //.withProperties(s.getValue().getProperties());
+                serverDtos.put(s.getKey(), sDto);
+            }
+
+            MachineRuntimeDto mDto = newDto(MachineRuntimeDto.class).withProperties(m.getValue().getProperties())
+                                                                    .withServers(serverDtos);
+            machineDtos.put(m.getKey(), mDto);
         }
+
+        runtimeDto.setMachines(machineDtos);
+
+//        runtimeDto.withMachines(runtime.getMachines()
+//                                       .stream()
+//                                       .map(org.eclipse.che.api.machine.server.DtoConverter::asDto)
+//                                       .collect(toList()));
+//        if (runtime.getDevMachine() != null) {
+//            runtimeDto.withDevMachine(org.eclipse.che.api.machine.server.DtoConverter.asDto(runtime.getDevMachine()));
+//        }
         return runtimeDto;
     }
 

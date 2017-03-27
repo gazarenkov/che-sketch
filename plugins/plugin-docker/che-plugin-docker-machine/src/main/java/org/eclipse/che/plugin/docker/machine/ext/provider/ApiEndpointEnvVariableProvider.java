@@ -12,7 +12,7 @@ package org.eclipse.che.plugin.docker.machine.ext.provider;
 
 import com.google.common.base.Strings;
 
-import org.eclipse.che.plugin.docker.machine.DockerInstanceRuntimeInfo;
+import org.eclipse.che.plugin.docker.machine.DockerInstanceRuntime;
 
 import javax.inject.Inject;
 import javax.inject.Named;
@@ -32,11 +32,11 @@ public class ApiEndpointEnvVariableProvider implements Provider<String> {
 
     @Override
     public String get() {
-        String apiEndpointEnvVar = System.getenv(DockerInstanceRuntimeInfo.API_ENDPOINT_URL_VARIABLE);
+        String apiEndpointEnvVar = System.getenv(DockerInstanceRuntime.API_ENDPOINT_URL_VARIABLE);
         if (Strings.isNullOrEmpty(apiEndpoint) &&
             !Strings.isNullOrEmpty(apiEndpointEnvVar)) {
             apiEndpoint = apiEndpointEnvVar;
         }
-        return DockerInstanceRuntimeInfo.API_ENDPOINT_URL_VARIABLE + '=' + apiEndpoint;
+        return DockerInstanceRuntime.API_ENDPOINT_URL_VARIABLE + '=' + apiEndpoint;
     }
 }

@@ -12,7 +12,7 @@ package org.eclipse.che.plugin.docker.machine;
 
 import com.google.inject.assistedinject.Assisted;
 
-import org.eclipse.che.api.core.model.machine.Command;
+import org.eclipse.che.api.core.model.workspace.config.Command;
 import org.eclipse.che.api.core.model.machine.Machine;
 import org.eclipse.che.api.core.model.machine.MachineConfig;
 import org.eclipse.che.api.core.util.LineConsumer;
@@ -77,14 +77,14 @@ public interface DockerMachineFactory {
                           @Assisted("container") String containerId) throws MachineException;
 
     /**
-     * Creates {@link DockerInstanceRuntimeInfo} instance using assisted injection
+     * Creates {@link DockerInstanceRuntime} instance using assisted injection
      *
      * @param containerInfo description of docker container
      * @param machineConfig config of machine
      * @param internalHost docker host internal hostname (used by the wsmaster). May be overridden by Server
      *                     Evaluation Strategy
      */
-    DockerInstanceRuntimeInfo createMetadata(@Assisted ContainerInfo containerInfo,
-                                             @Assisted MachineConfig machineConfig,
-                                             @Assisted String        internalHost);
+    DockerInstanceRuntime createMetadata(@Assisted ContainerInfo containerInfo,
+                                         @Assisted MachineConfig machineConfig,
+                                         @Assisted String        internalHost);
 }

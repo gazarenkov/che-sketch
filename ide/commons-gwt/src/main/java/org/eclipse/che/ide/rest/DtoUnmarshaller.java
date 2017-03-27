@@ -10,9 +10,11 @@
  *******************************************************************************/
 package org.eclipse.che.ide.rest;
 
-import org.eclipse.che.ide.dto.DtoFactory;
 import com.google.gwt.http.client.Response;
 import com.google.gwt.json.client.JSONParser;
+
+import org.eclipse.che.ide.dto.DtoFactory;
+import org.eclipse.che.ide.util.loging.Log;
 
 /**
  * Deserializer for responses body.
@@ -38,6 +40,9 @@ public class DtoUnmarshaller<T> implements Unmarshallable<T> {
     /** {@inheritDoc} */
     @Override
     public void unmarshal(Response response) {
+
+        Log.info(DtoUnmarshaller.class, ""+response);
+
         if (response.getText() != null) {
             if (isJsonArray(response)) {
                 payload = (T)dtoFactory.createListDtoFromJson(response.getText(), dtoInterface);

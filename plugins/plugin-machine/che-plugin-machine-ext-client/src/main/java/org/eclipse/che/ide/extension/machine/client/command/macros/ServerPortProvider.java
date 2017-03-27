@@ -15,15 +15,15 @@ import com.google.inject.Inject;
 import com.google.inject.Singleton;
 import com.google.web.bindery.event.shared.EventBus;
 
-import org.eclipse.che.api.core.model.machine.Machine;
-import org.eclipse.che.api.core.model.machine.Server;
+import org.eclipse.che.api.core.model.workspace.runtime.ServerRuntime;
 import org.eclipse.che.api.promises.client.Promise;
 import org.eclipse.che.api.promises.client.js.Promises;
 import org.eclipse.che.ide.api.app.AppContext;
-import org.eclipse.che.ide.api.macro.Macro;
-import org.eclipse.che.ide.api.macro.MacroRegistry;
+import org.eclipse.che.ide.api.machine.MachineEntity;
 import org.eclipse.che.ide.api.machine.events.WsAgentStateEvent;
 import org.eclipse.che.ide.api.machine.events.WsAgentStateHandler;
+import org.eclipse.che.ide.api.macro.Macro;
+import org.eclipse.che.ide.api.macro.MacroRegistry;
 
 import java.util.Map;
 import java.util.Set;
@@ -56,23 +56,23 @@ public class ServerPortProvider implements WsAgentStateHandler {
     }
 
     private void registerProviders() {
-        Machine devMachine = appContext.getDevMachine();
+        MachineEntity devMachine = appContext.getDevMachine();
         if (devMachine != null) {
             providers = getProviders(devMachine);
             commandPropertyRegistry.register(providers);
         }
     }
 
-    private Set<Macro> getProviders(Machine machine) {
+    private Set<Macro> getProviders(MachineEntity machine) {
         Set<Macro> providers = Sets.newHashSet();
-        for (Map.Entry<String, ? extends Server> entry : machine.getRuntime().getServers().entrySet()) {
+        for (Map.Entry<String, ? extends ServerRuntime> entry : machine.getServers().entrySet()) {
             providers.add(new AddressMacro(entry.getKey(),
-                                           entry.getValue().getAddress(),
+                                           entry.getValue().getUrl(),
                                            entry.getKey()));
 
             if (entry.getKey().endsWith("/tcp")) {
                 providers.add(new AddressMacro(entry.getKey().substring(0, entry.getKey().length() - 4),
-                                               entry.getValue().getAddress(), entry.getKey()));
+                                               entry.getValue().getUrl(), entry.getKey()));
             }
         }
 

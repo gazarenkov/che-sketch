@@ -13,11 +13,9 @@ package org.eclipse.che.ide.extension.machine.client.inject.factories;
 import com.google.inject.assistedinject.Assisted;
 
 import org.eclipse.che.api.core.model.machine.Machine;
-import org.eclipse.che.api.core.model.machine.Server;
-import org.eclipse.che.api.machine.shared.dto.MachineDto;
+import org.eclipse.che.api.core.model.workspace.runtime.ServerRuntime;
 import org.eclipse.che.api.machine.shared.dto.recipe.RecipeDescriptor;
 import org.eclipse.che.commons.annotation.Nullable;
-import org.eclipse.che.ide.api.machine.MachineEntity;
 import org.eclipse.che.ide.extension.machine.client.perspective.widgets.machine.appliance.server.ServerEntity;
 import org.eclipse.che.ide.extension.machine.client.perspective.widgets.machine.panel.MachineTreeNode;
 import org.eclipse.che.ide.extension.machine.client.perspective.widgets.recipe.editor.RecipeEditorPanel;
@@ -42,7 +40,7 @@ public interface EntityFactory {
      *
      * @return an implementation of {@link Machine}
      */
-    MachineEntity createMachine(@NotNull MachineDto descriptor);
+    //MachineEntity createMachine(@NotNull MachineRuntimeDto descriptor);
 
     /**
      * Creates tab entity using special parameters.
@@ -74,7 +72,7 @@ public interface EntityFactory {
      *         server descriptor which contains information about current server
      * @return an instance of {@link ServerEntity}
      */
-    ServerEntity createServer(@NotNull String port, @NotNull Server descriptor);
+    ServerEntity createServer(@NotNull String port, @NotNull ServerRuntime descriptor);
 
     /**
      * Creates machine node which will be displayed in special table on view.

@@ -13,17 +13,13 @@ package org.eclipse.che.api.agent.server.launcher;
 import com.google.common.util.concurrent.ThreadFactoryBuilder;
 
 import org.eclipse.che.api.agent.shared.model.Agent;
-import org.eclipse.che.api.core.ConflictException;
 import org.eclipse.che.api.core.ServerException;
-import org.eclipse.che.api.core.model.machine.Command;
+import org.eclipse.che.api.core.model.workspace.config.Command;
 import org.eclipse.che.api.core.util.AbstractLineConsumer;
 import org.eclipse.che.api.core.util.LineConsumer;
 import org.eclipse.che.api.machine.server.exception.MachineException;
 import org.eclipse.che.api.machine.server.model.impl.CommandImpl;
-import org.eclipse.che.api.machine.server.spi.Instance;
-import org.eclipse.che.api.machine.server.spi.InstanceProcess;
 import org.eclipse.che.commons.lang.concurrent.LoggingUncaughtExceptionHandler;
-import org.eclipse.che.commons.lang.concurrent.ThreadLocalPropagateContext;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 
@@ -33,7 +29,6 @@ import java.util.concurrent.ExecutorService;
 import java.util.concurrent.Executors;
 
 import static com.google.common.base.Strings.isNullOrEmpty;
-import static java.lang.String.format;
 
 /**
  * Launch agent script asynchronously over target instance and wait when it run.
@@ -67,63 +62,73 @@ public abstract class AbstractAgentLauncher implements AgentLauncher {
     }
 
     @Override
-    public void launch(Instance machine, Agent agent) throws ServerException {
+    public void launch(Runtime machine, Agent agent) throws ServerException {
         if (isNullOrEmpty(agent.getScript())) {
             return;
         }
         try {
-            final InstanceProcess process = start(machine, agent);
-            LOG.debug("Waiting for agent {} is launched. Workspace ID:{}", agent.getId(), machine.getWorkspaceId());
+            //final InstanceProcess process =
+            start(machine, agent);
+//            LOG.debug("Waiting for agent {} is launched. Workspace ID:{}", agent.getId(), machine.getWorkspaceId());
 
-            final long pingStartTimestamp = System.currentTimeMillis();
-            while (System.currentTimeMillis() - pingStartTimestamp < agentMaxStartTimeMs) {
-                if (agentLaunchingChecker.isLaunched(agent, process, machine)) {
-                    return;
-                } else {
-                    Thread.sleep(agentPingDelayMs);
-                }
-            }
+//            final long pingStartTimestamp = System.currentTimeMillis();
+//            while (System.currentTimeMillis() - pingStartTimestamp < agentMaxStartTimeMs) {
+//                if (agentLaunchingChecker.isLaunched(agent, process, machine)) {
+//                    return;
+//                } else {
+//                    Thread.sleep(agentPingDelayMs);
+//                }
+//            }
 
-            process.kill();
+            //process.kill();
         } catch (MachineException e) {
             throw new ServerException(e.getServiceError());
-        } catch (InterruptedException e) {
-            Thread.currentThread().interrupt();
-            throw new ServerException(format("Launching agent %s is interrupted", agent.getName()));
         }
+//        catch (InterruptedException e) {
+//            Thread.currentThread().interrupt();
+//            throw new ServerException(format("Launching agent %s is interrupted", agent.getName()));
+//        }
 
-        final String errMsg = format("Fail launching agent %s. Workspace ID:%s", agent.getName(), machine.getWorkspaceId());
-        LOG.error(errMsg);
-        throw new ServerException(errMsg);
+//        final String errMsg = format("Fail launching agent %s. Workspace ID:%s", agent.getName(), machine.getWorkspaceId());
+//        LOG.error(errMsg);
+//        throw new ServerException(errMsg);
     }
 
-    protected InstanceProcess start(Instance machine, Agent agent) throws ServerException {
+    protected void start(Runtime machine, Agent agent) throws ServerException {
         Command command = new CommandImpl(agent.getId(), agent.getScript(), "agent");
-        InstanceProcess process = machine.createProcess(command, null);
+        //InstanceProcess process = machine.createProcess(command, null);
+
+
+
         LineConsumer lineConsumer = new AbstractLineConsumer() {
             @Override
             public void writeLine(String line) throws IOException {
-                machine.getLogger().writeLine(line);
+ //               machine.getLogger().writeLine(line);
             }
         };
 
         CountDownLatch countDownLatch = new CountDownLatch(1);
-        executor.execute(ThreadLocalPropagateContext.wrap(() -> {
-            try {
-                countDownLatch.countDown();
-                process.start(lineConsumer);
-            } catch (ConflictException | MachineException e) {
-                try {
-                    machine.getLogger().writeLine(format("[ERROR] %s", e.getMessage()));
-                } catch (IOException ignored) {
-                }
-            } finally {
-                try {
-                    lineConsumer.close();
-                } catch (IOException ignored) {
-                }
-            }
-        }));
+//        executor.execute(ThreadLocalPropagateContext.wrap(() -> {
+//            try {
+//                countDownLatch.countDown();
+//
+//                machine.runCommand(agent.getScript(), lineConsumer);
+//
+//                //process.start(lineConsumer);
+//            } catch (MachineException e) {
+//                try {
+//                    machine.getLogger().writeLine(format("[ERROR] %s", e.getMessage()));
+//                } catch (IOException ignored) {
+//                }
+//            } finally {
+//                try {
+//                    lineConsumer.close();
+//                } catch (IOException ignored) {
+//                }
+//            }
+//        }));
+
+
         try {
             // ensure that code inside of task submitted to executor is called before end of this method
             countDownLatch.await();
@@ -131,6 +136,6 @@ public abstract class AbstractAgentLauncher implements AgentLauncher {
             Thread.currentThread().interrupt();
         }
 
-        return process;
+        //return process;
     }
 }

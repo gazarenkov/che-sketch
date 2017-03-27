@@ -13,7 +13,7 @@ package org.eclipse.che.ide.extension.machine.client.targets.categories.developm
 import com.google.gwt.user.client.ui.AcceptsOneWidget;
 import com.google.inject.Inject;
 
-import org.eclipse.che.api.core.model.machine.Machine;
+import org.eclipse.che.ide.api.machine.MachineEntity;
 import org.eclipse.che.ide.extension.machine.client.MachineLocalizationConstant;
 import org.eclipse.che.ide.extension.machine.client.targets.CategoryPage;
 import org.eclipse.che.ide.extension.machine.client.targets.Target;
@@ -61,7 +61,7 @@ public class DevelopmentCategoryPresenter implements CategoryPage, TargetManager
         container.setWidget(developmentView);
     }
 
-    private Machine getMachineByName(String machineName) {
+    private MachineEntity getMachineByName(String machineName) {
         if (targetsTreeManager == null) {
             return null;
         }
@@ -75,16 +75,16 @@ public class DevelopmentCategoryPresenter implements CategoryPage, TargetManager
             return false;
         }
 
-        final Machine machine = this.getMachineByName(target.getName());
+        final MachineEntity machine = this.getMachineByName(target.getName());
         if (machine == null) {
             return false;
         }
 
-        target.setOwner(machine.getOwner());
-        target.setType(machine.getConfig().getType());
-        target.setSourceType(machine.getConfig().getSource().getType());
-        target.setSourceContent(machine.getConfig().getSource().getContent());
-        target.setSource(machine.getConfig().getSource().getLocation());
+        //target.setOwner(machine.getOwner());
+        target.setType(machine.getType());
+        //target.setSourceType(machine.getConfig().getSource().getType());
+        //target.setSourceContent(machine.getConfig().getSource().getContent());
+        //target.setSource(machine.getConfig().getSource().getLocation());
 
         return true;
     }

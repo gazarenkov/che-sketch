@@ -13,7 +13,7 @@ package org.eclipse.che.api.environment.server;
 import com.google.common.base.Joiner;
 
 import org.eclipse.che.api.core.ServerException;
-import org.eclipse.che.api.core.model.workspace.Environment;
+import org.eclipse.che.api.core.model.workspace.config.Environment;
 import org.eclipse.che.api.environment.server.model.CheServiceBuildContextImpl;
 import org.eclipse.che.api.environment.server.model.CheServiceImpl;
 import org.eclipse.che.api.environment.server.model.CheServicesEnvironmentImpl;
@@ -24,10 +24,10 @@ import org.eclipse.che.api.machine.shared.dto.ServerConfDto;
 import org.eclipse.che.api.workspace.server.DtoConverter;
 import org.eclipse.che.api.workspace.server.model.impl.EnvironmentImpl;
 import org.eclipse.che.api.workspace.server.model.impl.EnvironmentRecipeImpl;
-import org.eclipse.che.api.workspace.server.model.impl.ExtendedMachineImpl;
+import org.eclipse.che.api.workspace.server.model.impl.MachineConfig2Impl;
 import org.eclipse.che.api.workspace.server.model.impl.ServerConf2Impl;
 import org.eclipse.che.api.workspace.shared.dto.EnvironmentDto;
-import org.eclipse.che.api.workspace.shared.dto.ExtendedMachineDto;
+import org.eclipse.che.api.workspace.shared.dto.MachineConfig2Dto;
 import org.mockito.InjectMocks;
 import org.mockito.Mock;
 import org.mockito.testng.MockitoTestNGListener;
@@ -167,7 +167,7 @@ public class CheEnvironmentValidatorTest {
     public static Object[][] invalidEnvironmentProvider() {
         // InvalidEnvironmentObject | ExceptionMessage
         EnvironmentDto env;
-        Map.Entry<String, ExtendedMachineDto> machineEntry;
+        Map.Entry<String, MachineConfig2Dto> machineEntry;
         List<List<Object>> data = new ArrayList<>();
 
         data.add(asList(createEnv().withRecipe(null), "Environment recipe should not be null"));
@@ -194,7 +194,7 @@ public class CheEnvironmentValidatorTest {
 
         env = createEnv();
         env.getMachines().put("missingInEnvMachine",
-                              newDto(ExtendedMachineDto.class).withAgents(singletonList("org.eclipse.che.ws-agent")));
+                              newDto(MachineConfig2Dto.class).withAgents(singletonList("org.eclipse.che.ws-agent")));
         data.add(asList(env, "Environment 'env' contains machines that are missing in environment recipe: missingInEnvMachine"));
 
         env = createEnv();
@@ -577,7 +577,7 @@ public class CheEnvironmentValidatorTest {
     private static EnvironmentDto createEnv() {
         // singletonMap, asList are wrapped into modifiable collections to ease env modifying by tests
         EnvironmentImpl env = new EnvironmentImpl();
-        Map<String, ExtendedMachineImpl> machines = new HashMap<>();
+        Map<String, MachineConfig2Impl> machines = new HashMap<>();
         Map<String, ServerConf2Impl> servers = new HashMap<>();
 
         servers.put("ref1", new ServerConf2Impl("8080/tcp",
@@ -585,12 +585,12 @@ public class CheEnvironmentValidatorTest {
                                                 singletonMap("prop1", "propValue")));
         servers.put("ref2", new ServerConf2Impl("8080/udp", "proto1", null));
         servers.put("ref3", new ServerConf2Impl("9090", "proto1", null));
-        machines.put("dev-machine", new ExtendedMachineImpl(asList("org.eclipse.che.ws-agent", "someAgent"),
-                                                            servers,
-                                                            singletonMap("memoryLimitBytes", "10000")));
-        machines.put("machine2", new ExtendedMachineImpl(asList("someAgent2", "someAgent3"),
-                                                         null,
-                                                         singletonMap("memoryLimitBytes", "10000")));
+        machines.put("dev-machine", new MachineConfig2Impl(asList("org.eclipse.che.ws-agent", "someAgent"),
+                                                           servers,
+                                                           singletonMap("memoryLimitBytes", "10000")));
+        machines.put("machine2", new MachineConfig2Impl(asList("someAgent2", "someAgent3"),
+                                                        null,
+                                                        singletonMap("memoryLimitBytes", "10000")));
         env.setRecipe(new EnvironmentRecipeImpl("compose",
                                                 "application/x-yaml",
                                                 "content",

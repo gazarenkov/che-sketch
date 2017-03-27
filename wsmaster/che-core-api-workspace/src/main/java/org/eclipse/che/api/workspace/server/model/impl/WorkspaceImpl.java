@@ -112,7 +112,7 @@ public class WorkspaceImpl implements Workspace {
     private WorkspaceStatus status;
 
     @Transient
-    private WorkspaceRuntimeImpl runtime;
+    private WorkspaceRuntime runtime;
 
     public WorkspaceImpl() {}
 
@@ -135,7 +135,8 @@ public class WorkspaceImpl implements Workspace {
             this.config = new WorkspaceConfigImpl(config);
         }
         if (runtime != null) {
-            this.runtime = new WorkspaceRuntimeImpl(runtime);
+            this.runtime = new WorkspaceRuntimeImpl(runtime.getActiveEnv(), runtime.getMachines(),
+                                                    runtime.getOwner());
         }
         if (attributes != null) {
             this.attributes = new HashMap<>(attributes);
@@ -223,11 +224,11 @@ public class WorkspaceImpl implements Workspace {
     }
 
     @Override
-    public WorkspaceRuntimeImpl getRuntime() {
+    public WorkspaceRuntime getRuntime() {
         return runtime;
     }
 
-    public void setRuntime(WorkspaceRuntimeImpl runtime) {
+    public void setRuntime(WorkspaceRuntime runtime) {
         this.runtime = runtime;
     }
 

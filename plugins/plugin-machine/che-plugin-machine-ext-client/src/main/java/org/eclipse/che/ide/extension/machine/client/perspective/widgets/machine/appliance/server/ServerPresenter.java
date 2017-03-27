@@ -14,17 +14,14 @@ import com.google.gwt.user.client.ui.AcceptsOneWidget;
 import com.google.gwt.user.client.ui.IsWidget;
 import com.google.inject.Inject;
 
-import org.eclipse.che.api.core.model.machine.Machine;
-import org.eclipse.che.api.core.model.machine.MachineRuntimeInfo;
-import org.eclipse.che.api.core.model.machine.Server;
+import org.eclipse.che.api.core.model.workspace.runtime.ServerRuntime;
+import org.eclipse.che.ide.api.machine.MachineEntity;
 import org.eclipse.che.ide.extension.machine.client.inject.factories.EntityFactory;
 import org.eclipse.che.ide.extension.machine.client.perspective.widgets.tab.content.TabPresenter;
 
 import java.util.ArrayList;
 import java.util.List;
 import java.util.Map;
-
-import static java.util.Collections.emptyList;
 
 /**
  * The class contains business logic which allows update server's information for current machine. The class is a tab presenter and
@@ -50,23 +47,23 @@ public class ServerPresenter implements TabPresenter {
      * @param machine
      *         machine for which need update information
      */
-    public void updateInfo(Machine machine) {
+    public void updateInfo(MachineEntity machine) {
         view.setServers(getServers(machine));
     }
 
-    private List<ServerEntity> getServers(Machine machine) {
-        MachineRuntimeInfo machineRuntime = machine.getRuntime();
-        if (machineRuntime == null) {
-            return emptyList();
-        }
+    private List<ServerEntity> getServers(MachineEntity machine) {
+//        MachineRuntime machineRuntime = machine.getRuntime();
+//        if (machineRuntime == null) {
+//            return emptyList();
+//        }
 
-        Map<String, ? extends Server> servers = machineRuntime.getServers();
+        Map<String, ? extends ServerRuntime> servers = machine.getServers();
         List<ServerEntity> serversList = new ArrayList<>(servers.size());
-        for (Map.Entry<String, ? extends Server> entry : servers.entrySet()) {
-            String exposedPort = entry.getKey();
-            Server descriptor = entry.getValue();
+        for (Map.Entry<String, ? extends ServerRuntime> entry : servers.entrySet()) {
+            String ref = entry.getKey();
+            ServerRuntime descriptor = entry.getValue();
 
-            ServerEntity serverEntity = entityFactory.createServer(exposedPort, descriptor);
+            ServerEntity serverEntity = entityFactory.createServer(ref, descriptor);
             serversList.add(serverEntity);
         }
         return serversList;

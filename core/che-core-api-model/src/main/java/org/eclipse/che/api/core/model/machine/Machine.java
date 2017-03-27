@@ -10,6 +10,7 @@
  *******************************************************************************/
 package org.eclipse.che.api.core.model.machine;
 
+import org.eclipse.che.api.core.model.workspace.runtime.MachineRuntime;
 import org.eclipse.che.commons.annotation.Nullable;
 
 /**
@@ -55,5 +56,5 @@ public interface Machine {
      * Is available only when {@link #getStatus()} returns {@link MachineStatus#RUNNING}
      */
     @Nullable
-    MachineRuntimeInfo getRuntime();
+    MachineRuntime getRuntime();
 }

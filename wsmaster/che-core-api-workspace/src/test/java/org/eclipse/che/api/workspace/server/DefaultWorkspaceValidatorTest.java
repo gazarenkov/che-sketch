@@ -17,7 +17,7 @@ import org.eclipse.che.api.machine.shared.dto.CommandDto;
 import org.eclipse.che.api.workspace.server.model.impl.WorkspaceImpl;
 import org.eclipse.che.api.workspace.shared.dto.EnvironmentDto;
 import org.eclipse.che.api.workspace.shared.dto.EnvironmentRecipeDto;
-import org.eclipse.che.api.workspace.shared.dto.ExtendedMachineDto;
+import org.eclipse.che.api.workspace.shared.dto.MachineConfig2Dto;
 import org.eclipse.che.api.workspace.shared.dto.ServerConf2Dto;
 import org.eclipse.che.api.workspace.shared.dto.WorkspaceConfigDto;
 import org.mockito.InjectMocks;
@@ -229,13 +229,13 @@ public class DefaultWorkspaceValidatorTest {
         final WorkspaceConfigDto workspaceConfigDto = newDto(WorkspaceConfigDto.class).withName("ws-name")
                                                                                       .withDefaultEnv("dev-env");
 
-        ExtendedMachineDto extendedMachine =
-                newDto(ExtendedMachineDto.class).withAgents(singletonList("org.eclipse.che.ws-agent"))
-                                                .withServers(singletonMap("ref1",
+        MachineConfig2Dto extendedMachine =
+                newDto(MachineConfig2Dto.class).withAgents(singletonList("org.eclipse.che.ws-agent"))
+                                               .withServers(singletonMap("ref1",
                                                                           newDto(ServerConf2Dto.class).withPort("8080/tcp")
                                                                                                       .withProtocol("https")
                                                                                                       .withProperties(singletonMap("some", "prop"))))
-                                                .withAttributes(singletonMap("memoryLimitBytes", "1000000"));
+                                               .withAttributes(singletonMap("memoryLimitBytes", "1000000"));
         EnvironmentDto env = newDto(EnvironmentDto.class).withMachines(singletonMap("devmachine1", extendedMachine))
                                                          .withRecipe(newDto(EnvironmentRecipeDto.class).withType("type")
                                                                                                        .withContent("content")

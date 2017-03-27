@@ -11,10 +11,8 @@
 package org.eclipse.che.api.workspace.shared.dto;
 
 import org.eclipse.che.api.core.factory.FactoryParameter;
-import org.eclipse.che.api.core.model.workspace.ServerConf2;
+import org.eclipse.che.api.core.model.workspace.config.ServerConf2;
 import org.eclipse.che.dto.shared.DTO;
-
-import java.util.Map;
 
 import static org.eclipse.che.api.core.factory.FactoryParameter.Obligation.MANDATORY;
 import static org.eclipse.che.api.core.factory.FactoryParameter.Obligation.OPTIONAL;
@@ -42,9 +40,9 @@ public interface ServerConf2Dto extends ServerConf2 {
 
     @Override
     @FactoryParameter(obligation = OPTIONAL)
-    Map<String, String> getProperties();
+    String getPath();
 
-    void setProperties(Map<String, String> properties);
+    void setPath(String path);
 
-    ServerConf2Dto withProperties(Map<String, String> properties);
+    ServerConf2Dto withPath(String path);
 }
