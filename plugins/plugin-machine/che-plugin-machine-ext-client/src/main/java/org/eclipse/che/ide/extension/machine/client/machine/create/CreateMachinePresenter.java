@@ -14,7 +14,7 @@ import com.google.gwt.regexp.shared.RegExp;
 import com.google.inject.Inject;
 import com.google.inject.Singleton;
 
-import org.eclipse.che.api.machine.shared.dto.recipe.RecipeDescriptor;
+import org.eclipse.che.api.machine.shared.dto.recipe.OldRecipeDescriptor;
 import org.eclipse.che.api.promises.client.Operation;
 import org.eclipse.che.api.promises.client.OperationException;
 import org.eclipse.che.ide.api.app.AppContext;
@@ -86,14 +86,14 @@ public class CreateMachinePresenter implements CreateMachineView.ActionDelegate 
     @Override
     public void onTagsChanged() {
         if (view.getTags().isEmpty()) {
-            view.setRecipes(Collections.<RecipeDescriptor>emptyList());
+            view.setRecipes(Collections.<OldRecipeDescriptor>emptyList());
             view.setNoRecipeHint(false);
             return;
         }
 
-        recipeServiceClient.searchRecipes(view.getTags(), RECIPE_TYPE, SKIP_COUNT, MAX_COUNT).then(new Operation<List<RecipeDescriptor>>() {
+        recipeServiceClient.searchRecipes(view.getTags(), RECIPE_TYPE, SKIP_COUNT, MAX_COUNT).then(new Operation<List<OldRecipeDescriptor>>() {
             @Override
-            public void apply(List<RecipeDescriptor> arg) throws OperationException {
+            public void apply(List<OldRecipeDescriptor> arg) throws OperationException {
                 view.setRecipes(arg);
                 view.setNoRecipeHint(arg.isEmpty());
             }
@@ -101,7 +101,7 @@ public class CreateMachinePresenter implements CreateMachineView.ActionDelegate 
     }
 
     @Override
-    public void onRecipeSelected(RecipeDescriptor recipe) {
+    public void onRecipeSelected(OldRecipeDescriptor recipe) {
         view.setRecipeURL(recipe.getLink("get recipe script").getHref());
     }
 

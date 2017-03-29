@@ -10,8 +10,8 @@
  *******************************************************************************/
 package org.eclipse.che.ide.api.machine;
 
+import org.eclipse.che.api.core.model.workspace.Runtime;
 import org.eclipse.che.api.core.model.workspace.Workspace;
-import org.eclipse.che.api.core.model.workspace.WorkspaceRuntime;
 
 import java.util.ArrayList;
 import java.util.List;
@@ -21,20 +21,20 @@ import java.util.Set;
  * @author Vitalii Parfonov
  */
 
-public class ActiveRuntime /*implements WorkspaceRuntime*/ {
+public class ActiveRuntime /*implements Runtime*/ {
 
-    protected WorkspaceRuntime workspaceRuntime;
-    private String id;
+    protected Runtime             runtime;
+    private   String              id;
 //    private String rootFolder;
-    private DevMachine devMachine;
-    private List<MachineEntity> machines;
+    private   DevMachine          devMachine;
+    private   List<MachineEntity> machines;
 
     public ActiveRuntime(Workspace workspace) {
-        this.workspaceRuntime = workspace.getRuntime();
-        if (workspaceRuntime != null) {
-            id = workspaceRuntime.getActiveEnv();
-            //rootFolder = workspaceRuntime.getRootFolder();
-            //devMachine = new DevMachine(workspaceRuntime.getDevMachine());
+        this.runtime = workspace.getRuntime();
+        if (runtime != null) {
+            id = runtime.getActiveEnv();
+            //rootFolder = runtime.getRootFolder();
+            //devMachine = new DevMachine(runtime.getDevMachine());
             machines = new ArrayList<>();
             Set<String> keys = workspace.getConfig().getEnvironments().get(id).getMachines().keySet();
 

@@ -11,8 +11,8 @@
 package org.eclipse.che.api.workspace.server.model.impl;
 
 import org.eclipse.che.api.core.model.workspace.config.Environment;
-import org.eclipse.che.api.core.model.workspace.config.EnvironmentRecipe;
-import org.eclipse.che.api.core.model.workspace.config.MachineConfig2;
+import org.eclipse.che.api.core.model.workspace.config.Recipe;
+import org.eclipse.che.api.core.model.workspace.config.MachineConfig;
 
 import javax.persistence.CascadeType;
 import javax.persistence.Column;
@@ -45,58 +45,58 @@ public class EnvironmentImpl implements Environment {
     private Long id;
 
     @Embedded
-    private EnvironmentRecipeImpl recipe;
+    private RecipeImpl recipe;
 
     @OneToMany(cascade = CascadeType.ALL, orphanRemoval = true, fetch = FetchType.EAGER)
     @JoinColumn(name = "machines_id")
     @MapKeyColumn(name = "machines_key")
-    private Map<String, MachineConfig2Impl> machines;
+    private Map<String, MachineConfigImpl> machines;
 
     public EnvironmentImpl() {}
 
-    public EnvironmentImpl(EnvironmentRecipe recipe,
-                           Map<String, ? extends MachineConfig2> machines) {
+    public EnvironmentImpl(Recipe recipe,
+                           Map<String, ? extends MachineConfig> machines) {
         if (recipe != null) {
-            this.recipe = new EnvironmentRecipeImpl(recipe);
+            this.recipe = new RecipeImpl(recipe);
         }
         if (machines != null) {
             this.machines = machines.entrySet()
                                     .stream()
                                     .collect(Collectors.toMap(Map.Entry::getKey,
-                                                              entry -> new MachineConfig2Impl(entry.getValue())));
+                                                              entry -> new MachineConfigImpl(entry.getValue())));
         }
     }
 
     public EnvironmentImpl(Environment environment) {
         if (environment.getRecipe() != null) {
-            this.recipe = new EnvironmentRecipeImpl(environment.getRecipe());
+            this.recipe = new RecipeImpl(environment.getRecipe());
         }
         if (environment.getMachines() != null) {
             this.machines = environment.getMachines()
                                        .entrySet()
                                        .stream()
                                        .collect(Collectors.toMap(Map.Entry::getKey,
-                                                                 entry -> new MachineConfig2Impl(entry.getValue())));
+                                                                 entry -> new MachineConfigImpl(entry.getValue())));
         }
     }
 
-    public EnvironmentRecipeImpl getRecipe() {
+    public RecipeImpl getRecipe() {
         return recipe;
     }
 
-    public void setRecipe(EnvironmentRecipeImpl environmentRecipe) {
+    public void setRecipe(RecipeImpl environmentRecipe) {
         this.recipe = environmentRecipe;
     }
 
     @Override
-    public Map<String, MachineConfig2Impl> getMachines() {
+    public Map<String, MachineConfigImpl> getMachines() {
         if (machines == null) {
             machines = new HashMap<>();
         }
         return machines;
     }
 
-    public void setMachines(Map<String, MachineConfig2Impl> machines) {
+    public void setMachines(Map<String, MachineConfigImpl> machines) {
         this.machines = machines;
     }
 

@@ -12,7 +12,7 @@ package org.eclipse.che.ide.macro;
 
 import com.google.inject.Inject;
 
-import org.eclipse.che.api.core.model.machine.Machine;
+import org.eclipse.che.api.core.model.machine.OldMachine;
 import org.eclipse.che.api.promises.client.Function;
 import org.eclipse.che.api.promises.client.FunctionException;
 import org.eclipse.che.api.promises.client.Promise;
@@ -30,7 +30,7 @@ import java.util.Iterator;
  *
  * @author Artem Zatsarynnyi
  * @see Macro
- * @see CommandManager#executeCommand(CommandImpl, Machine)
+ * @see CommandManager#executeCommand(CommandImpl, OldMachine)
  */
 public class MacroProcessorImpl implements MacroProcessor {
 

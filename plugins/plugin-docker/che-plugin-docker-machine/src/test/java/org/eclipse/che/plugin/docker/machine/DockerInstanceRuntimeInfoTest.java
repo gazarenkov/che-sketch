@@ -24,7 +24,7 @@ public class DockerInstanceRuntimeInfoTest {
 //    @Mock
 //    private ContainerInfo   containerInfo;
 //    @Mock
-//    private MachineConfig   machineConfig;
+//    private OldMachineConfig   machineConfig;
 //    @Mock
 //    private ContainerConfig containerConfig;
 //    @Mock
@@ -124,7 +124,7 @@ public class DockerInstanceRuntimeInfoTest {
 //                                                                         .withHostPort("32102")));
 //
 //        // when
-//        final Map<String, ServerImpl> servers = runtimeInfo.getServers();
+//        final Map<String, OldServerImpl> servers = runtimeInfo.getServers();
 //
 //        // then
 //        assertEquals(servers.keySet(), ports.keySet());
@@ -141,25 +141,25 @@ public class DockerInstanceRuntimeInfoTest {
 //                                                                           .withHostPort("32101")));
 //        ports.put("8080/udp", Collections.singletonList(new PortBinding().withHostIp(ALL_IP_ADDRESS )
 //                                                                         .withHostPort("32102")));
-//        final HashMap<String, ServerImpl> expectedServers = new HashMap<>();
-//        expectedServers.put("8080/tcp", new ServerImpl("Server-8080-tcp",
+//        final HashMap<String, OldServerImpl> expectedServers = new HashMap<>();
+//        expectedServers.put("8080/tcp", new OldServerImpl("OldServer-8080-tcp",
 //                                                       null,
 //                                                       CONTAINERINFO_GATEWAY + ":32100",
 //                                                       null,
 //                                                       new ServerPropertiesImpl(null, CONTAINERINFO_GATEWAY + ":32100", null)));
-//        expectedServers.put("100100/udp", new ServerImpl("Server-100100-udp",
+//        expectedServers.put("100100/udp", new OldServerImpl("OldServer-100100-udp",
 //                                                         null,
 //                                                         CONTAINERINFO_GATEWAY + ":32101",
 //                                                         null,
 //                                                         new ServerPropertiesImpl(null, CONTAINERINFO_GATEWAY + ":32101", null)));
-//        expectedServers.put("8080/udp", new ServerImpl("Server-8080-udp",
+//        expectedServers.put("8080/udp", new OldServerImpl("OldServer-8080-udp",
 //                                                       null,
 //                                                       CONTAINERINFO_GATEWAY + ":32102",
 //                                                       null,
 //                                                       new ServerPropertiesImpl(null, CONTAINERINFO_GATEWAY + ":32102", null)));
 //
 //        // when
-//        final Map<String, ServerImpl> servers = runtimeInfo.getServers();
+//        final Map<String, OldServerImpl> servers = runtimeInfo.getServers();
 //
 //        // then
 //        assertEquals(servers, expectedServers);
@@ -170,7 +170,7 @@ public class DockerInstanceRuntimeInfoTest {
 //        // given
 //        Map<String, List<PortBinding>> ports = new HashMap<>();
 //        when(networkSettings.getPorts()).thenReturn(ports);
-//        List<ServerConfImpl> serversConfigs = new ArrayList<>();
+//        List<OldServerConfImpl> serversConfigs = new ArrayList<>();
 //        doReturn(serversConfigs).when(machineConfig).getServers();
 //        ports.put("8080/tcp", Collections.singletonList(new PortBinding().withHostIp(ALL_IP_ADDRESS )
 //                                                                         .withHostPort("32100")));
@@ -180,39 +180,39 @@ public class DockerInstanceRuntimeInfoTest {
 //                                                                         .withHostPort("32102")));
 //        ports.put("8000/tcp", Collections.singletonList(new PortBinding().withHostIp(ALL_IP_ADDRESS )
 //                                                                         .withHostPort("32103")));
-//        serversConfigs.add(new ServerConfImpl("myserv1", "8080/tcp", "http", null));
-//        serversConfigs.add(new ServerConfImpl("myserv1-tftp", "8080/udp", "tftp", "/some/path"));
-//        serversConfigs.add(new ServerConfImpl("myserv2", "100100/udp", "dhcp", "/some"));
-//        serversConfigs.add(new ServerConfImpl(null, "8000/tcp", "tcp", "/path"));
+//        serversConfigs.add(new OldServerConfImpl("myserv1", "8080/tcp", "http", null));
+//        serversConfigs.add(new OldServerConfImpl("myserv1-tftp", "8080/udp", "tftp", "/some/path"));
+//        serversConfigs.add(new OldServerConfImpl("myserv2", "100100/udp", "dhcp", "/some"));
+//        serversConfigs.add(new OldServerConfImpl(null, "8000/tcp", "tcp", "/path"));
 //        runtimeInfo = new DockerInstanceRuntime(containerInfo,
 //                                                machineConfig,
 //                                                DEFAULT_HOSTNAME,
 //                                                provider,
 //                                                Collections.emptySet(),
 //                                                Collections.emptySet());
-//        final HashMap<String, ServerImpl> expectedServers = new HashMap<>();
-//        expectedServers.put("8080/tcp", new ServerImpl("myserv1",
+//        final HashMap<String, OldServerImpl> expectedServers = new HashMap<>();
+//        expectedServers.put("8080/tcp", new OldServerImpl("myserv1",
 //                                                       "http",
 //                                                       CONTAINERINFO_GATEWAY  + ":32100",
 //                                                       "http://" + CONTAINERINFO_GATEWAY  + ":32100",
 //                                                        new ServerPropertiesImpl(null,
 //                                                                CONTAINERINFO_GATEWAY  + ":32100",
 //                                                                "http://" + CONTAINERINFO_GATEWAY  + ":32100")));
-//        expectedServers.put("100100/udp", new ServerImpl("myserv2",
+//        expectedServers.put("100100/udp", new OldServerImpl("myserv2",
 //                                                         "dhcp",
 //                                                         CONTAINERINFO_GATEWAY  + ":32101",
 //                                                         "dhcp://" + CONTAINERINFO_GATEWAY  + ":32101/some",
 //                                                         new ServerPropertiesImpl("/some",
 //                                                                 CONTAINERINFO_GATEWAY  + ":32101",
 //                                                                 "dhcp://" + CONTAINERINFO_GATEWAY  + ":32101/some")));
-//        expectedServers.put("8080/udp", new ServerImpl("myserv1-tftp",
+//        expectedServers.put("8080/udp", new OldServerImpl("myserv1-tftp",
 //                                                       "tftp",
 //                                                       CONTAINERINFO_GATEWAY  + ":32102",
 //                                                       "tftp://" + CONTAINERINFO_GATEWAY  + ":32102/some/path",
 //                                                        new ServerPropertiesImpl("/some/path",
 //                                                                 CONTAINERINFO_GATEWAY  + ":32102",
 //                                                                 "tftp://" + CONTAINERINFO_GATEWAY  + ":32102/some/path")));
-//        expectedServers.put("8000/tcp", new ServerImpl("Server-8000-tcp",
+//        expectedServers.put("8000/tcp", new OldServerImpl("OldServer-8000-tcp",
 //                                                       "tcp",
 //                                                       CONTAINERINFO_GATEWAY  + ":32103",
 //                                                       "tcp://" + CONTAINERINFO_GATEWAY  + ":32103/path",
@@ -221,7 +221,7 @@ public class DockerInstanceRuntimeInfoTest {
 //                                                                 "tcp://" + CONTAINERINFO_GATEWAY  + ":32103/path")));
 //
 //        // when
-//        final Map<String, ServerImpl> servers = runtimeInfo.getServers();
+//        final Map<String, OldServerImpl> servers = runtimeInfo.getServers();
 //
 //        // then
 //        assertEquals(servers, expectedServers);
@@ -232,29 +232,29 @@ public class DockerInstanceRuntimeInfoTest {
 //        // given
 //        Map<String, List<PortBinding>> ports = new HashMap<>();
 //        when(networkSettings.getPorts()).thenReturn(ports);
-//        List<ServerConfImpl> serversConfigs = new ArrayList<>();
+//        List<OldServerConfImpl> serversConfigs = new ArrayList<>();
 //        doReturn(serversConfigs).when(machineConfig).getServers();
 //        ports.put("8080/tcp", Collections.singletonList(new PortBinding().withHostIp(ALL_IP_ADDRESS )
 //                                                                         .withHostPort("32100")));
 //        ports.put("8080/udp", Collections.singletonList(new PortBinding().withHostIp(ALL_IP_ADDRESS )
 //                                                                         .withHostPort("32102")));
-//        serversConfigs.add(new ServerConfImpl("myserv1", "8080", "http", "/some"));
-//        serversConfigs.add(new ServerConfImpl("myserv1-tftp", "8080/udp", "tftp", "path"));
+//        serversConfigs.add(new OldServerConfImpl("myserv1", "8080", "http", "/some"));
+//        serversConfigs.add(new OldServerConfImpl("myserv1-tftp", "8080/udp", "tftp", "path"));
 //        runtimeInfo = new DockerInstanceRuntime(containerInfo,
 //                                                machineConfig,
 //                                                DEFAULT_HOSTNAME,
 //                                                provider,
 //                                                Collections.emptySet(),
 //                                                Collections.emptySet());
-//        final HashMap<String, ServerImpl> expectedServers = new HashMap<>();
-//        expectedServers.put("8080/tcp", new ServerImpl("myserv1",
+//        final HashMap<String, OldServerImpl> expectedServers = new HashMap<>();
+//        expectedServers.put("8080/tcp", new OldServerImpl("myserv1",
 //                                                       "http",
 //                                                       CONTAINERINFO_GATEWAY + ":32100",
 //                                                       "http://" + CONTAINERINFO_GATEWAY + ":32100/some",
 //                                                       new ServerPropertiesImpl("/some",
 //                                                               CONTAINERINFO_GATEWAY + ":32100",
 //                                                               "http://" + CONTAINERINFO_GATEWAY + ":32100/some")));
-//        expectedServers.put("8080/udp", new ServerImpl("myserv1-tftp",
+//        expectedServers.put("8080/udp", new OldServerImpl("myserv1-tftp",
 //                                                       "tftp",
 //                                                       CONTAINERINFO_GATEWAY  + ":32102",
 //                                                       "tftp://" + CONTAINERINFO_GATEWAY  + ":32102/path",
@@ -263,7 +263,7 @@ public class DockerInstanceRuntimeInfoTest {
 //                                                               "tftp://" + CONTAINERINFO_GATEWAY  + ":32102/path")));
 //
 //        // when
-//        final Map<String, ServerImpl> servers = runtimeInfo.getServers();
+//        final Map<String, OldServerImpl> servers = runtimeInfo.getServers();
 //
 //        // then
 //        assertEquals(servers, expectedServers);
@@ -299,29 +299,29 @@ public class DockerInstanceRuntimeInfoTest {
 //        labels.put(String.format(SERVER_CONF_LABEL_PROTOCOL_KEY, "100100/udp"), "dhcp");
 //        labels.put(String.format(SERVER_CONF_LABEL_PATH_KEY, "100100/udp"), "some/path");
 //        labels.put(String.format(SERVER_CONF_LABEL_PROTOCOL_KEY, "8000/tcp"), "tcp");
-//        final HashMap<String, ServerImpl> expectedServers = new HashMap<>();
-//        expectedServers.put("8080/tcp", new ServerImpl("myserv1",
+//        final HashMap<String, OldServerImpl> expectedServers = new HashMap<>();
+//        expectedServers.put("8080/tcp", new OldServerImpl("myserv1",
 //                                                       "http",
 //                                                       CONTAINERINFO_GATEWAY  + ":32100",
 //                                                       "http://" + CONTAINERINFO_GATEWAY  + ":32100/some/path",
 //                                                       new ServerPropertiesImpl("/some/path",
 //                                                                 CONTAINERINFO_GATEWAY  + ":32100",
 //                                                                 "http://" + CONTAINERINFO_GATEWAY  + ":32100/some/path")));
-//        expectedServers.put("100100/udp", new ServerImpl("myserv2",
+//        expectedServers.put("100100/udp", new OldServerImpl("myserv2",
 //                                                         "dhcp",
 //                                                         CONTAINERINFO_GATEWAY  + ":32101",
 //                                                         "dhcp://" + CONTAINERINFO_GATEWAY  + ":32101/some/path",
 //                                                         new ServerPropertiesImpl("some/path",
 //                                                                 CONTAINERINFO_GATEWAY  + ":32101",
 //                                                                 "dhcp://" + CONTAINERINFO_GATEWAY  + ":32101/some/path")));
-//        expectedServers.put("8080/udp", new ServerImpl("myserv1-tftp",
+//        expectedServers.put("8080/udp", new OldServerImpl("myserv1-tftp",
 //                                                       "tftp",
 //                                                       CONTAINERINFO_GATEWAY  + ":32102",
 //                                                       "tftp://" + CONTAINERINFO_GATEWAY  + ":32102",
 //                                                       new ServerPropertiesImpl(null,
 //                                                               CONTAINERINFO_GATEWAY  + ":32102",
 //                                                               "tftp://" + CONTAINERINFO_GATEWAY  + ":32102")));
-//        expectedServers.put("8000/tcp", new ServerImpl("Server-8000-tcp",
+//        expectedServers.put("8000/tcp", new OldServerImpl("OldServer-8000-tcp",
 //                                                       "tcp",
 //                                                       CONTAINERINFO_GATEWAY  + ":32103",
 //                                                       "tcp://" + CONTAINERINFO_GATEWAY  + ":32103",
@@ -330,7 +330,7 @@ public class DockerInstanceRuntimeInfoTest {
 //                                                               "tcp://" + CONTAINERINFO_GATEWAY  + ":32103")));
 //
 //        // when
-//        final Map<String, ServerImpl> servers = runtimeInfo.getServers();
+//        final Map<String, OldServerImpl> servers = runtimeInfo.getServers();
 //
 //        // then
 //        assertEquals(servers, expectedServers);
@@ -361,22 +361,22 @@ public class DockerInstanceRuntimeInfoTest {
 //        labels.put(String.format(SERVER_CONF_LABEL_PROTOCOL_KEY, "8080/udp"), "tftp");
 //        labels.put(String.format(SERVER_CONF_LABEL_REF_KEY, "8000"), "myserv2");
 //        labels.put(String.format(SERVER_CONF_LABEL_PROTOCOL_KEY, "8000/tcp"), "tcp");
-//        final HashMap<String, ServerImpl> expectedServers = new HashMap<>();
-//        expectedServers.put("8080/tcp", new ServerImpl("myserv1",
+//        final HashMap<String, OldServerImpl> expectedServers = new HashMap<>();
+//        expectedServers.put("8080/tcp", new OldServerImpl("myserv1",
 //                                                       "http",
 //                                                       CONTAINERINFO_GATEWAY  + ":32100",
 //                                                       "http://" + CONTAINERINFO_GATEWAY  + ":32100",
 //                                                       new ServerPropertiesImpl(null,
 //                                                               CONTAINERINFO_GATEWAY  + ":32100",
 //                                                               "http://" + CONTAINERINFO_GATEWAY  + ":32100")));
-//        expectedServers.put("8080/udp", new ServerImpl("myserv1-tftp",
+//        expectedServers.put("8080/udp", new OldServerImpl("myserv1-tftp",
 //                                                       "tftp",
 //                                                       CONTAINERINFO_GATEWAY  + ":32102",
 //                                                       "tftp://" + CONTAINERINFO_GATEWAY  + ":32102",
 //                                                       new ServerPropertiesImpl(null,
 //                                                               CONTAINERINFO_GATEWAY  + ":32102",
 //                                                               "tftp://" + CONTAINERINFO_GATEWAY  + ":32102")));
-//        expectedServers.put("8000/tcp", new ServerImpl("myserv2",
+//        expectedServers.put("8000/tcp", new OldServerImpl("myserv2",
 //                                                       "tcp",
 //                                                       CONTAINERINFO_GATEWAY  + ":32103",
 //                                                       "tcp://" + CONTAINERINFO_GATEWAY  + ":32103",
@@ -385,7 +385,7 @@ public class DockerInstanceRuntimeInfoTest {
 //                                                               "tcp://" + CONTAINERINFO_GATEWAY  + ":32103")));
 //
 //        // when
-//        final Map<String, ServerImpl> servers = runtimeInfo.getServers();
+//        final Map<String, OldServerImpl> servers = runtimeInfo.getServers();
 //
 //        // then
 //        assertEquals(servers, expectedServers);
@@ -398,7 +398,7 @@ public class DockerInstanceRuntimeInfoTest {
 //        when(networkSettings.getPorts()).thenReturn(ports);
 //        Map<String, String> labels = new HashMap<>();
 //        when(containerConfig.getLabels()).thenReturn(labels);
-//        List<ServerConfImpl> serversConfigs = new ArrayList<>();
+//        List<OldServerConfImpl> serversConfigs = new ArrayList<>();
 //        doReturn(serversConfigs).when(machineConfig).getServers();
 //        ports.put("8080/tcp", Collections.singletonList(new PortBinding().withHostIp(ALL_IP_ADDRESS )
 //                                                                         .withHostPort("32100")));
@@ -413,37 +413,37 @@ public class DockerInstanceRuntimeInfoTest {
 //        labels.put(String.format(SERVER_CONF_LABEL_REF_KEY, "100100/udp"), "myserv2label");
 //        labels.put(String.format(SERVER_CONF_LABEL_PROTOCOL_KEY, "100100/udp"), "dhcp");
 //        labels.put(String.format(SERVER_CONF_LABEL_PATH_KEY, "100100/udp"), "/path");
-//        serversConfigs.add(new ServerConfImpl("myserv1conf", "8080/tcp", "http", null));
-//        serversConfigs.add(new ServerConfImpl(null, "8080/udp", null, "some/path"));
+//        serversConfigs.add(new OldServerConfImpl("myserv1conf", "8080/tcp", "http", null));
+//        serversConfigs.add(new OldServerConfImpl(null, "8080/udp", null, "some/path"));
 //        runtimeInfo = new DockerInstanceRuntime(containerInfo,
 //                                                machineConfig,
 //                                                DEFAULT_HOSTNAME,
 //                                                provider,
 //                                                Collections.emptySet(),
 //                                                Collections.emptySet());
-//        final HashMap<String, ServerImpl> expectedServers = new HashMap<>();
-//        expectedServers.put("8080/tcp", new ServerImpl("myserv1conf",
+//        final HashMap<String, OldServerImpl> expectedServers = new HashMap<>();
+//        expectedServers.put("8080/tcp", new OldServerImpl("myserv1conf",
 //                                                       "http",
 //                                                       CONTAINERINFO_GATEWAY  + ":32100",
 //                                                       "http://" + CONTAINERINFO_GATEWAY  + ":32100",
 //                                                       new ServerPropertiesImpl(null,
 //                                                               CONTAINERINFO_GATEWAY  + ":32100",
 //                                                               "http://" + CONTAINERINFO_GATEWAY  + ":32100")));
-//        expectedServers.put("100100/udp", new ServerImpl("myserv2label",
+//        expectedServers.put("100100/udp", new OldServerImpl("myserv2label",
 //                                                         "dhcp",
 //                                                         CONTAINERINFO_GATEWAY  + ":32101",
 //                                                         "dhcp://" + CONTAINERINFO_GATEWAY  + ":32101/path",
 //                                                         new ServerPropertiesImpl("/path",
 //                                                                CONTAINERINFO_GATEWAY  + ":32101",
 //                                                                "dhcp://" + CONTAINERINFO_GATEWAY  + ":32101/path")));
-//        expectedServers.put("8080/udp", new ServerImpl("Server-8080-udp",
+//        expectedServers.put("8080/udp", new OldServerImpl("OldServer-8080-udp",
 //                                                       null,
 //                                                       CONTAINERINFO_GATEWAY  + ":32102",
 //                                                       null,
 //                                                       new ServerPropertiesImpl("some/path", CONTAINERINFO_GATEWAY  + ":32102", null)));
 //
 //        // when
-//        final Map<String, ServerImpl> servers = runtimeInfo.getServers();
+//        final Map<String, OldServerImpl> servers = runtimeInfo.getServers();
 //
 //        // then
 //        assertEquals(servers, expectedServers);
@@ -463,12 +463,12 @@ public class DockerInstanceRuntimeInfoTest {
 //        // add user defined server
 //        ports.put("4305/tcp", Collections.singletonList(new PortBinding().withHostIp(ALL_IP_ADDRESS )
 //                                                                         .withHostPort("32103")));
-//        Set<ServerConf> commonSystemServersConfigs = new HashSet<>();
-//        commonSystemServersConfigs.add(new ServerConfImpl("sysServer1-tcp", "4301/tcp", "http", "/some/path"));
-//        commonSystemServersConfigs.add(new ServerConfImpl("sysServer2-udp", "4302/udp", "dhcp", null));
-//        commonSystemServersConfigs.add(new ServerConfImpl("sysServer1-udp", "4301/udp", null, "some/path"));
-//        Set<ServerConf> devSystemServersConfigs = new HashSet<>();
-//        devSystemServersConfigs.add(new ServerConfImpl("devSysServer1-tcp", "4305/tcp", "http", null));
+//        Set<OldServerConf> commonSystemServersConfigs = new HashSet<>();
+//        commonSystemServersConfigs.add(new OldServerConfImpl("sysServer1-tcp", "4301/tcp", "http", "/some/path"));
+//        commonSystemServersConfigs.add(new OldServerConfImpl("sysServer2-udp", "4302/udp", "dhcp", null));
+//        commonSystemServersConfigs.add(new OldServerConfImpl("sysServer1-udp", "4301/udp", null, "some/path"));
+//        Set<OldServerConf> devSystemServersConfigs = new HashSet<>();
+//        devSystemServersConfigs.add(new OldServerConfImpl("devSysServer1-tcp", "4305/tcp", "http", null));
 //        when(machineConfig.isDev()).thenReturn(false);
 //        runtimeInfo = new DockerInstanceRuntime(containerInfo,
 //                                                machineConfig,
@@ -476,36 +476,36 @@ public class DockerInstanceRuntimeInfoTest {
 //                                                provider,
 //                                                devSystemServersConfigs,
 //                                                commonSystemServersConfigs);
-//        final HashMap<String, ServerImpl> expectedServers = new HashMap<>();
-//        expectedServers.put("4301/tcp", new ServerImpl("sysServer1-tcp",
+//        final HashMap<String, OldServerImpl> expectedServers = new HashMap<>();
+//        expectedServers.put("4301/tcp", new OldServerImpl("sysServer1-tcp",
 //                                                       "http",
 //                                                       CONTAINERINFO_GATEWAY  + ":32100",
 //                                                       "http://" + CONTAINERINFO_GATEWAY  + ":32100/some/path",
 //                                                       new ServerPropertiesImpl("/some/path",
 //                                                                   CONTAINERINFO_GATEWAY  + ":32100",
 //                                                                   "http://" + CONTAINERINFO_GATEWAY  + ":32100/some/path")));
-//        expectedServers.put("4302/udp", new ServerImpl("sysServer2-udp",
+//        expectedServers.put("4302/udp", new OldServerImpl("sysServer2-udp",
 //                                                       "dhcp",
 //                                                       CONTAINERINFO_GATEWAY  + ":32101",
 //                                                       "dhcp://" + CONTAINERINFO_GATEWAY  + ":32101",
 //                                                       new ServerPropertiesImpl(null,
 //                                                                    CONTAINERINFO_GATEWAY  + ":32101",
 //                                                                    "dhcp://" + CONTAINERINFO_GATEWAY  + ":32101")));
-//        expectedServers.put("4301/udp", new ServerImpl("sysServer1-udp",
+//        expectedServers.put("4301/udp", new OldServerImpl("sysServer1-udp",
 //                                                       null,
 //                                                       CONTAINERINFO_GATEWAY  + ":32102",
 //                                                       null,
 //                                                       new ServerPropertiesImpl("some/path",
 //                                                                   CONTAINERINFO_GATEWAY  + ":32102",
 //                                                                   null)));
-//        expectedServers.put("4305/tcp", new ServerImpl("Server-4305-tcp",
+//        expectedServers.put("4305/tcp", new OldServerImpl("OldServer-4305-tcp",
 //                                                       null,
 //                                                       CONTAINERINFO_GATEWAY  + ":32103",
 //                                                       null,
 //                                                       new ServerPropertiesImpl(null, CONTAINERINFO_GATEWAY  + ":32103", null)));
 //
 //        // when
-//        final Map<String, ServerImpl> servers = runtimeInfo.getServers();
+//        final Map<String, OldServerImpl> servers = runtimeInfo.getServers();
 //
 //        // then
 //        assertEquals(servers, expectedServers);
@@ -524,12 +524,12 @@ public class DockerInstanceRuntimeInfoTest {
 //                                                                         .withHostPort("32102")));
 //        ports.put("4305/udp", Collections.singletonList(new PortBinding().withHostIp(ALL_IP_ADDRESS )
 //                                                                         .withHostPort("32103")));
-//        Set<ServerConf> commonSystemServersConfigs = new HashSet<>();
-//        commonSystemServersConfigs.add(new ServerConfImpl("sysServer1-tcp", "4301/tcp", "http", "/some/path1"));
-//        commonSystemServersConfigs.add(new ServerConfImpl("sysServer2-udp", "4302/udp", "dhcp", "some/path2"));
-//        Set<ServerConf> devSystemServersConfigs = new HashSet<>();
-//        devSystemServersConfigs.add(new ServerConfImpl("devSysServer1-tcp", "4305/tcp", "http", "/some/path3"));
-//        devSystemServersConfigs.add(new ServerConfImpl("devSysServer1-udp", "4305/udp", null, "some/path4"));
+//        Set<OldServerConf> commonSystemServersConfigs = new HashSet<>();
+//        commonSystemServersConfigs.add(new OldServerConfImpl("sysServer1-tcp", "4301/tcp", "http", "/some/path1"));
+//        commonSystemServersConfigs.add(new OldServerConfImpl("sysServer2-udp", "4302/udp", "dhcp", "some/path2"));
+//        Set<OldServerConf> devSystemServersConfigs = new HashSet<>();
+//        devSystemServersConfigs.add(new OldServerConfImpl("devSysServer1-tcp", "4305/tcp", "http", "/some/path3"));
+//        devSystemServersConfigs.add(new OldServerConfImpl("devSysServer1-udp", "4305/udp", null, "some/path4"));
 //        when(machineConfig.isDev()).thenReturn(true);
 //        runtimeInfo = new DockerInstanceRuntime(containerInfo,
 //                                                machineConfig,
@@ -537,29 +537,29 @@ public class DockerInstanceRuntimeInfoTest {
 //                                                provider,
 //                                                devSystemServersConfigs,
 //                                                commonSystemServersConfigs);
-//        final HashMap<String, ServerImpl> expectedServers = new HashMap<>();
-//        expectedServers.put("4301/tcp", new ServerImpl("sysServer1-tcp",
+//        final HashMap<String, OldServerImpl> expectedServers = new HashMap<>();
+//        expectedServers.put("4301/tcp", new OldServerImpl("sysServer1-tcp",
 //                                                       "http",
 //                                                       CONTAINERINFO_GATEWAY  + ":32100",
 //                                                       "http://" + CONTAINERINFO_GATEWAY  + ":32100/some/path1",
 //                                                       new ServerPropertiesImpl("/some/path1",
 //                                                           CONTAINERINFO_GATEWAY  + ":32100",
 //                                                           "http://" + CONTAINERINFO_GATEWAY  + ":32100/some/path1")));
-//        expectedServers.put("4302/udp", new ServerImpl("sysServer2-udp",
+//        expectedServers.put("4302/udp", new OldServerImpl("sysServer2-udp",
 //                                                       "dhcp",
 //                                                       CONTAINERINFO_GATEWAY  + ":32101",
 //                                                       "dhcp://" + CONTAINERINFO_GATEWAY  + ":32101/some/path2",
 //                                                       new ServerPropertiesImpl("some/path2",
 //                                                           CONTAINERINFO_GATEWAY  + ":32101",
 //                                                           "dhcp://" + CONTAINERINFO_GATEWAY  + ":32101/some/path2")));
-//        expectedServers.put("4305/tcp", new ServerImpl("devSysServer1-tcp",
+//        expectedServers.put("4305/tcp", new OldServerImpl("devSysServer1-tcp",
 //                                                       "http",
 //                                                       CONTAINERINFO_GATEWAY  + ":32102",
 //                                                       "http://" + CONTAINERINFO_GATEWAY  + ":32102/some/path3",
 //                                                       new ServerPropertiesImpl("/some/path3",
 //                                                           CONTAINERINFO_GATEWAY  + ":32102",
 //                                                           "http://" + CONTAINERINFO_GATEWAY  + ":32102/some/path3")));
-//        expectedServers.put("4305/udp", new ServerImpl("devSysServer1-udp",
+//        expectedServers.put("4305/udp", new OldServerImpl("devSysServer1-udp",
 //                                                       null,
 //                                                       CONTAINERINFO_GATEWAY  + ":32103",
 //                                                       null,
@@ -568,7 +568,7 @@ public class DockerInstanceRuntimeInfoTest {
 //                                                           null)));
 //
 //        // when
-//        final Map<String, ServerImpl> servers = runtimeInfo.getServers();
+//        final Map<String, OldServerImpl> servers = runtimeInfo.getServers();
 //
 //        // then
 //        assertEquals(servers, expectedServers);

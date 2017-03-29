@@ -10,10 +10,10 @@
  *******************************************************************************/
 package org.eclipse.che.ide.extension.machine.client.machine;
 
-import org.eclipse.che.api.machine.shared.dto.MachineConfigDto;
 import org.eclipse.che.api.machine.shared.dto.MachineDto;
-import org.eclipse.che.api.machine.shared.dto.MachineRuntimeDto;
-import org.eclipse.che.api.machine.shared.dto.ServerDto;
+import org.eclipse.che.api.machine.shared.dto.OldMachineConfigDto;
+import org.eclipse.che.api.machine.shared.dto.OldMachineDto;
+import org.eclipse.che.api.machine.shared.dto.OldServerDto;
 import org.eclipse.che.ide.api.app.AppContext;
 import org.eclipse.che.ide.api.machine.MachineEntity;
 import org.eclipse.che.ide.api.machine.MachineEntityImpl;
@@ -40,13 +40,13 @@ public class MachineItemTest {
     private final static String SOME_TEXT = "someText";
 
     @Mock
-    private MachineDto                  descriptor;
+    private OldMachineDto               descriptor;
     @Mock
-    private MachineConfigDto            machineConfig;
+    private OldMachineConfigDto         machineConfig;
     @Mock
-    private MachineRuntimeDto           machineRuntimeDto;
+    private MachineDto                  machineRuntimeDto;
     @Mock
-    private ServerDto                   serverDescriptor;
+    private OldServerDto                serverDescriptor;
     @Mock
     private MachineLocalizationConstant locale;
     @Mock
@@ -58,7 +58,7 @@ public class MachineItemTest {
 
     @Before
     public void setUp() {
-        Map<String, ServerDto> servers = new HashMap<>();
+        Map<String, OldServerDto> servers = new HashMap<>();
         servers.put(SOME_TEXT, serverDescriptor);
 
         when(descriptor.getRuntime()).thenReturn(machineRuntimeDto);

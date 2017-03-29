@@ -18,15 +18,15 @@ import com.google.inject.Inject;
 import com.google.inject.Singleton;
 import com.google.web.bindery.event.shared.EventBus;
 
+import org.eclipse.che.api.core.model.machine.OldMachine;
+import org.eclipse.che.api.core.model.workspace.Runtime;
 import org.eclipse.che.api.core.model.workspace.config.Command;
-import org.eclipse.che.api.core.model.machine.Machine;
 import org.eclipse.che.api.core.model.workspace.config.Environment;
-import org.eclipse.che.api.core.model.workspace.config.MachineConfig2;
+import org.eclipse.che.api.core.model.workspace.config.MachineConfig;
 import org.eclipse.che.api.core.model.workspace.Workspace;
 import org.eclipse.che.api.core.model.workspace.WorkspaceConfig;
-import org.eclipse.che.api.core.model.workspace.WorkspaceRuntime;
-import org.eclipse.che.api.machine.shared.dto.MachineConfigDto;
-import org.eclipse.che.api.machine.shared.dto.MachineDto;
+import org.eclipse.che.api.machine.shared.dto.OldMachineConfigDto;
+import org.eclipse.che.api.machine.shared.dto.OldMachineDto;
 import org.eclipse.che.api.machine.shared.dto.execagent.GetProcessLogsResponseDto;
 import org.eclipse.che.api.machine.shared.dto.execagent.GetProcessesResponseDto;
 import org.eclipse.che.api.promises.client.Operation;
@@ -538,8 +538,8 @@ public class ProcessesPanelPresenter extends BasePresenter implements ProcessesP
 
         return machine.getServer("ssh").getUrl();
 
-        //Map<String, ? extends Server> servers = machine.getServers();
-        //final Server sshServer = servers.get(SSH_PORT + "/tcp");
+        //Map<String, ? extends OldServer> servers = machine.getServers();
+        //final OldServer sshServer = servers.get(SSH_PORT + "/tcp");
         //return sshServer != null ? sshServer.getAddress() : null;
     }
 
@@ -794,9 +794,9 @@ public class ProcessesPanelPresenter extends BasePresenter implements ProcessesP
             return false;
         }
         for (Environment environment : environments.values()) {
-            MachineConfig2 machineConfig2 = environment.getMachines().get(machineName);
-            if (machineConfig2 != null) {
-                if (machineConfig2.getAgents() != null && machineConfig2.getAgents().contains(agent)) {
+            MachineConfig machineConfig = environment.getMachines().get(machineName);
+            if (machineConfig != null) {
+                if (machineConfig.getAgents() != null && machineConfig.getAgents().contains(agent)) {
                     return true;
                 }
             }
@@ -874,22 +874,22 @@ public class ProcessesPanelPresenter extends BasePresenter implements ProcessesP
     }
 
     private List<MachineEntity> getMachines(Workspace workspace) {
-        WorkspaceRuntime workspaceRuntime = workspace.getRuntime();
-        if (workspaceRuntime == null) {
+        Runtime runtime = workspace.getRuntime();
+        if (runtime == null) {
             return emptyList();
         }
 
-        //Set<String> names = workspaceRuntime.getMachines().keySet();
+        //Set<String> names = runtime.getMachines().keySet();
 
-        //List<? extends MachineRuntime> runtimeMachines = workspaceRuntime.getMachines();
+        //List<? extends Machine> runtimeMachines = runtime.getMachines();
 
-        List<MachineEntity> machines = new ArrayList<>(workspaceRuntime.getMachines().size());
-        for (String machineName : workspaceRuntime.getMachines().keySet()) {
+        List<MachineEntity> machines = new ArrayList<>(runtime.getMachines().size());
+        for (String machineName : runtime.getMachines().keySet()) {
 
             machines.add(new MachineEntityImpl(workspace, machineName));
 
-//            if (machine instanceof MachineDto) {
-//                MachineEntity machineEntity = entityFactory.createMachine((MachineDto)machine);
+//            if (machine instanceof OldMachineDto) {
+//                MachineEntity machineEntity = entityFactory.createMachine((OldMachineDto)machine);
 //                machines.add(machineEntity);
 //            }
 
@@ -1177,10 +1177,10 @@ public class ProcessesPanelPresenter extends BasePresenter implements ProcessesP
         appContext.getWorkspace();
 
         if (!consoles.containsKey(machineName)) {
-            MachineDto machineDto = dtoFactory.createDto(MachineDto.class)
-                    .withId(machineName)
-                    .withStatus(CREATING)
-                    .withConfig(dtoFactory.createDto(MachineConfigDto.class)
+            OldMachineDto machineDto = dtoFactory.createDto(OldMachineDto.class)
+                                                 .withId(machineName)
+                                                 .withStatus(CREATING)
+                                                 .withConfig(dtoFactory.createDto(OldMachineConfigDto.class)
                                     .withDev("dev-machine".equals(machineName))
                                     .withName(machineName)
                                     .withType("docker")
@@ -1289,14 +1289,14 @@ public class ProcessesPanelPresenter extends BasePresenter implements ProcessesP
 
     @Override
     public void onDownloadWorkspaceOutput(DownloadWorkspaceOutputEvent event) {
-        Machine devMachine = null;
+        OldMachine devMachine = null;
 
         for (ProcessTreeNode machineNode : machineNodes.values()) {
-            if (!(machineNode.getData() instanceof Machine)) {
+            if (!(machineNode.getData() instanceof OldMachine)) {
                 continue;
             }
 
-            Machine machine = (Machine)machineNode.getData();
+            OldMachine machine = (OldMachine)machineNode.getData();
             if (!machine.getConfig().isDev()) {
                 continue;
             }

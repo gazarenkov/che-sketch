@@ -14,17 +14,17 @@ import com.google.gwt.core.client.Callback;
 import com.google.inject.Provider;
 
 import org.eclipse.che.api.machine.shared.dto.CommandDto;
-import org.eclipse.che.api.machine.shared.dto.MachineConfigDto;
-import org.eclipse.che.api.machine.shared.dto.MachineDto;
+import org.eclipse.che.api.machine.shared.dto.OldMachineConfigDto;
+import org.eclipse.che.api.machine.shared.dto.OldMachineDto;
 import org.eclipse.che.api.machine.shared.dto.MachineLimitsDto;
 import org.eclipse.che.api.machine.shared.dto.MachineSourceDto;
-import org.eclipse.che.api.machine.shared.dto.recipe.RecipeDescriptor;
+import org.eclipse.che.api.machine.shared.dto.recipe.OldRecipeDescriptor;
 import org.eclipse.che.api.promises.client.Operation;
 import org.eclipse.che.api.promises.client.Promise;
 import org.eclipse.che.api.promises.client.PromiseError;
 import org.eclipse.che.api.workspace.shared.dto.EnvironmentDto;
-import org.eclipse.che.api.workspace.shared.dto.EnvironmentRecipeDto;
-import org.eclipse.che.api.workspace.shared.dto.MachineConfig2Dto;
+import org.eclipse.che.api.workspace.shared.dto.RecipeDto;
+import org.eclipse.che.api.workspace.shared.dto.MachineConfigDto;
 import org.eclipse.che.api.workspace.shared.dto.WorkspaceConfigDto;
 import org.eclipse.che.api.workspace.shared.dto.WorkspaceDto;
 import org.eclipse.che.commons.test.mockito.answer.SelfReturningAnswer;
@@ -89,49 +89,49 @@ public class CreateWorkspacePresenterTest {
 
     //additional mocks
     @Mock
-    private Callback<Component, Exception>  componentCallback;
+    private Callback<Component, Exception>     componentCallback;
     @Mock
-    private HidePopupCallBack               popupCallBack;
+    private HidePopupCallBack                  popupCallBack;
     @Mock
-    private Promise<List<RecipeDescriptor>> recipesPromise;
+    private Promise<List<OldRecipeDescriptor>> recipesPromise;
     @Mock
-    private Promise<WorkspaceDto>           userWsPromise;
+    private Promise<WorkspaceDto>              userWsPromise;
     @Mock
-    private RecipeDescriptor                recipeDescriptor;
+    private OldRecipeDescriptor                recipeDescriptor;
     @Mock
-    private DefaultWorkspaceComponent       workspaceComponent;
+    private DefaultWorkspaceComponent          workspaceComponent;
     @Mock
-    private MachineLimitsDto                limitsDto;
+    private MachineLimitsDto                   limitsDto;
 
     //DTOs
-    private MachineConfigDto     machineConfigDto;
-    private WorkspaceConfigDto   workspaceConfigDto;
+    private OldMachineConfigDto machineConfigDto;
+    private WorkspaceConfigDto  workspaceConfigDto;
     @Mock
-    private MachineDto           machineDto;
+    private OldMachineDto       machineDto;
     @Mock
-    private MachineSourceDto     machineSourceDto;
+    private MachineSourceDto    machineSourceDto;
     // Mocks too
-    private EnvironmentDto       environmentDto;
-    private EnvironmentRecipeDto environmentRecipeDto;
-    private MachineConfig2Dto    extendedMachineDto;
+    private EnvironmentDto      environmentDto;
+    private RecipeDto           environmentRecipeDto;
+    private MachineConfigDto    extendedMachineDto;
     @Mock
-    private CommandDto           commandDto;
+    private CommandDto          commandDto;
     @Mock
-    private WorkspaceDto         usersWorkspaceDto;
+    private WorkspaceDto        usersWorkspaceDto;
 
     @Captor
-    private ArgumentCaptor<Operation<List<RecipeDescriptor>>> recipeOperation;
+    private ArgumentCaptor<Operation<List<OldRecipeDescriptor>>> recipeOperation;
     @Captor
-    private ArgumentCaptor<Operation<WorkspaceDto>>      workspaceOperation;
+    private ArgumentCaptor<Operation<WorkspaceDto>>              workspaceOperation;
     @Captor
-    private ArgumentCaptor<Operation<PromiseError>>           errorOperation;
+    private ArgumentCaptor<Operation<PromiseError>>              errorOperation;
 
     @InjectMocks
     private CreateWorkspacePresenter presenter;
 
     @Before
     public void setUp() {
-        machineConfigDto = mock(MachineConfigDto.class, new SelfReturningAnswer());
+        machineConfigDto = mock(OldMachineConfigDto.class, new SelfReturningAnswer());
         workspaceConfigDto = mock(WorkspaceConfigDto.class, new SelfReturningAnswer());
         when(usersWorkspaceDto.getConfig()).thenReturn(workspaceConfigDto);
 
@@ -142,7 +142,7 @@ public class CreateWorkspacePresenterTest {
         when(dtoFactory.createDto(MachineLimitsDto.class)).thenReturn(limitsDto);
         when(limitsDto.withRam(anyInt())).thenReturn(limitsDto);
 
-        when(dtoFactory.createDto(MachineConfigDto.class)).thenReturn(machineConfigDto);
+        when(dtoFactory.createDto(OldMachineConfigDto.class)).thenReturn(machineConfigDto);
 
         when(dtoFactory.createDto(EnvironmentDto.class)).thenReturn(environmentDto);
 
@@ -151,10 +151,10 @@ public class CreateWorkspacePresenterTest {
         when(dtoFactory.createDto(WorkspaceDto.class)).thenReturn(usersWorkspaceDto);
         environmentDto = mock(EnvironmentDto.class, new SelfReturningAnswer());
         when(dtoFactory.createDto(EnvironmentDto.class)).thenReturn(environmentDto);
-        environmentRecipeDto = mock(EnvironmentRecipeDto.class, new SelfReturningAnswer());
-        when(dtoFactory.createDto(EnvironmentRecipeDto.class)).thenReturn(environmentRecipeDto);
-        extendedMachineDto = mock(MachineConfig2Dto.class, new SelfReturningAnswer());
-        when(dtoFactory.createDto(MachineConfig2Dto.class)).thenReturn(extendedMachineDto);
+        environmentRecipeDto = mock(RecipeDto.class, new SelfReturningAnswer());
+        when(dtoFactory.createDto(RecipeDto.class)).thenReturn(environmentRecipeDto);
+        extendedMachineDto = mock(MachineConfigDto.class, new SelfReturningAnswer());
+        when(dtoFactory.createDto(MachineConfigDto.class)).thenReturn(extendedMachineDto);
 
         when(wsComponentProvider.get()).thenReturn(workspaceComponent);
 
@@ -249,7 +249,7 @@ public class CreateWorkspacePresenterTest {
 
     @Test
     public void recipesShouldBeFoundAndShown() throws Exception {
-        List<RecipeDescriptor> recipes = Collections.singletonList(recipeDescriptor);
+        List<OldRecipeDescriptor> recipes = Collections.singletonList(recipeDescriptor);
 
         callSearchRecipesApplyMethod(recipes);
 
@@ -258,7 +258,7 @@ public class CreateWorkspacePresenterTest {
         verify(view).setVisibleTagsError(false);
     }
 
-    private void callSearchRecipesApplyMethod(List<RecipeDescriptor> recipes) throws Exception {
+    private void callSearchRecipesApplyMethod(List<OldRecipeDescriptor> recipes) throws Exception {
         List<String> tags = Collections.singletonList("test1 test2");
 
         when(view.getTags()).thenReturn(tags);
@@ -278,20 +278,20 @@ public class CreateWorkspacePresenterTest {
 
     @Test
     public void errorLabelShouldBeShowWhenRecipesNotFound() throws Exception {
-        List<RecipeDescriptor> recipes = new ArrayList<>();
+        List<OldRecipeDescriptor> recipes = new ArrayList<>();
 
         callSearchRecipesApplyMethod(recipes);
 
         verify(view).setVisibleTagsError(true);
         verify(popupCallBack).hidePopup();
-        verify(view, never()).showFoundByTagRecipes(Matchers.<List<RecipeDescriptor>>anyObject());
+        verify(view, never()).showFoundByTagRecipes(Matchers.<List<OldRecipeDescriptor>>anyObject());
     }
 
     @Test
     public void predefinedRecipesShouldBeFound() {
         presenter.onPredefinedRecipesClicked();
 
-        verify(view).showPredefinedRecipes(Matchers.<List<RecipeDescriptor>>anyObject());
+        verify(view).showPredefinedRecipes(Matchers.<List<OldRecipeDescriptor>>anyObject());
     }
 
     @Test
@@ -312,7 +312,7 @@ public class CreateWorkspacePresenterTest {
         presenter.onCreateButtonClicked();
 
         verify(recipeServiceClient).getAllRecipes();
-        verify(recipesPromise).then(Matchers.<Operation<List<RecipeDescriptor>>>anyObject());
+        verify(recipesPromise).then(Matchers.<Operation<List<OldRecipeDescriptor>>>anyObject());
 
         verify(view).show();
     }

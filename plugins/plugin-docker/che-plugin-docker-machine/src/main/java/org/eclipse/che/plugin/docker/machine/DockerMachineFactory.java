@@ -13,8 +13,8 @@ package org.eclipse.che.plugin.docker.machine;
 import com.google.inject.assistedinject.Assisted;
 
 import org.eclipse.che.api.core.model.workspace.config.Command;
-import org.eclipse.che.api.core.model.machine.Machine;
-import org.eclipse.che.api.core.model.machine.MachineConfig;
+import org.eclipse.che.api.core.model.machine.OldMachine;
+import org.eclipse.che.api.core.model.machine.OldMachineConfig;
 import org.eclipse.che.api.core.util.LineConsumer;
 import org.eclipse.che.api.machine.server.exception.MachineException;
 import org.eclipse.che.api.machine.server.spi.Instance;
@@ -60,7 +60,7 @@ public interface DockerMachineFactory {
      * @param outputConsumer consumer of output from container main process
      * @throws MachineException if error occurs on creation of {@code Instance}
      */
-    Instance createInstance(@Assisted Machine machine,
+    Instance createInstance(@Assisted OldMachine machine,
                             @Assisted("container") String container,
                             @Assisted("image") String image,
                             @Assisted DockerNode node,
@@ -81,10 +81,10 @@ public interface DockerMachineFactory {
      *
      * @param containerInfo description of docker container
      * @param machineConfig config of machine
-     * @param internalHost docker host internal hostname (used by the wsmaster). May be overridden by Server
+     * @param internalHost docker host internal hostname (used by the wsmaster). May be overridden by OldServer
      *                     Evaluation Strategy
      */
     DockerInstanceRuntime createMetadata(@Assisted ContainerInfo containerInfo,
-                                         @Assisted MachineConfig machineConfig,
+                                         @Assisted OldMachineConfig machineConfig,
                                          @Assisted String        internalHost);
 }

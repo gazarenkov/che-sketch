@@ -10,9 +10,9 @@
  *******************************************************************************/
 package org.eclipse.che.plugin.machine.ssh;
 
-import org.eclipse.che.api.core.model.machine.Machine;
-import org.eclipse.che.api.core.model.machine.MachineConfig;
-import org.eclipse.che.api.core.model.workspace.runtime.MachineRuntime;
+import org.eclipse.che.api.core.model.machine.OldMachine;
+import org.eclipse.che.api.core.model.machine.OldMachineConfig;
+import org.eclipse.che.api.core.model.workspace.runtime.Machine;
 import org.eclipse.che.api.core.util.LineConsumer;
 import org.mockito.Mock;
 import org.mockito.testng.MockitoTestNGListener;
@@ -27,35 +27,35 @@ import static org.mockito.Mockito.verify;
 import static org.mockito.Mockito.when;
 
 /**
- * Tests for{@link SshMachineInstance}
+ * Tests for{@link SshOldMachineInstance}
  *
  * @author Igor Vinokur
  */
 @Listeners(MockitoTestNGListener.class)
 public class SshMachineInstanceTest {
     @Mock
-    private Machine      machine;
+    private OldMachine   machine;
     @Mock
     private SshClient    sshClient;
     @Mock
     private LineConsumer outputConsumer;
 
-    private SshMachineInstance sshMachineInstance;
+    private SshOldMachineInstance sshMachineInstance;
 
     @BeforeMethod
     public void setUp() {
-        when(machine.getConfig()).thenReturn(mock(MachineConfig.class));
+        when(machine.getConfig()).thenReturn(mock(OldMachineConfig.class));
         when(machine.getEnvName()).thenReturn("EnvName");
         when(machine.getId()).thenReturn("Id");
         when(machine.getOwner()).thenReturn("Owner");
-        when(machine.getRuntime()).thenReturn(mock(MachineRuntime.class));
+        when(machine.getRuntime()).thenReturn(mock(Machine.class));
         when(machine.getWorkspaceId()).thenReturn("WorkspaceId");
 
-        sshMachineInstance = new SshMachineInstance(machine,
-                                                    sshClient,
-                                                    outputConsumer,
-                                                    mock(SshMachineFactory.class),
-                                                    new HashSet<>());
+        sshMachineInstance = new SshOldMachineInstance(machine,
+                                                       sshClient,
+                                                       outputConsumer,
+                                                       mock(SshMachineFactory.class),
+                                                       new HashSet<>());
     }
 
     @Test

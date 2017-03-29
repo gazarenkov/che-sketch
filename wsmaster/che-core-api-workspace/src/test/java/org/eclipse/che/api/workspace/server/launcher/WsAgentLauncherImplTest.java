@@ -27,7 +27,7 @@ public class WsAgentLauncherImplTest {
 //    private static final ServerPropertiesImpl SERVER_PROPERTIES             = new ServerPropertiesImpl(null,
 //                                                                                                       WS_AGENT_SERVER_LOCATION,
 //                                                                                                       WS_AGENT_SERVER_URL);
-//    private static final ServerImpl           SERVER                        = new ServerImpl("ref",
+//    private static final OldServerImpl           SERVER                        = new OldServerImpl("ref",
 //                                                                                             "http",
 //                                                                                             WS_AGENT_SERVER_LOCATION_EXT,
 //                                                                                             WS_AGENT_SERVER_URL_EXT,
@@ -43,7 +43,7 @@ public class WsAgentLauncherImplTest {
 //    @Mock
 //    private HttpJsonResponse          pingResponse;
 //    @Mock
-//    private MachineRuntimeImpl        machineRuntime;
+//    private MachineImpl        machineRuntime;
 //    @Mock
 //    private WsAgentPingRequestFactory wsAgentPingRequestFactory;
 //    @Mock
@@ -66,7 +66,7 @@ public class WsAgentLauncherImplTest {
 //        when(machine.getId()).thenReturn(MACHINE_ID);
 //        when(machine.getWorkspaceId()).thenReturn(WORKSPACE_ID);
 //        when(machine.getRuntime()).thenReturn(machineRuntime);
-//        doReturn(Collections.<String, Server>singletonMap(WS_AGENT_PORT, SERVER)).when(machineRuntime).getServers();
+//        doReturn(Collections.<String, OldServer>singletonMap(WS_AGENT_PORT, SERVER)).when(machineRuntime).getServers();
 //        when(requestFactory.fromUrl(anyString())).thenReturn(pingRequest);
 //        when(wsAgentPingRequestFactory.createRequest(machine)).thenReturn(pingRequest);
 //        when(pingRequest.request()).thenReturn(pingResponse);

@@ -28,7 +28,7 @@ import org.eclipse.che.ide.ui.radiobuttongroup.RadioButtonGroup;
 import static org.eclipse.che.ide.workspace.perspectives.project.ProjectPerspective.PROJECT_PERSPECTIVE_ID;
 
 /**
- * Action for switching Project/Machine perspectives.
+ * Action for switching Project/OldMachine perspectives.
  *
  * @author Artem Zatsarynnyi
  */

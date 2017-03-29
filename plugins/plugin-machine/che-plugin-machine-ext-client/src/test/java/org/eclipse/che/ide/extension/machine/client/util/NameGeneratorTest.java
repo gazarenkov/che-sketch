@@ -12,7 +12,7 @@ package org.eclipse.che.ide.extension.machine.client.util;
 
 import com.google.gwtmockito.GwtMockitoTestRunner;
 
-import org.eclipse.che.api.machine.shared.dto.recipe.RecipeDescriptor;
+import org.eclipse.che.api.machine.shared.dto.recipe.OldRecipeDescriptor;
 import org.eclipse.che.ide.extension.machine.client.perspective.widgets.recipe.entry.RecipeWidget;
 import org.junit.Test;
 import org.junit.runner.RunWith;
@@ -39,17 +39,17 @@ public class NameGeneratorTest {
     private static final String COPY4_HELLO = "Copy4 of hello";
 
     @Mock
-    private RecipeWidget recipe1;
+    private RecipeWidget        recipe1;
     @Mock
-    private RecipeDescriptor recipeDescriptor1;
+    private OldRecipeDescriptor recipeDescriptor1;
     @Mock
-    private RecipeWidget recipe2;
+    private RecipeWidget        recipe2;
     @Mock
-    private RecipeDescriptor recipeDescriptor2;
+    private OldRecipeDescriptor recipeDescriptor2;
     @Mock
-    private RecipeWidget recipe3;
+    private RecipeWidget        recipe3;
     @Mock
-    private RecipeDescriptor recipeDescriptor3;
+    private OldRecipeDescriptor recipeDescriptor3;
 
     /**
      * First copy is named 'copy of'
@@ -153,14 +153,14 @@ public class NameGeneratorTest {
         RecipeWidget environment9 = mock(RecipeWidget.class);
         RecipeWidget environment10 = mock(RecipeWidget.class);
 
-        RecipeDescriptor recipeDescriptor3 = mock(RecipeDescriptor.class);
-        RecipeDescriptor recipeDescriptor4 = mock(RecipeDescriptor.class);
-        RecipeDescriptor recipeDescriptor5 = mock(RecipeDescriptor.class);
-        RecipeDescriptor recipeDescriptor6 = mock(RecipeDescriptor.class);
-        RecipeDescriptor recipeDescriptor7 = mock(RecipeDescriptor.class);
-        RecipeDescriptor recipeDescriptor8 = mock(RecipeDescriptor.class);
-        RecipeDescriptor recipeDescriptor9 = mock(RecipeDescriptor.class);
-        RecipeDescriptor recipeDescriptor10 = mock(RecipeDescriptor.class);
+        OldRecipeDescriptor recipeDescriptor3 = mock(OldRecipeDescriptor.class);
+        OldRecipeDescriptor recipeDescriptor4 = mock(OldRecipeDescriptor.class);
+        OldRecipeDescriptor recipeDescriptor5 = mock(OldRecipeDescriptor.class);
+        OldRecipeDescriptor recipeDescriptor6 = mock(OldRecipeDescriptor.class);
+        OldRecipeDescriptor recipeDescriptor7 = mock(OldRecipeDescriptor.class);
+        OldRecipeDescriptor recipeDescriptor8 = mock(OldRecipeDescriptor.class);
+        OldRecipeDescriptor recipeDescriptor9 = mock(OldRecipeDescriptor.class);
+        OldRecipeDescriptor recipeDescriptor10 = mock(OldRecipeDescriptor.class);
 
         when(recipe1.getDescriptor()).thenReturn(recipeDescriptor1);
         when(recipe2.getDescriptor()).thenReturn(recipeDescriptor2);

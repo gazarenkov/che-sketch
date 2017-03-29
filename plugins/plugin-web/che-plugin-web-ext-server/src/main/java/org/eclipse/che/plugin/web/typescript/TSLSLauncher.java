@@ -28,7 +28,7 @@ import java.nio.file.Paths;
 import static java.util.Arrays.asList;
 
 /**
- * Launcher for TypeScript Language Server
+ * Launcher for TypeScript Language OldServer
  */
 @Singleton
 public class TSLSLauncher extends LanguageServerLauncherTemplate {

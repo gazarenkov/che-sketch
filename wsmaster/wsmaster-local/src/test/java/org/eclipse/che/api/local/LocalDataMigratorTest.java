@@ -22,7 +22,7 @@ import org.eclipse.che.api.core.ServerException;
 import org.eclipse.che.api.local.storage.LocalStorageFactory;
 import org.eclipse.che.api.local.storage.stack.StackLocalStorage;
 import org.eclipse.che.api.machine.server.model.impl.SnapshotImpl;
-import org.eclipse.che.api.machine.server.recipe.RecipeImpl;
+import org.eclipse.che.api.machine.server.recipe.OldRecipeImpl;
 import org.eclipse.che.api.machine.server.spi.RecipeDao;
 import org.eclipse.che.api.machine.server.spi.SnapshotDao;
 import org.eclipse.che.api.ssh.server.model.impl.SshPairImpl;
@@ -235,7 +235,7 @@ public class LocalDataMigratorTest {
         final SnapshotImpl snapshot = new SnapshotImpl();
         snapshot.setId("snapshotId");
         snapshot.setWorkspaceId(workspace.getId());
-        final RecipeImpl recipe = new RecipeImpl();
+        final OldRecipeImpl recipe = new OldRecipeImpl();
         recipe.setId("id");
         recipe.setCreator(user.getId());
         final StackImpl stack = new StackImpl();

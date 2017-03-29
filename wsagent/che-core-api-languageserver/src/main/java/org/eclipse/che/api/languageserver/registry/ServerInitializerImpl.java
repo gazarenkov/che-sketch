@@ -121,7 +121,7 @@ public class ServerInitializerImpl implements ServerInitializer {
             server = launcher.launch(projectPath);
         } catch (LanguageServerException e) {
             throw new LanguageServerException(
-                    "Can't initialize Language Server " + languageId + " on " + projectPath + ". " + e.getMessage(), e);
+                    "Can't initialize Language OldServer " + languageId + " on " + projectPath + ". " + e.getMessage(), e);
         }
         registerCallbacks(server);
 
@@ -136,7 +136,7 @@ public class ServerInitializerImpl implements ServerInitializer {
             throw new LanguageServerException("Error fetching server capabilities " + languageId + ". " + e.getMessage(), e);
         }
 
-        LOG.info("Initialized Language Server {} on project {}", languageId, projectPath);
+        LOG.info("Initialized Language OldServer {} on project {}", languageId, projectPath);
         return server;
     }
 

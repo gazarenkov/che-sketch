@@ -10,7 +10,7 @@
  *******************************************************************************/
 package org.eclipse.che.ide.extension.machine.client.targets;
 
-import org.eclipse.che.api.machine.shared.dto.recipe.RecipeDescriptor;
+import org.eclipse.che.api.machine.shared.dto.recipe.OldRecipeDescriptor;
 
 import java.util.Objects;
 
@@ -26,7 +26,7 @@ public class BaseTarget implements Target {
 
     private String category;
 
-    private RecipeDescriptor recipe;
+    private OldRecipeDescriptor recipe;
 
     /**
      * Indicate if target has unsaved changes.
@@ -56,12 +56,12 @@ public class BaseTarget implements Target {
     }
 
     @Override
-    public RecipeDescriptor getRecipe() {
+    public OldRecipeDescriptor getRecipe() {
         return recipe;
     }
 
     @Override
-    public void setRecipe(RecipeDescriptor recipe) {
+    public void setRecipe(OldRecipeDescriptor recipe) {
         this.recipe = recipe;
     }
 

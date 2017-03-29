@@ -32,10 +32,10 @@ import org.eclipse.che.api.factory.server.spi.FactoryDao;
 import org.eclipse.che.api.machine.server.model.impl.CommandImpl;
 import org.eclipse.che.api.user.server.model.impl.UserImpl;
 import org.eclipse.che.api.workspace.server.model.impl.EnvironmentImpl;
-import org.eclipse.che.api.workspace.server.model.impl.EnvironmentRecipeImpl;
-import org.eclipse.che.api.workspace.server.model.impl.MachineConfig2Impl;
+import org.eclipse.che.api.workspace.server.model.impl.RecipeImpl;
+import org.eclipse.che.api.workspace.server.model.impl.MachineConfigImpl;
 import org.eclipse.che.api.workspace.server.model.impl.ProjectConfigImpl;
-import org.eclipse.che.api.workspace.server.model.impl.ServerConf2Impl;
+import org.eclipse.che.api.workspace.server.model.impl.ServerConfigImpl;
 import org.eclipse.che.api.workspace.server.model.impl.SourceStorageImpl;
 import org.eclipse.che.api.workspace.server.model.impl.WorkspaceConfigImpl;
 import org.eclipse.che.commons.lang.Pair;
@@ -313,30 +313,30 @@ public class FactoryDaoTest {
         cmd2.getAttributes().putAll(ImmutableMap.of("key4", "value4"));
         final List<CommandImpl> commands = new ArrayList<>(asList(cmd1, cmd2));
 
-        // Machine configs
-        final MachineConfig2Impl exMachine1 = new MachineConfig2Impl();
-        final ServerConf2Impl serverConf1 = new ServerConf2Impl("2265", "http", singletonMap("prop1", "val"));
-        final ServerConf2Impl serverConf2 = new ServerConf2Impl("2266", "ftp", singletonMap("prop1", "val"));
+        // OldMachine configs
+        final MachineConfigImpl exMachine1 = new MachineConfigImpl();
+        final ServerConfigImpl serverConf1 = new ServerConfigImpl("2265", "http", singletonMap("prop1", "val"));
+        final ServerConfigImpl serverConf2 = new ServerConfigImpl("2266", "ftp", singletonMap("prop1", "val"));
         exMachine1.setServers(ImmutableMap.of("ref1", serverConf1, "ref2", serverConf2));
         exMachine1.setAgents(ImmutableList.of("agent5", "agent4"));
         exMachine1.setAttributes(singletonMap("att1", "val"));
 
-        final MachineConfig2Impl exMachine2 = new MachineConfig2Impl();
-        final ServerConf2Impl serverConf3 = new ServerConf2Impl("2333", "https", singletonMap("prop2", "val"));
-        final ServerConf2Impl serverConf4 = new ServerConf2Impl("2334", "wss", singletonMap("prop2", "val"));
+        final MachineConfigImpl exMachine2 = new MachineConfigImpl();
+        final ServerConfigImpl serverConf3 = new ServerConfigImpl("2333", "https", singletonMap("prop2", "val"));
+        final ServerConfigImpl serverConf4 = new ServerConfigImpl("2334", "wss", singletonMap("prop2", "val"));
         exMachine2.setServers(ImmutableMap.of("ref1", serverConf3, "ref2", serverConf4));
         exMachine2.setAgents(ImmutableList.of("agent2", "agent1"));
         exMachine2.setAttributes(singletonMap("att1", "val"));
 
-        final MachineConfig2Impl exMachine3 = new MachineConfig2Impl();
-        final ServerConf2Impl serverConf5 = new ServerConf2Impl("2333", "https", singletonMap("prop2", "val"));
+        final MachineConfigImpl exMachine3 = new MachineConfigImpl();
+        final ServerConfigImpl serverConf5 = new ServerConfigImpl("2333", "https", singletonMap("prop2", "val"));
         exMachine3.setServers(singletonMap("ref1", serverConf5));
         exMachine3.setAgents(ImmutableList.of("agent6", "agent2"));
         exMachine3.setAttributes(singletonMap("att1", "val"));
 
 
         // Environments
-        final EnvironmentRecipeImpl recipe1 = new EnvironmentRecipeImpl();
+        final RecipeImpl recipe1 = new RecipeImpl();
         recipe1.setLocation("https://eclipse.che/Dockerfile");
         recipe1.setType("dockerfile");
         recipe1.setContentType("text/x-dockerfile");
@@ -347,7 +347,7 @@ public class FactoryDaoTest {
                                                        "machine3", exMachine3)));
         env1.setRecipe(recipe1);
 
-        final EnvironmentRecipeImpl recipe2 = new EnvironmentRecipeImpl();
+        final RecipeImpl recipe2 = new RecipeImpl();
         recipe2.setLocation("https://eclipse.che/Dockerfile");
         recipe2.setType("dockerfile");
         recipe2.setContentType("text/x-dockerfile");

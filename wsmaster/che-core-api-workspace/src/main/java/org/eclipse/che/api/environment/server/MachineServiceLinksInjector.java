@@ -12,7 +12,7 @@ package org.eclipse.che.api.environment.server;
 
 import org.eclipse.che.api.core.rest.ServiceContext;
 import org.eclipse.che.api.core.rest.shared.dto.Link;
-import org.eclipse.che.api.machine.shared.dto.MachineDto;
+import org.eclipse.che.api.machine.shared.dto.OldMachineDto;
 
 import javax.inject.Singleton;
 import javax.ws.rs.core.UriBuilder;
@@ -27,7 +27,7 @@ import java.util.List;
 @Singleton
 public class MachineServiceLinksInjector {
 
-    public MachineDto injectLinks(MachineDto machine, ServiceContext serviceContext) {
+    public OldMachineDto injectLinks(OldMachineDto machine, ServiceContext serviceContext) {
         final UriBuilder uriBuilder = serviceContext.getServiceUriBuilder();
         final List<Link> links = new ArrayList<>();
 
@@ -98,10 +98,10 @@ public class MachineServiceLinksInjector {
         return machine.withLinks(links);
     }
 
-//    protected void injectTerminalLink(MachineDto machine, ServiceContext serviceContext, List<Link> links) {
+//    protected void injectTerminalLink(OldMachineDto machine, ServiceContext serviceContext, List<Link> links) {
 //        final String scheme = serviceContext.getBaseUriBuilder().build().getScheme();
 //        if (machine.getRuntime() != null) {
-//            final Collection<ServerDto> servers = machine.getRuntime().getServers().values();
+//            final Collection<OldServerDto> servers = machine.getRuntime().getServers().values();
 //            servers.stream()
 //                   .filter(server -> TERMINAL_REFERENCE.equals(server.getRef()))
 //                   .findAny()
@@ -116,10 +116,10 @@ public class MachineServiceLinksInjector {
 //        }
 //    }
 //
-//    protected void injectExecAgentLink(MachineDto machine, ServiceContext serviceContext, List<Link> links) {
+//    protected void injectExecAgentLink(OldMachineDto machine, ServiceContext serviceContext, List<Link> links) {
 //        final String scheme = serviceContext.getBaseUriBuilder().build().getScheme();
 //        if (machine.getRuntime() != null) {
-//            final Collection<ServerDto> servers = machine.getRuntime().getServers().values();
+//            final Collection<OldServerDto> servers = machine.getRuntime().getServers().values();
 //            servers.stream()
 //                   .filter(server -> TERMINAL_REFERENCE.equals(server.getRef()))
 //                   .findAny()

@@ -12,9 +12,9 @@ package org.eclipse.che.ide.extension.machine.client.inject.factories;
 
 import com.google.inject.assistedinject.Assisted;
 
-import org.eclipse.che.api.core.model.machine.Machine;
-import org.eclipse.che.api.core.model.workspace.runtime.ServerRuntime;
-import org.eclipse.che.api.machine.shared.dto.recipe.RecipeDescriptor;
+import org.eclipse.che.api.core.model.machine.OldMachine;
+import org.eclipse.che.api.core.model.workspace.runtime.Server;
+import org.eclipse.che.api.machine.shared.dto.recipe.OldRecipeDescriptor;
 import org.eclipse.che.commons.annotation.Nullable;
 import org.eclipse.che.ide.extension.machine.client.perspective.widgets.machine.appliance.server.ServerEntity;
 import org.eclipse.che.ide.extension.machine.client.perspective.widgets.machine.panel.MachineTreeNode;
@@ -38,9 +38,9 @@ public interface EntityFactory {
     /**
      * Creates machine object.
      *
-     * @return an implementation of {@link Machine}
+     * @return an implementation of {@link OldMachine}
      */
-    //MachineEntity createMachine(@NotNull MachineRuntimeDto descriptor);
+    //MachineEntity createMachine(@NotNull MachineDto descriptor);
 
     /**
      * Creates tab entity using special parameters.
@@ -61,7 +61,7 @@ public interface EntityFactory {
      * @return an instance of {@link RecipeEditorPanel}
      */
     @NotNull
-    RecipeEditorPanel createRecipeEditorPanel(@Nullable RecipeDescriptor recipeDescriptor);
+    RecipeEditorPanel createRecipeEditorPanel(@Nullable OldRecipeDescriptor recipeDescriptor);
 
     /**
      * Creates server entity with special parameters.
@@ -72,7 +72,7 @@ public interface EntityFactory {
      *         server descriptor which contains information about current server
      * @return an instance of {@link ServerEntity}
      */
-    ServerEntity createServer(@NotNull String port, @NotNull ServerRuntime descriptor);
+    ServerEntity createServer(@NotNull String port, @NotNull Server descriptor);
 
     /**
      * Creates machine node which will be displayed in special table on view.

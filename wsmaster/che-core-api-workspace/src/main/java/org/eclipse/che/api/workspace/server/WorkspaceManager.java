@@ -20,7 +20,7 @@ import org.eclipse.che.api.core.NotFoundException;
 import org.eclipse.che.api.core.ServerException;
 import org.eclipse.che.api.core.model.workspace.Workspace;
 import org.eclipse.che.api.core.model.workspace.WorkspaceConfig;
-import org.eclipse.che.api.core.model.workspace.WorkspaceRuntime;
+import org.eclipse.che.api.core.model.workspace.Runtime;
 import org.eclipse.che.api.core.model.workspace.WorkspaceStatus;
 import org.eclipse.che.api.core.notification.EventService;
 import org.eclipse.che.api.machine.server.exception.SourceNotFoundException;
@@ -451,7 +451,7 @@ public class WorkspaceManager {
 
         states.put(workspace.getId(), WorkspaceStatus.STARTING);
         // barrier, safely doesn't allow to start the workspace twice
-        final Future<WorkspaceRuntime> descriptor = runtimes.startAsync(workspace, env, options);
+        final Future<Runtime> descriptor = runtimes.startAsync(workspace, env, options);
 
         sharedPool.execute(() -> {
             try {
@@ -539,7 +539,7 @@ public class WorkspaceManager {
         });
     }
 
-//    private void startAsync(MachineConfig machineConfig, String workspaceId) {
+//    private void startAsync(OldMachineConfig machineConfig, String workspaceId) {
 //        sharedPool.execute(() -> {
 //            try {
 //                runtimes.startMachine(workspaceId, machineConfig);

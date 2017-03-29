@@ -15,8 +15,8 @@ import org.eclipse.che.api.core.ConflictException;
 import org.eclipse.che.api.core.NotFoundException;
 import org.eclipse.che.api.core.ServerException;
 import org.eclipse.che.api.core.model.machine.MachineLogMessage;
+import org.eclipse.che.api.core.model.workspace.Runtime;
 import org.eclipse.che.api.core.model.workspace.Workspace;
-import org.eclipse.che.api.core.model.workspace.WorkspaceRuntime;
 import org.eclipse.che.api.core.model.workspace.WorkspaceStatus;
 import org.eclipse.che.api.core.model.workspace.config.Environment;
 import org.eclipse.che.api.core.notification.EventService;
@@ -24,7 +24,7 @@ import org.eclipse.che.api.core.util.AbstractMessageConsumer;
 import org.eclipse.che.api.core.util.MessageConsumer;
 import org.eclipse.che.api.core.util.WebsocketMessageConsumer;
 import org.eclipse.che.api.workspace.server.model.impl.EnvironmentImpl;
-import org.eclipse.che.api.workspace.server.model.impl.WorkspaceRuntimeImpl;
+import org.eclipse.che.api.workspace.server.model.impl.RuntimeImpl;
 import org.eclipse.che.api.workspace.server.spi.InternalRuntime;
 import org.eclipse.che.api.workspace.server.spi.NotSupportedException;
 import org.eclipse.che.api.workspace.server.spi.RuntimeIdentity;
@@ -57,7 +57,7 @@ import static org.slf4j.LoggerFactory.getLogger;
 //import org.eclipse.che.api.machine.server.spi.Runtime;
 
 /**
- * Defines an internal API for managing {@link WorkspaceRuntimeImpl} instances.
+ * Defines an internal API for managing {@link RuntimeImpl} instances.
  *
  * <p>This component implements {@link WorkspaceStatus} contract.
  *
@@ -146,7 +146,7 @@ public class WorkspaceRuntimes {
      * Returns the runtime descriptor describing currently starting/running/stopping
      * workspace runtime.
      *
-     * returns a copy of a real {@code WorkspaceRuntime} object,
+     * returns a copy of a real {@code Runtime} object,
      * which means that any runtime copy modifications won't affect the
      * real object and also it means that copy won't be affected with modifications applied
      * to the real runtime workspace object state.
@@ -159,7 +159,7 @@ public class WorkspaceRuntimes {
      * @throws ServerException
      *         if environment is in illegal state
      */
-    public WorkspaceRuntime get(String workspaceId) throws NotFoundException, ServerException {
+    public Runtime get(String workspaceId) throws NotFoundException, ServerException {
 
         InternalRuntime runtime = runtimes.get(workspaceId);
         if(runtime != null)
@@ -194,9 +194,9 @@ public class WorkspaceRuntimes {
      * @see WorkspaceStatus#STARTING
      * @see WorkspaceStatus#RUNNING
      */
-    public WorkspaceRuntime start(Workspace workspace,
-                                   String envName,
-                                   Map<String, String> options) throws ApiException, ValidationException, IOException {
+    public Runtime start(Workspace workspace,
+                         String envName,
+                         Map<String, String> options) throws ApiException, ValidationException, IOException {
 
         final EnvironmentImpl environment = copyEnv(workspace, envName);
         final String workspaceId = workspace.getId();
@@ -209,8 +209,8 @@ public class WorkspaceRuntimes {
      * method does, but asynchronously. Nonetheless synchronously checks that workspace
      * doesn't have runtime and makes it {@link WorkspaceStatus#STARTING}.
      */
-    public Future<WorkspaceRuntime> startAsync(Workspace workspace,
-                                                String envName,
+    public Future<Runtime> startAsync(Workspace workspace,
+                                      String envName,
                                       Map<String, String> options) throws ConflictException, ServerException {
 
         final EnvironmentImpl environment = copyEnv(workspace, envName);
@@ -300,8 +300,8 @@ public class WorkspaceRuntimes {
                          Map<String, String> options) throws ApiException, ValidationException, IOException {
 
         requireNonNull(environment, "Environment should not be null " + workspaceId);
-        requireNonNull(environment.getRecipe(), "Recipe should not be null " + workspaceId);
-        requireNonNull(environment.getRecipe().getType(), "Recipe type should not be null " + workspaceId);
+        requireNonNull(environment.getRecipe(), "OldRecipe should not be null " + workspaceId);
+        requireNonNull(environment.getRecipe().getType(), "OldRecipe type should not be null " + workspaceId);
 
         RuntimeInfrastructure infra = infraByRecipe.get(environment.getRecipe().getType());
         if(infra == null)
@@ -334,9 +334,9 @@ public class WorkspaceRuntimes {
 
 
 //        // Phase 2: start agents if any
-//        for (Map.Entry<String, MachineConfig2Impl> machineEntry : environment.getMachines().entrySet()) {
+//        for (Map.Entry<String, MachineConfigImpl> machineEntry : environment.getMachines().entrySet()) {
 //            if (!machineEntry.getValue().getAgents().isEmpty()) {
-//                MachineRuntime machine = runtime.getMachines().get(machineEntry.getKey());
+//                Machine machine = runtime.getMachines().get(machineEntry.getKey());
 //                // TODO
 //                // installAgents(machine);
 //            }
@@ -507,7 +507,7 @@ public class WorkspaceRuntimes {
 //        infra.start(workspaceId, environment, getEnvironmentLogger(workspaceId), options);
 //
 //        // agents
-//        for(Map.Entry<String, MachineConfig2Impl> machineEntry : environment.getMachines().entrySet()) {
+//        for(Map.Entry<String, MachineConfigImpl> machineEntry : environment.getMachines().entrySet()) {
 //            if(!machineEntry.getValue().getAgents().isEmpty()) {
 //                RuntimeMachine machine = runtimes.get(workspaceId).getMachines().get(machineEntry.getKey());
 //                // installAgents(machine);
@@ -574,9 +574,9 @@ public class WorkspaceRuntimes {
 
 //    private void launchAgents(EnvironmentImpl environment, List<Runtime> machines) throws ServerException {
 //        for (Runtime instance : machines) {
-//            Map<String, MachineConfig2Impl> envMachines = environment.getMachines();
+//            Map<String, MachineConfigImpl> envMachines = environment.getMachines();
 //            if (envMachines != null) {
-//                MachineConfig2 extendedMachine = envMachines.get(instance.getConfig().getName());
+//                MachineConfig extendedMachine = envMachines.get(instance.getConfig().getName());
 //                if (extendedMachine != null) {
 //                    List<String> agents = extendedMachine.getAgents();
 //                    launchAgents(instance, agents);
@@ -612,13 +612,13 @@ public class WorkspaceRuntimes {
 //                                        .withEventType(EventType.SNAPSHOT_CREATING)
 //                                        .withPrevStatus(WorkspaceStatus.RUNNING));
 //
-//        WorkspaceRuntimeImpl runtime = get(workspaceId).getRuntime();
-//        List<MachineImpl> machines = runtime.getMachines();
+//        RuntimeImpl runtime = get(workspaceId).getRuntime();
+//        List<OldMachineImpl> machines = runtime.getMachines();
 //        machines.sort(comparing(m -> !m.getConfig().isDev(), Boolean::compare));
 //
 //        LOG.info("Creating snapshot of workspace '{}', machines to snapshot: '{}'", workspaceId, machines.size());
 //        List<SnapshotImpl> newSnapshots = new ArrayList<>(machines.size());
-//        for (MachineImpl machine : machines) {
+//        for (OldMachineImpl machine : machines) {
 //            try {
 //                newSnapshots.add(envEngine.saveSnapshot(workspaceId, machine.getId()));
 //            } catch (ServerException | NotFoundException x) {

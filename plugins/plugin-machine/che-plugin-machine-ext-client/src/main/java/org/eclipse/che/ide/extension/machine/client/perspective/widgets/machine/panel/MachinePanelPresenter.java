@@ -16,9 +16,9 @@ import com.google.inject.Inject;
 import com.google.inject.Singleton;
 import com.google.web.bindery.event.shared.EventBus;
 
-import org.eclipse.che.api.core.model.workspace.runtime.MachineRuntime;
+import org.eclipse.che.api.core.model.workspace.Runtime;
+import org.eclipse.che.api.core.model.workspace.runtime.Machine;
 import org.eclipse.che.api.core.model.workspace.Workspace;
-import org.eclipse.che.api.core.model.workspace.WorkspaceRuntime;
 import org.eclipse.che.commons.annotation.Nullable;
 import org.eclipse.che.ide.api.app.AppContext;
 import org.eclipse.che.ide.api.event.ActivePartChangedEvent;
@@ -121,17 +121,17 @@ public class MachinePanelPresenter extends BasePresenter implements MachinePanel
     }
 
     private List<MachineEntity> getMachines(Workspace workspace) {
-        WorkspaceRuntime workspaceRuntime = workspace.getRuntime();
-        if (workspaceRuntime == null) {
+        Runtime runtime = workspace.getRuntime();
+        if (runtime == null) {
             return emptyList();
         }
 
-        Map<String, ? extends MachineRuntime> runtimeMachines = workspaceRuntime.getMachines();
+        Map<String, ? extends Machine> runtimeMachines = runtime.getMachines();
         List<MachineEntity> machines = new ArrayList<>(runtimeMachines.size());
         for (String machineId : runtimeMachines.keySet()) {
-            //if (machine instanceof MachineDto) {
+            //if (machine instanceof OldMachineDto) {
                 MachineEntity machineEntity = new MachineEntityImpl(appContext.getWorkspace(), machineId);
-                        //entityFactory.createMachine((MachineRuntimeDto)machine);
+                        //entityFactory.createMachine((MachineDto)machine);
                 machines.add(machineEntity);
             //}
 
@@ -183,7 +183,7 @@ public class MachinePanelPresenter extends BasePresenter implements MachinePanel
 //        } else {
 //            isMachineRunning = false;
 //
-//            final MachineConfig machineConfig = selectedMachine.getConfig();
+//            final OldMachineConfig machineConfig = selectedMachine.getConfig();
 //            final boolean isDevMachine = machineConfig.isDev();
 //            final String machineName = machineConfig.getName();
 //

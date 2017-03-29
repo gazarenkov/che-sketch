@@ -10,15 +10,15 @@
  *******************************************************************************/
 package org.eclipse.che.ide.api.machine;
 
-import org.eclipse.che.api.core.model.workspace.runtime.ServerRuntime;
+import org.eclipse.che.api.core.model.workspace.runtime.Server;
 
 /**
  * Describe development machine server instance.
  *
- * @link Server
+ * @link OldServer
  * @author Vitalii Parfonov
  */
-public class MachineServer implements ServerRuntime {
+public class MachineServer implements Server {
 
 
 //    private final String address;
@@ -27,7 +27,7 @@ public class MachineServer implements ServerRuntime {
     private final String url;
 //    private final ServerProperties properties;
 //
-        public MachineServer(ServerRuntime dto) {
+        public MachineServer(Server dto) {
 //            address = dto.getAddress();
 //            protocol = dto.getProtocol();
 //            ref = dto.getRef();

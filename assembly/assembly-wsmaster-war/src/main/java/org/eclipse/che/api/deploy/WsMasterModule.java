@@ -15,9 +15,11 @@ import com.google.inject.multibindings.Multibinder;
 import com.google.inject.name.Names;
 
 import org.eclipse.che.api.agent.server.launcher.AgentLauncher;
+import org.eclipse.che.api.core.model.machine.OldServerConf;
 import org.eclipse.che.api.core.rest.CheJsonProvider;
 import org.eclipse.che.api.core.rest.MessageBodyAdapter;
 import org.eclipse.che.api.core.rest.MessageBodyAdapterInterceptor;
+import org.eclipse.che.api.machine.server.model.impl.OldServerConfImpl;
 import org.eclipse.che.api.machine.shared.Constants;
 import org.eclipse.che.api.user.server.TokenValidator;
 import org.eclipse.che.api.workspace.server.WorkspaceConfigMessageBodyAdapter;
@@ -85,12 +87,12 @@ public class WsMasterModule extends AbstractModule {
 
         bind(org.eclipse.che.api.core.notification.WSocketEventBusServer.class);
         // additional ports for development of extensions
-        Multibinder<org.eclipse.che.api.core.model.machine.ServerConf> machineServers = Multibinder.newSetBinder(binder(),
-                                                                                   org.eclipse.che.api.core.model.machine.ServerConf.class,
-                                                                                   Names.named("machine.docker.dev_machine.machine_servers"));
+        Multibinder<OldServerConf> machineServers = Multibinder.newSetBinder(binder(),
+                                                                             OldServerConf.class,
+                                                                             Names.named("machine.docker.dev_machine.machine_servers"));
         machineServers.addBinding().toInstance(
-                new org.eclipse.che.api.machine.server.model.impl.ServerConfImpl(Constants.WSAGENT_DEBUG_REFERENCE, "4403/tcp", "http",
-                                                                                 null));
+                new OldServerConfImpl(Constants.WSAGENT_DEBUG_REFERENCE, "4403/tcp", "http",
+                                      null));
 
         bind(org.eclipse.che.api.agent.server.WsAgentHealthChecker.class)
                 .to(org.eclipse.che.api.agent.server.WsAgentHealthCheckerImpl.class);

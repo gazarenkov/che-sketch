@@ -15,7 +15,7 @@ import com.google.gwt.user.client.Element;
 import com.google.gwtmockito.GwtMockitoTestRunner;
 
 import org.eclipse.che.api.core.rest.shared.dto.Link;
-import org.eclipse.che.api.machine.shared.dto.recipe.RecipeDescriptor;
+import org.eclipse.che.api.machine.shared.dto.recipe.OldRecipeDescriptor;
 import org.eclipse.che.ide.workspace.create.recipewidget.RecipeWidget.ActionDelegate;
 import org.junit.Before;
 import org.junit.Test;
@@ -36,7 +36,7 @@ import static org.mockito.Mockito.when;
 public class RecipeWidgetImplTest {
 
     @Mock
-    private RecipeDescriptor              descriptor;
+    private OldRecipeDescriptor           descriptor;
     @Mock
     private org.eclipse.che.ide.Resources resources;
 

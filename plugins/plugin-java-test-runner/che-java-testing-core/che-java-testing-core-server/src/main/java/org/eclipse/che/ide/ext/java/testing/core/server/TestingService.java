@@ -75,7 +75,7 @@ public class TestingService {
     @ApiOperation(value = "Execute Java tests and return results",
             notes = "The GET parameters are passed to the test framework implementation.")
     @ApiResponses({@ApiResponse(code = 200, message = "OK"),
-            @ApiResponse(code = 500, message = "Server error")})
+            @ApiResponse(code = 500, message = "OldServer error")})
     public TestResult run(@Context UriInfo uriInfo) throws Exception {
         Map<String, String> queryParameters = getMap(uriInfo.getQueryParameters());
         String projectPath = queryParameters.get("projectPath");

@@ -114,7 +114,7 @@ public class ProcessTreeRenderer implements NodeRenderer<ProcessTreeNode> {
     private SpanElement createMachineElement(final ProcessTreeNode node) {
         final MachineEntity machine = (MachineEntity)node.getData();
         final String machineId = machine.getId();
-        //final MachineConfig machineConfig = machine.getConfig();
+        //final OldMachineConfig machineConfig = machine.getConfig();
         final String machineCategory = machine.isDev() ? locale.devMachineCategory() : machine.getType();
 
         SpanElement root = Elements.createSpanElement();

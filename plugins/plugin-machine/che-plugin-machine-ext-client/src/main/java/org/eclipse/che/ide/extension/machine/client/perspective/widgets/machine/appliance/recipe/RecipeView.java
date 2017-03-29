@@ -32,7 +32,7 @@ public interface RecipeView extends IsWidget {
     void setScript(@NotNull String script);
 
     /**
-     * Change visibility of Recipe tab panel.
+     * Change visibility of OldRecipe tab panel.
      *
      * @param visible
      *         <code>true</code> panel is visible, <code>false</code> panel isn't visible

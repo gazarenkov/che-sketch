@@ -155,7 +155,7 @@ public class MavenServerService {
     @Path("reimport")
     @ApiOperation(value = "Re-import maven model")
     @ApiResponses({@ApiResponse(code = 200, message = "OK"),
-                   @ApiResponse(code = 500, message = "Internal Server Error")})
+                   @ApiResponse(code = 500, message = "Internal OldServer Error")})
     public Response reimportDependencies(@ApiParam(value = "The paths to projects which need to be reimported")
                                          @QueryParam("projectPath") List<String> paths) throws ServerException {
         IWorkspace workspace = eclipseWorkspaceProvider.get();

@@ -22,7 +22,7 @@ public interface MachineLogMessage {
     String getContent();
 
     /**
-     * Machine name
+     * OldMachine name
      */
     String getMachineName();
 }

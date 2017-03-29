@@ -13,7 +13,7 @@ package org.eclipse.che.plugin.machine.ssh;
 import com.google.inject.assistedinject.Assisted;
 
 import org.eclipse.che.api.core.model.workspace.config.Command;
-import org.eclipse.che.api.core.model.machine.Machine;
+import org.eclipse.che.api.core.model.machine.OldMachine;
 import org.eclipse.che.api.core.util.LineConsumer;
 import org.eclipse.che.api.machine.server.exception.MachineException;
 import org.eclipse.che.api.machine.server.spi.Instance;
@@ -46,9 +46,9 @@ public interface SshMachineFactory {
      * @param outputConsumer consumer of output from container main process
      * @throws MachineException if error occurs on creation of {@code Instance}
      */
-    SshMachineInstance createInstance(@Assisted Machine machine,
-                                      @Assisted SshClient sshClient,
-                                      @Assisted LineConsumer outputConsumer) throws MachineException;
+    SshOldMachineInstance createInstance(@Assisted OldMachine machine,
+                                         @Assisted SshClient sshClient,
+                                         @Assisted LineConsumer outputConsumer) throws MachineException;
 
     /**
      * Creates ssh machine implementation of {@link org.eclipse.che.api.machine.server.spi.InstanceProcess}.

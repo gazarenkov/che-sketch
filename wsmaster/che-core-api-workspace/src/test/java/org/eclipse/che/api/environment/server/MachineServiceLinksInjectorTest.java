@@ -11,9 +11,9 @@
 package org.eclipse.che.api.environment.server;
 
 import org.eclipse.che.api.core.rest.ServiceContext;
-import org.eclipse.che.api.machine.shared.dto.MachineConfigDto;
-import org.eclipse.che.api.machine.shared.dto.MachineRuntimeDto;
-import org.eclipse.che.api.machine.shared.dto.ServerDto;
+import org.eclipse.che.api.machine.shared.dto.MachineDto;
+import org.eclipse.che.api.machine.shared.dto.OldMachineConfigDto;
+import org.eclipse.che.api.machine.shared.dto.OldServerDto;
 import org.everrest.core.impl.uri.UriBuilderImpl;
 import org.mockito.Mock;
 import org.mockito.testng.MockitoTestNGListener;
@@ -34,16 +34,16 @@ public class MachineServiceLinksInjectorTest {
     private static final String URI_BASE = "http://localhost:8080";
 
     @Mock
-    private ServiceContext    serviceContextMock;
+    private ServiceContext      serviceContextMock;
     @Mock
-    private MachineRuntimeDto machineRuntimeInfoDtoMock;
+    private MachineDto          machineRuntimeInfoDtoMock;
     @Mock
-    private MachineConfigDto  machineConfigDtoMock;
+    private OldMachineConfigDto machineConfigDtoMock;
     @Mock
-    private ServerDto         terminalServerMock;
+    private OldServerDto        terminalServerMock;
 
     @Mock
-    private ServerDto             execAgentServerMock;
+    private OldServerDto execAgentServerMock;
 
 
     private MachineServiceLinksInjector machineLinksInjector;
@@ -65,7 +65,7 @@ public class MachineServiceLinksInjectorTest {
 //        when(execAgentServerMock.getUrl()).thenReturn(URI_BASE + "/connect");
 //        when(machineRuntimeInfoDtoMock.getServers()).thenReturn(ImmutableMap.of(TERMINAL_REFERENCE, terminalServerMock,
 //                                                                                EXEC_AGENT_REFERENCE, execAgentServerMock));
-//        final MachineDto machineDto = DtoFactory.newDto(MachineDto.class)
+//        final OldMachineDto machineDto = DtoFactory.newDto(OldMachineDto.class)
 //                                                .withId("id")
 //                                                .withWorkspaceId("wsId")
 //                                                .withConfig(machineConfigDtoMock)

@@ -15,7 +15,7 @@ import com.google.inject.Inject;
 import com.google.inject.Singleton;
 import com.google.web.bindery.event.shared.EventBus;
 
-import org.eclipse.che.api.core.model.workspace.runtime.ServerRuntime;
+import org.eclipse.che.api.core.model.workspace.runtime.Server;
 import org.eclipse.che.api.promises.client.Promise;
 import org.eclipse.che.api.promises.client.js.Promises;
 import org.eclipse.che.ide.api.app.AppContext;
@@ -65,7 +65,7 @@ public class ServerPortProvider implements WsAgentStateHandler {
 
     private Set<Macro> getProviders(MachineEntity machine) {
         Set<Macro> providers = Sets.newHashSet();
-        for (Map.Entry<String, ? extends ServerRuntime> entry : machine.getServers().entrySet()) {
+        for (Map.Entry<String, ? extends Server> entry : machine.getServers().entrySet()) {
             providers.add(new AddressMacro(entry.getKey(),
                                            entry.getValue().getUrl(),
                                            entry.getKey()));

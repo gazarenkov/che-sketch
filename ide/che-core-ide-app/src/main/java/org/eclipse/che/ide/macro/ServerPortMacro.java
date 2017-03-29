@@ -16,7 +16,7 @@ import com.google.inject.Inject;
 import com.google.inject.Singleton;
 import com.google.web.bindery.event.shared.EventBus;
 
-import org.eclipse.che.api.core.model.machine.Server;
+import org.eclipse.che.api.core.model.machine.OldServer;
 import org.eclipse.che.ide.api.app.AppContext;
 import org.eclipse.che.ide.api.machine.DevMachine;
 import org.eclipse.che.ide.api.machine.MachineServer;
@@ -35,7 +35,7 @@ import java.util.Set;
  * @author Vlad Zhukovskyi
  * @see AbstractServerMacro
  * @see DevMachine
- * @see Server#getAddress()
+ * @see OldServer#getAddress()
  * @since 4.7.0
  */
 @Beta

@@ -46,7 +46,7 @@ public class PerspectiveManagerTest {
     public void setUp() {
         Map<String, Perspective> perspectives = new HashMap<>();
 
-        perspectives.put("Machine Perspective", machinePerspective);
+        perspectives.put("OldMachine Perspective", machinePerspective);
         perspectives.put("Project Perspective", projectPerspective);
 
         manager = new PerspectiveManager(perspectives, "Project Perspective");
@@ -63,14 +63,14 @@ public class PerspectiveManagerTest {
     public void perspectiveIdShouldBeSet() {
         manager.addListener(typeListener);
 
-        manager.setPerspectiveId("Machine Perspective");
+        manager.setPerspectiveId("OldMachine Perspective");
 
         verify(projectPerspective).storeState();
 
         verify(typeListener).onPerspectiveChanged();
 
         assertThat(manager.getActivePerspective(), equalTo(machinePerspective));
-        assertThat(manager.getPerspectiveId(), equalTo("Machine Perspective"));
+        assertThat(manager.getPerspectiveId(), equalTo("OldMachine Perspective"));
     }
 
 }

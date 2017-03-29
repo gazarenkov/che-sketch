@@ -11,8 +11,8 @@
 package org.eclipse.che.ide.api.workspace;
 
 import org.eclipse.che.api.machine.shared.dto.CommandDto;
-import org.eclipse.che.api.machine.shared.dto.MachineConfigDto;
-import org.eclipse.che.api.machine.shared.dto.MachineDto;
+import org.eclipse.che.api.machine.shared.dto.OldMachineConfigDto;
+import org.eclipse.che.api.machine.shared.dto.OldMachineDto;
 import org.eclipse.che.api.machine.shared.dto.SnapshotDto;
 import org.eclipse.che.api.promises.client.Promise;
 import org.eclipse.che.api.workspace.shared.dto.EnvironmentDto;
@@ -259,10 +259,10 @@ public interface WorkspaceServiceClient {
      *         workspace ID
      * @param machineConfig
      *         the new machine configuration
-     * @return a promise that resolves to the {@link MachineDto}, or rejects with an error
-     * @see WorkspaceService#createMachine(String, MachineConfigDto)
+     * @return a promise that resolves to the {@link OldMachineDto}, or rejects with an error
+     * @see WorkspaceService#createMachine(String, OldMachineConfigDto)
      */
-    Promise<Void> createMachine(String wsId, MachineConfigDto machineConfig);
+    Promise<Void> createMachine(String wsId, OldMachineConfigDto machineConfig);
 
     /**
      * Returns workspace's snapshot.

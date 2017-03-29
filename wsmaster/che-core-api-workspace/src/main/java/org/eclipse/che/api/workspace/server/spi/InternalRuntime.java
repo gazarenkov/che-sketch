@@ -10,17 +10,17 @@
  *******************************************************************************/
 package org.eclipse.che.api.workspace.server.spi;
 
-import org.eclipse.che.api.core.model.workspace.WorkspaceRuntime;
-import org.eclipse.che.api.core.model.workspace.runtime.MachineRuntime;
+import org.eclipse.che.api.core.model.workspace.Runtime;
+import org.eclipse.che.api.core.model.workspace.runtime.Machine;
 
 import java.util.Map;
 
 /**
- * Implementation of concrete WorkspaceRuntime
+ * Implementation of concrete Runtime
  * Important to notice - no states in here, it is always RUNNING
  * @author gazarenkov
  */
-public abstract class InternalRuntime implements WorkspaceRuntime {
+public abstract class InternalRuntime implements Runtime {
 
     private final RuntimeContext context;
 
@@ -39,7 +39,7 @@ public abstract class InternalRuntime implements WorkspaceRuntime {
     }
 
     @Override
-    public abstract Map<String, ? extends MachineRuntime> getMachines();
+    public abstract Map<String, ? extends Machine> getMachines();
 
     /**
      * @return some implementation specific properties if any

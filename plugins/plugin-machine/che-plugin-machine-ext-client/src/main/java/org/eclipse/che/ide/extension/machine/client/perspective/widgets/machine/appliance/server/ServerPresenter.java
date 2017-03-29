@@ -14,7 +14,7 @@ import com.google.gwt.user.client.ui.AcceptsOneWidget;
 import com.google.gwt.user.client.ui.IsWidget;
 import com.google.inject.Inject;
 
-import org.eclipse.che.api.core.model.workspace.runtime.ServerRuntime;
+import org.eclipse.che.api.core.model.workspace.runtime.Server;
 import org.eclipse.che.ide.api.machine.MachineEntity;
 import org.eclipse.che.ide.extension.machine.client.inject.factories.EntityFactory;
 import org.eclipse.che.ide.extension.machine.client.perspective.widgets.tab.content.TabPresenter;
@@ -52,16 +52,16 @@ public class ServerPresenter implements TabPresenter {
     }
 
     private List<ServerEntity> getServers(MachineEntity machine) {
-//        MachineRuntime machineRuntime = machine.getRuntime();
-//        if (machineRuntime == null) {
+//        Machine machine = machine.getRuntime();
+//        if (machine == null) {
 //            return emptyList();
 //        }
 
-        Map<String, ? extends ServerRuntime> servers = machine.getServers();
+        Map<String, ? extends Server> servers = machine.getServers();
         List<ServerEntity> serversList = new ArrayList<>(servers.size());
-        for (Map.Entry<String, ? extends ServerRuntime> entry : servers.entrySet()) {
+        for (Map.Entry<String, ? extends Server> entry : servers.entrySet()) {
             String ref = entry.getKey();
-            ServerRuntime descriptor = entry.getValue();
+            Server descriptor = entry.getValue();
 
             ServerEntity serverEntity = entityFactory.createServer(ref, descriptor);
             serversList.add(serverEntity);

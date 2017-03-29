@@ -10,7 +10,7 @@
  *******************************************************************************/
 package org.eclipse.che.ide.extension.machine.client.machine.create;
 
-import org.eclipse.che.api.machine.shared.dto.recipe.RecipeDescriptor;
+import org.eclipse.che.api.machine.shared.dto.recipe.OldRecipeDescriptor;
 import org.eclipse.che.ide.api.mvp.View;
 
 import java.util.List;
@@ -53,7 +53,7 @@ public interface CreateMachineView extends View<CreateMachineView.ActionDelegate
     void setNoRecipeHint(boolean show);
 
     /** Sets recipes corresponded to tags. */
-    void setRecipes(List<RecipeDescriptor> recipes);
+    void setRecipes(List<OldRecipeDescriptor> recipes);
 
     /**
      * Sets whether 'Create' button is enabled.
@@ -91,12 +91,12 @@ public interface CreateMachineView extends View<CreateMachineView.ActionDelegate
          * @param recipe
          *         selected recipe
          */
-        void onRecipeSelected(RecipeDescriptor recipe);
+        void onRecipeSelected(OldRecipeDescriptor recipe);
 
         /** Called when 'Create' button has been clicked. */
         void onCreateClicked();
 
-        /** Called when 'Replace Dev Machine' button has been clicked. */
+        /** Called when 'Replace Dev OldMachine' button has been clicked. */
         void onReplaceDevMachineClicked();
 
         /** Called when 'Cancel' button has been clicked. */

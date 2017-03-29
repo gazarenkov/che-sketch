@@ -118,7 +118,7 @@ public class CheEnvironmentEngineTest {
 //    }
 //
 //    @Test(expectedExceptions = NotFoundException.class,
-//          expectedExceptionsMessageRegExp = "Machine with ID .* is not found in the environment of workspace .*")
+//          expectedExceptionsMessageRegExp = "OldMachine with ID .* is not found in the environment of workspace .*")
 //    public void shouldThrowExceptionOnGetMachineIfMachineIsNotFound() throws Exception {
 //        // given
 //        List<Instance> instances = startEnv();
@@ -149,7 +149,7 @@ public class CheEnvironmentEngineTest {
 //                    String machineName = (String)arguments[3];
 //                    boolean isDev = (boolean)arguments[4];
 //                    CheServiceImpl service = (CheServiceImpl)arguments[6];
-//                    Machine machine = createMachine(workspaceId,
+//                    OldMachine machine = createMachine(workspaceId,
 //                                                    envName,
 //                                                    service,
 //                                                    machineName,
@@ -334,7 +334,7 @@ public class CheEnvironmentEngineTest {
 //                                          any(LineConsumer.class)))
 //                .thenReturn(newMachine);
 //
-//        MachineConfigImpl config = createConfig(false);
+//        OldMachineConfigImpl config = createConfig(false);
 //        String machineName = "extraMachine";
 //        config.setName(machineName);
 //        config.setLimits(null);
@@ -382,7 +382,7 @@ public class CheEnvironmentEngineTest {
 //                    String machineName = (String)arguments[3];
 //                    boolean isDev = (boolean)arguments[4];
 //                    CheServiceImpl service = (CheServiceImpl)arguments[6];
-//                    Machine machine = createMachine(workspaceId,
+//                    OldMachine machine = createMachine(workspaceId,
 //                                                    envName,
 //                                                    service,
 //                                                    machineName,
@@ -440,7 +440,7 @@ public class CheEnvironmentEngineTest {
 //                    String machineName = (String)arguments[3];
 //                    boolean isDev = (boolean)arguments[4];
 //                    CheServiceImpl service = (CheServiceImpl)arguments[6];
-//                    Machine machine = createMachine(workspaceId,
+//                    OldMachine machine = createMachine(workspaceId,
 //                                                    envName,
 //                                                    service,
 //                                                    machineName,
@@ -499,7 +499,7 @@ public class CheEnvironmentEngineTest {
 //                                          any(LineConsumer.class)))
 //                .thenReturn(newMachine);
 //
-//        MachineConfigImpl config = createConfig(false);
+//        OldMachineConfigImpl config = createConfig(false);
 //        String machineName = "extraMachine";
 //        config.setName(machineName);
 //        config.setLimits(new MachineLimitsImpl(4096));
@@ -541,7 +541,7 @@ public class CheEnvironmentEngineTest {
 //                                          any(LineConsumer.class)))
 //                .thenReturn(newMachine);
 //
-//        MachineConfigImpl config = createConfig(false);
+//        OldMachineConfigImpl config = createConfig(false);
 //        String machineName = "extraMachine";
 //        config.setName(machineName);
 //        config.setSource(new MachineSourceImpl("docker").setLocation(API_ENDPOINT + "/recipe/12345"));
@@ -587,7 +587,7 @@ public class CheEnvironmentEngineTest {
 //                                          any(LineConsumer.class)))
 //                .thenReturn(newMachine);
 //
-//        MachineConfigImpl config = createConfig(false);
+//        OldMachineConfigImpl config = createConfig(false);
 //        String machineName = "extraMachine";
 //        config.setName(machineName);
 //        String contextUrl = "http://another-server.com/recipe/12345";
@@ -632,7 +632,7 @@ public class CheEnvironmentEngineTest {
 //                                          any(LineConsumer.class)))
 //                .thenReturn(newMachine);
 //
-//        MachineConfigImpl config = createConfig(false);
+//        OldMachineConfigImpl config = createConfig(false);
 //        List<String> agents = asList("agent1", "agent2");
 //
 //        // when
@@ -749,14 +749,14 @@ public class CheEnvironmentEngineTest {
 //                                          any(LineConsumer.class)))
 //                .thenReturn(newMachine);
 //
-//        MachineConfigImpl config = createConfig(false);
+//        OldMachineConfigImpl config = createConfig(false);
 //
 //        // when
 //        Instance actualInstance = engine.startMachine(workspaceId, config, emptyList());
 //
 //        // then
 //        assertEquals(actualInstance, newMachine);
-//        verify(instanceProvider, never()).createInstance(any(Machine.class), any(LineConsumer.class));
+//        verify(instanceProvider, never()).createInstance(any(OldMachine.class), any(LineConsumer.class));
 //        verify(machineProvider, times(3)).startService(anyString(),
 //                                                       anyString(),
 //                                                       anyString(),
@@ -770,7 +770,7 @@ public class CheEnvironmentEngineTest {
 //    @Test
 //    public void shouldBeAbleToStartNonDockerMachine() throws Exception {
 //        // given
-//        ServerConf2 serverConf2 = mock(ServerConf2.class);
+//        ServerConfig serverConf2 = mock(ServerConfig.class);
 //        when(serverConf2.getPort()).thenReturn("1111/tcp");
 //        when(serverConf2.getProtocol()).thenReturn("http");
 //        when(serverConf2.getProperties()).thenReturn(singletonMap("path", "some path"));
@@ -784,9 +784,9 @@ public class CheEnvironmentEngineTest {
 //        when(newMachine.getId()).thenReturn("newMachineId");
 //        when(newMachine.getWorkspaceId()).thenReturn(workspaceId);
 //        when(machineInstanceProviders.getProvider("anotherType")).thenReturn(instanceProvider);
-//        doReturn(newMachine).when(instanceProvider).createInstance(any(Machine.class), any(LineConsumer.class));
+//        doReturn(newMachine).when(instanceProvider).createInstance(any(OldMachine.class), any(LineConsumer.class));
 //
-//        MachineConfigImpl config = MachineConfigImpl.builder()
+//        OldMachineConfigImpl config = OldMachineConfigImpl.builder()
 //                                                    .fromConfig(createConfig(false))
 //                                                    .setType("anotherType")
 //                                                    .build();
@@ -796,31 +796,31 @@ public class CheEnvironmentEngineTest {
 //
 //        // then
 //        assertEquals(actualInstance, newMachine);
-//        ArgumentCaptor<Machine> argumentCaptor = ArgumentCaptor.forClass(Machine.class);
+//        ArgumentCaptor<OldMachine> argumentCaptor = ArgumentCaptor.forClass(OldMachine.class);
 //        verify(instanceProvider).createInstance(argumentCaptor.capture(), any(LineConsumer.class));
 //
-//        MachineConfigImpl newConfig = new MachineConfigImpl(config);
-//        newConfig.setServers(singletonList(new ServerConfImpl("ssh", "1111/tcp", "http", "some path")));
+//        OldMachineConfigImpl newConfig = new OldMachineConfigImpl(config);
+//        newConfig.setServers(singletonList(new OldServerConfImpl("ssh", "1111/tcp", "http", "some path")));
 //        assertEquals(argumentCaptor.getValue().getConfig(), newConfig);
 //    }
 //
 //    @Test(expectedExceptions = EnvironmentNotRunningException.class,
 //          expectedExceptionsMessageRegExp = "Environment '.*' is not running")
 //    public void shouldThrowExceptionOnMachineStartIfEnvironmentIsNotRunning() throws Exception {
-//        MachineConfigImpl config = createConfig(false);
+//        OldMachineConfigImpl config = createConfig(false);
 //
 //        // when
 //        engine.startMachine("wsIdOfNotRunningEnv", config, emptyList());
 //    }
 //
 //    @Test(expectedExceptions = ConflictException.class,
-//          expectedExceptionsMessageRegExp = "Machine with name '.*' already exists in environment of workspace '.*'")
+//          expectedExceptionsMessageRegExp = "OldMachine with name '.*' already exists in environment of workspace '.*'")
 //    public void machineStartShouldThrowExceptionIfMachineWithTheSameNameAlreadyExistsInEnvironment() throws Exception {
 //        // given
 //        List<Instance> instances = startEnv();
 //        Instance instance = instances.get(0);
 //
-//        MachineConfigImpl config = createConfig(false);
+//        OldMachineConfigImpl config = createConfig(false);
 //        config.setName(instance.getConfig().getName());
 //
 //        // when
@@ -833,7 +833,7 @@ public class CheEnvironmentEngineTest {
 //        List<Instance> instances = startEnv();
 //        Instance instance = instances.get(0);
 //
-//        MachineConfigImpl config = createConfig(false);
+//        OldMachineConfigImpl config = createConfig(false);
 //        when(engine.generateMachineId()).thenReturn("newMachineId");
 //
 //        // when
@@ -893,7 +893,7 @@ public class CheEnvironmentEngineTest {
 //    }
 //
 //    @Test(expectedExceptions = NotFoundException.class,
-//          expectedExceptionsMessageRegExp = "Machine with ID '.*' is not found in environment of workspace '.*'")
+//          expectedExceptionsMessageRegExp = "OldMachine with ID '.*' is not found in environment of workspace '.*'")
 //    public void machineStopOfNonExistingMachineShouldThrowsException() throws Exception {
 //        // given
 //        List<Instance> instances = startEnv();
@@ -952,7 +952,7 @@ public class CheEnvironmentEngineTest {
 //    }
 //
 //    @Test(expectedExceptions = NotFoundException.class,
-//          expectedExceptionsMessageRegExp = "Machine with id '.*' is not found in environment of workspace '.*'")
+//          expectedExceptionsMessageRegExp = "OldMachine with id '.*' is not found in environment of workspace '.*'")
 //    public void shouldThrowExceptionOnSaveSnapshotIfMachineIsNotFound() throws Exception {
 //        // given
 //        List<Instance> instances = startEnv();
@@ -1058,7 +1058,7 @@ public class CheEnvironmentEngineTest {
 //                    String machineName = (String)arguments[3];
 //                    boolean isDev = (boolean)arguments[4];
 //                    CheServiceImpl service = (CheServiceImpl)arguments[6];
-//                    Machine machine = createMachine(workspaceId,
+//                    OldMachine machine = createMachine(workspaceId,
 //                                                    envName,
 //                                                    service,
 //                                                    machineName,
@@ -1077,8 +1077,8 @@ public class CheEnvironmentEngineTest {
 //                            messageConsumer);
 //    }
 //
-//    private static MachineConfigImpl createConfig(boolean isDev) {
-//        return MachineConfigImpl.builder()
+//    private static OldMachineConfigImpl createConfig(boolean isDev) {
+//        return OldMachineConfigImpl.builder()
 //                                .setDev(isDev)
 //                                .setType("docker")
 //                                .setLimits(new MachineLimitsImpl(1024))
@@ -1090,25 +1090,25 @@ public class CheEnvironmentEngineTest {
 //    private EnvironmentImpl createEnv() {
 //        // singletonMap, asList are wrapped into modifiable collections to ease env modifying by tests
 //        EnvironmentImpl env = new EnvironmentImpl();
-//        Map<String, MachineConfig2Impl> machines = new HashMap<>();
-//        Map<String, ServerConf2Impl> servers = new HashMap<>();
+//        Map<String, MachineConfigImpl> machines = new HashMap<>();
+//        Map<String, ServerConfigImpl> servers = new HashMap<>();
 //
-//        servers.put("ref1", new ServerConf2Impl("8080/tcp",
+//        servers.put("ref1", new ServerConfigImpl("8080/tcp",
 //                                                "proto1",
 //                                                singletonMap("prop1", "propValue")));
-//        servers.put("ref2", new ServerConf2Impl("8080/udp", "proto1", null));
-//        servers.put("ref3", new ServerConf2Impl("9090", "proto1", null));
-//        machines.put("dev-machine", new MachineConfig2Impl(asList("org.eclipse.che.ws-agent", "someAgent"),
+//        servers.put("ref2", new ServerConfigImpl("8080/udp", "proto1", null));
+//        servers.put("ref3", new ServerConfigImpl("9090", "proto1", null));
+//        machines.put("dev-machine", new MachineConfigImpl(asList("org.eclipse.che.ws-agent", "someAgent"),
 //                                                            servers,
 //                                                            singletonMap("memoryLimitBytes", "10000")));
-//        machines.put("machine2", new MachineConfig2Impl(asList("someAgent2", "someAgent3"),
+//        machines.put("machine2", new MachineConfigImpl(asList("someAgent2", "someAgent3"),
 //                                                         null,
 //                                                         singletonMap("memoryLimitBytes", "10000")));
 //        String environmentRecipeContent =
 //                "services:\n  " +
 //                "dev-machine:\n    image: codenvy/ubuntu_jdk8\n    mem_limit: 4294967296\n  " +
 //                "machine2:\n    image: codenvy/ubuntu_jdk8\n    mem_limit: 100000";
-//        env.setRecipe(new EnvironmentRecipeImpl("compose",
+//        env.setRecipe(new RecipeImpl("compose",
 //                                                "application/x-yaml",
 //                                                environmentRecipeContent,
 //                                                null));
@@ -1139,7 +1139,7 @@ public class CheEnvironmentEngineTest {
 //        return cheServicesEnvironment;
 //    }
 //
-//    private static MachineImpl createMachine(String workspaceId,
+//    private static OldMachineImpl createMachine(String workspaceId,
 //                                             String envName,
 //                                             CheServiceImpl service,
 //                                             String serviceName,
@@ -1159,8 +1159,8 @@ public class CheEnvironmentEngineTest {
 //        }
 //        MachineLimitsImpl limits = new MachineLimitsImpl((int)Size.parseSizeToMegabytes(service.getMemLimit() + "b"));
 //
-//        return MachineImpl.builder()
-//                          .setConfig(MachineConfigImpl.builder()
+//        return OldMachineImpl.builder()
+//                          .setConfig(OldMachineConfigImpl.builder()
 //                                                      .setDev(isDev)
 //                                                      .setName(serviceName)
 //                                                      .setSource(machineSource)
@@ -1172,7 +1172,7 @@ public class CheEnvironmentEngineTest {
 //                          .setStatus(MachineStatus.RUNNING)
 //                          .setWorkspaceId(workspaceId)
 //                          .setEnvName(envName)
-//                          .setRuntime(new MachineRuntimeImpl(emptyMap(),
+//                          .setRuntime(new MachineImpl(emptyMap(),
 //                                                             emptyMap(),
 //                                                             emptyMap()))
 //                          .build();

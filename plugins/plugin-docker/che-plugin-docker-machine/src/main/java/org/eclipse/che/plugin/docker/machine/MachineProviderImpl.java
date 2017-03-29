@@ -17,7 +17,7 @@ import com.google.common.util.concurrent.ThreadFactoryBuilder;
 import org.eclipse.che.api.core.NotFoundException;
 import org.eclipse.che.api.core.ServerException;
 import org.eclipse.che.api.core.model.machine.MachineStatus;
-import org.eclipse.che.api.core.model.machine.ServerConf;
+import org.eclipse.che.api.core.model.machine.OldServerConf;
 import org.eclipse.che.api.core.util.FileCleaner;
 import org.eclipse.che.api.core.util.LineConsumer;
 import org.eclipse.che.api.core.util.SystemInfo;
@@ -25,8 +25,8 @@ import org.eclipse.che.api.environment.server.MachineInstanceProvider;
 import org.eclipse.che.api.environment.server.model.CheServiceImpl;
 import org.eclipse.che.api.machine.server.exception.MachineException;
 import org.eclipse.che.api.machine.server.exception.SourceNotFoundException;
-import org.eclipse.che.api.machine.server.model.impl.MachineConfigImpl;
-import org.eclipse.che.api.machine.server.model.impl.MachineImpl;
+import org.eclipse.che.api.machine.server.model.impl.OldMachineConfigImpl;
+import org.eclipse.che.api.machine.server.model.impl.OldMachineImpl;
 import org.eclipse.che.api.machine.server.model.impl.MachineLimitsImpl;
 import org.eclipse.che.api.machine.server.model.impl.MachineSourceImpl;
 import org.eclipse.che.api.machine.server.spi.Instance;
@@ -135,8 +135,8 @@ public class MachineProviderImpl implements MachineInstanceProvider {
                                UserSpecificDockerRegistryCredentialsProvider dockerCredentials,
                                DockerMachineFactory dockerMachineFactory,
                                DockerInstanceStopDetector dockerInstanceStopDetector,
-                               @Named("machine.docker.dev_machine.machine_servers") Set<ServerConf> devMachineServers,
-                               @Named("machine.docker.machine_servers") Set<ServerConf> allMachinesServers,
+                               @Named("machine.docker.dev_machine.machine_servers") Set<OldServerConf> devMachineServers,
+                               @Named("machine.docker.machine_servers") Set<OldServerConf> allMachinesServers,
                                @Named("machine.docker.dev_machine.machine_volumes") Set<String> devMachineSystemVolumes,
                                @Named("machine.docker.machine_volumes") Set<String> allMachinesSystemVolumes,
                                @Named("che.docker.always_pull_image") boolean doForcePullOnBuild,
@@ -207,10 +207,10 @@ public class MachineProviderImpl implements MachineInstanceProvider {
 
         this.devMachinePortsToExpose = new ArrayList<>(allMachinesServers.size() + devMachineServers.size());
         this.commonMachinePortsToExpose = new ArrayList<>(allMachinesServers.size());
-        for (ServerConf serverConf : devMachineServers) {
+        for (OldServerConf serverConf : devMachineServers) {
             devMachinePortsToExpose.add(serverConf.getPort());
         }
-        for (ServerConf serverConf : allMachinesServers) {
+        for (OldServerConf serverConf : allMachinesServers) {
             commonMachinePortsToExpose.add(serverConf.getPort());
             devMachinePortsToExpose.add(serverConf.getPort());
         }
@@ -297,27 +297,27 @@ public class MachineProviderImpl implements MachineInstanceProvider {
                                                       workspaceId);
 
             final String userId = EnvironmentContext.getCurrent().getSubject().getUserId();
-            MachineImpl machine = new MachineImpl(MachineConfigImpl.builder()
-                                                                   .setDev(isDev)
-                                                                   .setName(machineName)
-                                                                   .setType("docker")
-                                                                   // casting considered as safe because more than int of megabytes is a lot!
-                                                                   .setLimits(new MachineLimitsImpl((int)Size
+            OldMachineImpl machine = new OldMachineImpl(OldMachineConfigImpl.builder()
+                                                                            .setDev(isDev)
+                                                                            .setName(machineName)
+                                                                            .setType("docker")
+                                                                            // casting considered as safe because more than int of megabytes is a lot!
+                                                                            .setLimits(new MachineLimitsImpl((int)Size
                                                                            .parseSizeToMegabytes(
                                                                                    service.getMemLimit() + "b")))
-                                                                   .setSource(new MachineSourceImpl(service.getBuild() != null ?
+                                                                            .setSource(new MachineSourceImpl(service.getBuild() != null ?
                                                                                                     "context" :
                                                                                                     "image")
                                                                                       .setLocation(service.getBuild() != null ?
                                                                                                    service.getBuild().getContext() :
                                                                                                    service.getImage()))
-                                                                   .build(),
-                                                  service.getId(),
-                                                  workspaceId,
-                                                  envName,
-                                                  userId,
-                                                  MachineStatus.RUNNING,
-                                                  null);
+                                                                            .build(),
+                                                        service.getId(),
+                                                        workspaceId,
+                                                        envName,
+                                                        userId,
+                                                        MachineStatus.RUNNING,
+                                                        null);
 
             return dockerMachineFactory.createInstance(machine,
                                                        container,
@@ -443,7 +443,7 @@ public class MachineProviderImpl implements MachineInstanceProvider {
                 new MachineSourceImpl("image").setLocation(service.getImage()));
         if (dockerMachineSource.getRepository() == null) {
             throw new MachineException(
-                    format("Machine creation failed. Machine source is invalid. No repository is defined. Found '%s'.",
+                    format("OldMachine creation failed. OldMachine source is invalid. No repository is defined. Found '%s'.",
                            dockerMachineSource));
         }
 

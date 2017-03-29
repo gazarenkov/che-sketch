@@ -13,10 +13,10 @@ package org.eclipse.che.ide.extension.machine.client.perspective.widgets.recipe;
 import com.google.gwtmockito.GwtMockitoTestRunner;
 import com.google.web.bindery.event.shared.EventBus;
 
+import org.eclipse.che.api.machine.shared.dto.recipe.NewOldRecipe;
+import org.eclipse.che.api.machine.shared.dto.recipe.OldRecipeDescriptor;
 import org.eclipse.che.ide.api.machine.RecipeServiceClient;
-import org.eclipse.che.api.machine.shared.dto.recipe.NewRecipe;
-import org.eclipse.che.api.machine.shared.dto.recipe.RecipeDescriptor;
-import org.eclipse.che.api.machine.shared.dto.recipe.RecipeUpdate;
+import org.eclipse.che.api.machine.shared.dto.recipe.OldRecipeUpdate;
 import org.eclipse.che.api.promises.client.Operation;
 import org.eclipse.che.api.promises.client.Promise;
 import org.eclipse.che.api.promises.client.PromiseError;
@@ -82,39 +82,39 @@ public class RecipePartPresenterTest {
 
     //additional mocks
     @Mock
-    private RecipeDescriptor  recipeDescriptor1;
+    private OldRecipeDescriptor recipeDescriptor1;
     @Mock
-    private RecipeDescriptor  recipeDescriptor2;
+    private OldRecipeDescriptor recipeDescriptor2;
     @Mock
-    private RecipeEditorPanel recipeEditorPanel;
+    private RecipeEditorPanel   recipeEditorPanel;
     @Mock
-    private OMSVGSVGElement   omsvgsvgElement;
+    private OMSVGSVGElement     omsvgsvgElement;
     @Mock
-    private SVGResource       svgResource;
+    private SVGResource         svgResource;
     @Mock
     RecipeEditorPanel stubPanel;
     @Mock
     private MachineResources.Css css;
 
     @Mock
-    private Promise<List<RecipeDescriptor>> recipePromises;
+    private Promise<List<OldRecipeDescriptor>> recipePromises;
     @Mock
-    private Promise<RecipeDescriptor>       recipeDescriptorPromise;
+    private Promise<OldRecipeDescriptor>       recipeDescriptorPromise;
     @Mock
-    private Promise<RecipeDescriptor>       savedRecipeDescriptorPromise;
+    private Promise<OldRecipeDescriptor>       savedRecipeDescriptorPromise;
     @Mock
-    private Promise<Void>                   deletePromise;
+    private Promise<Void>                      deletePromise;
 
     @Captor
-    private ArgumentCaptor<Operation<List<RecipeDescriptor>>> operationListDescriptorCaptor;
+    private ArgumentCaptor<Operation<List<OldRecipeDescriptor>>> operationListDescriptorCaptor;
     @Captor
-    private ArgumentCaptor<Operation<RecipeDescriptor>>       operationDescriptorCaptor;
+    private ArgumentCaptor<Operation<OldRecipeDescriptor>>       operationDescriptorCaptor;
     @Captor
-    private ArgumentCaptor<Operation<RecipeDescriptor>>       savedDescriptorCaptor;
+    private ArgumentCaptor<Operation<OldRecipeDescriptor>>       savedDescriptorCaptor;
     @Captor
-    private ArgumentCaptor<Operation<PromiseError>>           operationErrorArgumentCaptor;
+    private ArgumentCaptor<Operation<PromiseError>>              operationErrorArgumentCaptor;
     @Captor
-    private ArgumentCaptor<Operation<Void>>                   deleteCaptor;
+    private ArgumentCaptor<Operation<Void>>                      deleteCaptor;
 
     RecipePartPresenter recipePartPresenter;
 
@@ -172,7 +172,7 @@ public class RecipePartPresenterTest {
         verify(service).getAllRecipes();
 
         verify(recipePromises).then(operationListDescriptorCaptor.capture());
-        operationListDescriptorCaptor.getValue().apply(Collections.<RecipeDescriptor>emptyList());
+        operationListDescriptorCaptor.getValue().apply(Collections.<OldRecipeDescriptor>emptyList());
 
         verify(recipePartView).clear();
         verify(recipesContainerPresenter).getEditorStubPanel();
@@ -183,8 +183,8 @@ public class RecipePartPresenterTest {
 
     @Test
     public void firstRecipeShouldBeCreated() throws Exception {
-        NewRecipe newRecipe = mock(NewRecipe.class);
-        when(dtoFactory.createDto(NewRecipe.class)).thenReturn(newRecipe);
+        NewOldRecipe newRecipe = mock(NewOldRecipe.class);
+        when(dtoFactory.createDto(NewOldRecipe.class)).thenReturn(newRecipe);
         when(newRecipe.withType(anyString())).thenReturn(newRecipe);
         when(newRecipe.withScript(anyString())).thenReturn(newRecipe);
         when(newRecipe.withName(anyString())).thenReturn(newRecipe);
@@ -215,9 +215,9 @@ public class RecipePartPresenterTest {
 
     @Test
     public void secondRecipeShouldBeCreated() throws Exception {
-        NewRecipe newRecipe = mock(NewRecipe.class);
+        NewOldRecipe newRecipe = mock(NewOldRecipe.class);
 
-        when(dtoFactory.createDto(NewRecipe.class)).thenReturn(newRecipe);
+        when(dtoFactory.createDto(NewOldRecipe.class)).thenReturn(newRecipe);
         when(newRecipe.withType(anyString())).thenReturn(newRecipe);
         when(newRecipe.withScript(anyString())).thenReturn(newRecipe);
         when(newRecipe.withName(anyString())).thenReturn(newRecipe);
@@ -258,8 +258,8 @@ public class RecipePartPresenterTest {
 
     @Test
     public void recipeShouldBeDeleted() throws Exception {
-        NewRecipe newRecipe = mock(NewRecipe.class);
-        when(dtoFactory.createDto(NewRecipe.class)).thenReturn(newRecipe);
+        NewOldRecipe newRecipe = mock(NewOldRecipe.class);
+        when(dtoFactory.createDto(NewOldRecipe.class)).thenReturn(newRecipe);
         when(newRecipe.withType(anyString())).thenReturn(newRecipe);
         when(newRecipe.withScript(anyString())).thenReturn(newRecipe);
         when(newRecipe.withName(anyString())).thenReturn(newRecipe);
@@ -282,10 +282,10 @@ public class RecipePartPresenterTest {
 
     @Test
     public void recipeShouldBeSaved() throws Exception {
-        NewRecipe newRecipe = mock(NewRecipe.class);
+        NewOldRecipe newRecipe = mock(NewOldRecipe.class);
         List<String> tags = Collections.singletonList("tag");
 
-        when(dtoFactory.createDto(NewRecipe.class)).thenReturn(newRecipe);
+        when(dtoFactory.createDto(NewOldRecipe.class)).thenReturn(newRecipe);
         when(newRecipe.withType(anyString())).thenReturn(newRecipe);
         when(newRecipe.withScript(anyString())).thenReturn(newRecipe);
         when(newRecipe.withName(anyString())).thenReturn(newRecipe);
@@ -293,8 +293,8 @@ public class RecipePartPresenterTest {
         when(service.createRecipe(newRecipe)).thenReturn(recipeDescriptorPromise);
         when(recipesContainerPresenter.getEditorPanel(Matchers.<RecipeWidget>any())).thenReturn(recipeEditorPanel);
 
-        RecipeUpdate recipeUpdate = mock(RecipeUpdate.class);
-        when(dtoFactory.createDto(RecipeUpdate.class)).thenReturn(recipeUpdate);
+        OldRecipeUpdate recipeUpdate = mock(OldRecipeUpdate.class);
+        when(dtoFactory.createDto(OldRecipeUpdate.class)).thenReturn(recipeUpdate);
         when(recipeUpdate.withType(anyString())).thenReturn(recipeUpdate);
         when(recipeUpdate.withId(anyString())).thenReturn(recipeUpdate);
         when(recipeUpdate.withScript(anyString())).thenReturn(recipeUpdate);
@@ -322,7 +322,7 @@ public class RecipePartPresenterTest {
         savedDescriptorCaptor.getValue().apply(recipeDescriptor1);
         verify(recipeDescriptor1).setScript("script");
         verify(recipeDescriptor1).setTags(recipeDescriptor1.getTags());
-        verify(notificationManager).notify(eq("Recipe \"name\" was saved."));
+        verify(notificationManager).notify(eq("OldRecipe \"name\" was saved."));
     }
 
     @Test
@@ -352,8 +352,8 @@ public class RecipePartPresenterTest {
 
     @Test
     public void notificationShouldBeShowedWhenCreationIsFailed() throws Exception {
-        NewRecipe newRecipe = mock(NewRecipe.class);
-        when(dtoFactory.createDto(NewRecipe.class)).thenReturn(newRecipe);
+        NewOldRecipe newRecipe = mock(NewOldRecipe.class);
+        when(dtoFactory.createDto(NewOldRecipe.class)).thenReturn(newRecipe);
         when(newRecipe.withType(anyString())).thenReturn(newRecipe);
         when(newRecipe.withScript(anyString())).thenReturn(newRecipe);
         when(newRecipe.withName(anyString())).thenReturn(newRecipe);

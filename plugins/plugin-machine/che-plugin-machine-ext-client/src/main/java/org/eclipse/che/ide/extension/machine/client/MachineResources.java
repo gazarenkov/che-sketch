@@ -17,7 +17,7 @@ import com.google.gwt.resources.client.TextResource;
 import org.vectomatic.dom.svg.ui.SVGResource;
 
 /**
- * The resource interface for the Machine extension.
+ * The resource interface for the OldMachine extension.
  *
  * @author Artem Zatsarynnyi
  * @author Dmitry Shnurenko
@@ -93,17 +93,17 @@ public interface MachineResources extends ClientBundle {
     @Source("recipe-template.txt")
     TextResource recipeTemplate();
 
-    /** Returns the CSS resource for the Machine extension. */
+    /** Returns the CSS resource for the OldMachine extension. */
     @Source({"machine.css", "org/eclipse/che/ide/api/ui/style.css"})
     Css getCss();
 
-    /** The CssResource interface for the Machine extension. */
+    /** The CssResource interface for the OldMachine extension. */
     interface Css extends CssResource {
 
-        /** Returns the CSS class name for 'Machine' console panel. */
+        /** Returns the CSS class name for 'OldMachine' console panel. */
         String machineConsole();
 
-        /** Returns the CSS class name for 'Machine' console toolbar. */
+        /** Returns the CSS class name for 'OldMachine' console toolbar. */
         String consoleToolbar();
 
         /** Returns the CSS class name for tab-panel in 'Outputs' console. */

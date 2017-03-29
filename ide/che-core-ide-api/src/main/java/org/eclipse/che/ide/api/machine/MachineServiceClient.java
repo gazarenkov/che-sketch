@@ -10,14 +10,14 @@
  *******************************************************************************/
 package org.eclipse.che.ide.api.machine;
 
-import org.eclipse.che.api.machine.shared.dto.MachineDto;
+import org.eclipse.che.api.machine.shared.dto.OldMachineDto;
 import org.eclipse.che.api.promises.client.Promise;
 
 import javax.validation.constraints.NotNull;
 import java.util.List;
 
 /**
- * Client for Machine API.
+ * Client for OldMachine API.
  *
  * @author Artem Zatsarynnyi
  * @author Dmitry Shnurenko
@@ -29,9 +29,9 @@ public interface MachineServiceClient {
      *
      * @param workspaceId
      *         workspace id
-     * @return a promise that will provide a list of {@link MachineDto}s for the given workspace ID, or rejects with an error
+     * @return a promise that will provide a list of {@link OldMachineDto}s for the given workspace ID, or rejects with an error
      */
-    Promise<List<MachineDto>> getMachines(String workspaceId);
+    Promise<List<OldMachineDto>> getMachines(String workspaceId);
 
     /**
      * Destroy machine with the specified ID.

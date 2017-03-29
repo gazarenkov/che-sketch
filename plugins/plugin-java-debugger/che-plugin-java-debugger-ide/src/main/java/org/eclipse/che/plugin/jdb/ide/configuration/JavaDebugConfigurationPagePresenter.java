@@ -14,7 +14,7 @@ import com.google.gwt.user.client.ui.AcceptsOneWidget;
 import com.google.inject.Inject;
 import com.google.inject.Singleton;
 
-import org.eclipse.che.api.core.model.workspace.runtime.ServerRuntime;
+import org.eclipse.che.api.core.model.workspace.runtime.Server;
 import org.eclipse.che.ide.api.app.AppContext;
 import org.eclipse.che.ide.api.debug.DebugConfiguration;
 import org.eclipse.che.ide.api.debug.DebugConfigurationPage;
@@ -86,8 +86,8 @@ public class JavaDebugConfigurationPagePresenter implements JavaDebugConfigurati
             return ports;
         }
 
-        Map<String, ? extends ServerRuntime> servers = machine.getServers();
-        for (Map.Entry<String, ? extends ServerRuntime> entry : servers.entrySet()) {
+        Map<String, ? extends Server> servers = machine.getServers();
+        for (Map.Entry<String, ? extends Server> entry : servers.entrySet()) {
             UrlBuilder url = new UrlBuilder(entry.getValue().getUrl());
             String port = url.getPort();
             String description = port + " (" + entry.getKey() + ")";

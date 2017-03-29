@@ -15,6 +15,8 @@ import com.google.inject.assistedinject.FactoryModuleBuilder;
 import com.google.inject.multibindings.Multibinder;
 import com.google.inject.name.Names;
 
+import org.eclipse.che.api.core.model.machine.OldServerConf;
+
 /**
  * Provides bindings needed for ssh machine implementation usage.
  *
@@ -31,7 +33,7 @@ public class SshMachineModule extends AbstractModule {
 
         install(new FactoryModuleBuilder()
                         .implement(org.eclipse.che.api.machine.server.spi.Instance.class,
-                                   org.eclipse.che.plugin.machine.ssh.SshMachineInstance.class)
+                                   SshOldMachineInstance.class)
                         .implement(org.eclipse.che.api.machine.server.spi.InstanceProcess.class,
                                    org.eclipse.che.plugin.machine.ssh.SshMachineProcess.class)
                         .implement(org.eclipse.che.plugin.machine.ssh.SshClient.class,
@@ -43,9 +45,9 @@ public class SshMachineModule extends AbstractModule {
 //        Multibinder.newSetBinder(binder(), org.eclipse.che.api.agent.server.launcher.AgentLauncher.class)
 //                   .addBinding().to(org.eclipse.che.plugin.machine.ssh.SshMachineImplTerminalLauncher.class);
 
-        Multibinder<org.eclipse.che.api.core.model.machine.ServerConf> machineServers =
+        Multibinder<OldServerConf> machineServers =
                 Multibinder.newSetBinder(binder(),
-                                         org.eclipse.che.api.core.model.machine.ServerConf.class,
+                                         OldServerConf.class,
                                          Names.named("machine.ssh.machine_servers"));
     }
 }

@@ -39,10 +39,10 @@ import org.eclipse.che.api.user.server.UserManager;
 import org.eclipse.che.api.user.server.model.impl.UserImpl;
 import org.eclipse.che.api.workspace.server.WorkspaceManager;
 import org.eclipse.che.api.workspace.server.model.impl.EnvironmentImpl;
-import org.eclipse.che.api.workspace.server.model.impl.EnvironmentRecipeImpl;
-import org.eclipse.che.api.workspace.server.model.impl.MachineConfig2Impl;
+import org.eclipse.che.api.workspace.server.model.impl.RecipeImpl;
+import org.eclipse.che.api.workspace.server.model.impl.MachineConfigImpl;
 import org.eclipse.che.api.workspace.server.model.impl.ProjectConfigImpl;
-import org.eclipse.che.api.workspace.server.model.impl.ServerConf2Impl;
+import org.eclipse.che.api.workspace.server.model.impl.ServerConfigImpl;
 import org.eclipse.che.api.workspace.server.model.impl.SourceStorageImpl;
 import org.eclipse.che.api.workspace.server.model.impl.WorkspaceConfigImpl;
 import org.eclipse.che.api.workspace.server.model.impl.WorkspaceImpl;
@@ -772,18 +772,18 @@ public class FactoryServiceTest {
     }
 
     private static EnvironmentDto createEnvDto() {
-        final EnvironmentRecipeImpl environmentRecipe = new EnvironmentRecipeImpl();
+        final RecipeImpl environmentRecipe = new RecipeImpl();
         environmentRecipe.setType("type");
         environmentRecipe.setContent("content");
         environmentRecipe.setContentType("compose");
         environmentRecipe.setLocation("location");
         final EnvironmentImpl env = new EnvironmentImpl();
-        final MachineConfig2Impl extendedMachine = new MachineConfig2Impl();
+        final MachineConfigImpl extendedMachine = new MachineConfigImpl();
         extendedMachine.setAgents(singletonList("agent"));
         extendedMachine.setAttributes(singletonMap("att1", "value"));
-        extendedMachine.setServers(singletonMap("agent", new ServerConf2Impl("5555",
-                                                                             "https",
-                                                                             singletonMap("prop1", "value1"))));
+        extendedMachine.setServers(singletonMap("agent", new ServerConfigImpl("5555",
+                                                                              "https",
+                                                                              singletonMap("prop1", "value1"))));
         env.setRecipe(environmentRecipe);
         env.setMachines(singletonMap("machine1", extendedMachine));
         return org.eclipse.che.api.workspace.server.DtoConverter.asDto(env);

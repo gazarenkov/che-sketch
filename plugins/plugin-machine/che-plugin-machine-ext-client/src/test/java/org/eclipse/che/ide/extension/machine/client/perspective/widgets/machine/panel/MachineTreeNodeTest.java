@@ -10,8 +10,8 @@
  *******************************************************************************/
 package org.eclipse.che.ide.extension.machine.client.perspective.widgets.machine.panel;
 
-import org.eclipse.che.api.machine.shared.dto.MachineConfigDto;
-import org.eclipse.che.api.machine.shared.dto.MachineDto;
+import org.eclipse.che.api.machine.shared.dto.OldMachineConfigDto;
+import org.eclipse.che.api.machine.shared.dto.OldMachineDto;
 import org.eclipse.che.ide.ui.tree.TreeNodeElement;
 import org.junit.Before;
 import org.junit.Test;
@@ -41,9 +41,9 @@ public class MachineTreeNodeTest {
     @Mock
     private MachineTreeNode                  parent;
     @Mock
-    private MachineDto                       data;
+    private OldMachineDto                    data;
     @Mock
-    private MachineConfigDto                 machineConfig;
+    private OldMachineConfigDto              machineConfig;
     @Mock
     private Collection<MachineTreeNode>      children;
     @Mock

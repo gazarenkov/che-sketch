@@ -10,7 +10,7 @@
  *******************************************************************************/
 package org.eclipse.che.ide.extension.machine.client.targets;
 
-import org.eclipse.che.api.machine.shared.dto.recipe.RecipeDescriptor;
+import org.eclipse.che.api.machine.shared.dto.recipe.OldRecipeDescriptor;
 
 import javax.validation.constraints.NotNull;
 
@@ -35,10 +35,10 @@ public interface Target {
     String getCategory();
 
     /** Sets the recipe of the target. */
-    void setRecipe(RecipeDescriptor recipe);
+    void setRecipe(OldRecipeDescriptor recipe);
 
     /** Returns the recipe of the target. */
-    RecipeDescriptor getRecipe();
+    OldRecipeDescriptor getRecipe();
 
     /** Returns the connecting status. */
     boolean isConnected();

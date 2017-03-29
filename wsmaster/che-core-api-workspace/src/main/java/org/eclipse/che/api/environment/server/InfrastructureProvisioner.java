@@ -11,7 +11,7 @@
 package org.eclipse.che.api.environment.server;
 
 import org.eclipse.che.api.core.model.workspace.config.Environment;
-import org.eclipse.che.api.core.model.workspace.config.MachineConfig2;
+import org.eclipse.che.api.core.model.workspace.config.MachineConfig;
 import org.eclipse.che.api.environment.server.exception.EnvironmentException;
 import org.eclipse.che.api.environment.server.model.CheServiceImpl;
 import org.eclipse.che.api.environment.server.model.CheServicesEnvironmentImpl;
@@ -44,5 +44,5 @@ public interface InfrastructureProvisioner {
      * @throws EnvironmentException
      *         if any error occurs
      */
-    void provision(MachineConfig2 machineConfig, CheServiceImpl internalMachine) throws EnvironmentException;
+    void provision(MachineConfig machineConfig, CheServiceImpl internalMachine) throws EnvironmentException;
 }

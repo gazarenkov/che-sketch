@@ -3537,13 +3537,13 @@ public class ModifierCorrectionsQuickFixTest extends QuickFixTest {
 		buf.append("\n");
 		buf.append("import java.io.IOException;\n");
 		buf.append("\n");
-		buf.append("public class Machine extends OtherMachine {\n");
+		buf.append("public class OldMachine extends OtherMachine {\n");
 		buf.append("    @Override\n");
 		buf.append("    public boolean isAlive(OtherMachine m) throws IOException {\n");
 		buf.append("        return true;\n");
 		buf.append("    }\n");
 		buf.append("}\n");
-		ICompilationUnit cu= pack1.createCompilationUnit("Machine.java", buf.toString(), false, null);
+		ICompilationUnit cu= pack1.createCompilationUnit("OldMachine.java", buf.toString(), false, null);
 
 		CompilationUnit astRoot= getASTRoot(cu);
 		ArrayList proposals= collectCorrections(cu, astRoot);
@@ -3557,7 +3557,7 @@ public class ModifierCorrectionsQuickFixTest extends QuickFixTest {
 		buf.append("\n");
 		buf.append("import java.io.IOException;\n");
 		buf.append("\n");
-		buf.append("public class Machine extends OtherMachine {\n");
+		buf.append("public class OldMachine extends OtherMachine {\n");
 		buf.append("    public boolean isAlive(OtherMachine m) throws IOException {\n");
 		buf.append("        return true;\n");
 		buf.append("    }\n");

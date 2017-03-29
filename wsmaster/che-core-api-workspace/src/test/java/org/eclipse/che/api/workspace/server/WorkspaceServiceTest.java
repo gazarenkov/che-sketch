@@ -695,8 +695,8 @@ public class WorkspaceServiceTest {
 //                                               .get(workspace.getConfig().getDefaultEnv());
 //        assertNotNull(environment);
 //
-//        final WorkspaceRuntimeImpl runtime = new WorkspaceRuntimeImpl(workspace.getConfig().getDefaultEnv());
-//        MachineConfigImpl devMachineConfig = MachineConfigImpl.builder()
+//        final RuntimeImpl runtime = new RuntimeImpl(workspace.getConfig().getDefaultEnv());
+//        OldMachineConfigImpl devMachineConfig = OldMachineConfigImpl.builder()
 //                                                              .setDev(true)
 //                                                              .setEnvVariables(emptyMap())
 //                                                              .setServers(emptyList())
@@ -708,16 +708,16 @@ public class WorkspaceServiceTest {
 //                                                                                  .next())
 //                                                              .setType("type")
 //                                                              .build();
-//        runtime.setDevMachine(new MachineImpl(devMachineConfig,
+//        runtime.setDevMachine(new OldMachineImpl(devMachineConfig,
 //                                              "machine123",
 //                                              workspace.getId(),
 //                                              workspace.getConfig().getDefaultEnv(),
 //                                              USER_ID,
 //                                              MachineStatus.RUNNING,
-//                                              new MachineRuntimeImpl(emptyMap(),
+//                                              new MachineImpl(emptyMap(),
 //                                                                     emptyMap(),
 //                                                                     singletonMap("8080/https",
-//                                                                                      new ServerImpl(
+//                                                                                      new OldServerImpl(
 //                                                                                              "wsagent",
 //                                                                                              "https",
 //                                                                                              "address",
@@ -806,8 +806,8 @@ public class WorkspaceServiceTest {
 //        workspace.setStatus(RUNNING);
 //
 //        WsAgentHealthStateDto wsAgentState = newDto(WsAgentHealthStateDto.class);
-//        WorkspaceRuntimeImpl runtime = mock(WorkspaceRuntimeImpl.class);
-//        MachineImpl machine = mock(MachineImpl.class);
+//        RuntimeImpl runtime = mock(RuntimeImpl.class);
+//        OldMachineImpl machine = mock(OldMachineImpl.class);
 //        when(runtime.getDevMachine()).thenReturn(machine);
 //        when(wsAgentHealthChecker.check(machine)).thenReturn(wsAgentState);
 //
@@ -917,11 +917,11 @@ public class WorkspaceServiceTest {
 //    }
 //
 //    private static EnvironmentDto createEnvDto() {
-//        MachineConfig2Impl devMachine = new MachineConfig2Impl(singletonList("org.eclipse.che.ws-agent"),
+//        MachineConfigImpl devMachine = new MachineConfigImpl(singletonList("org.eclipse.che.ws-agent"),
 //                                                                 null,
 //                                                                 singletonMap("memoryLimitBytes", "10000"));
 //
-//        return DtoConverter.asDto(new EnvironmentImpl(new EnvironmentRecipeImpl("type", "content-type", "content", null),
+//        return DtoConverter.asDto(new EnvironmentImpl(new RecipeImpl("type", "content-type", "content", null),
 //                                                      singletonMap("dev-machine", devMachine)));
 //    }
 //

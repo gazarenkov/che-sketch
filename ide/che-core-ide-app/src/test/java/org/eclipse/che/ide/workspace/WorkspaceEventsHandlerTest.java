@@ -16,17 +16,17 @@ import com.google.web.bindery.event.shared.EventBus;
 
 import org.eclipse.che.api.core.rest.shared.dto.Link;
 import org.eclipse.che.api.core.rest.shared.dto.LinkParameter;
-import org.eclipse.che.api.machine.shared.dto.MachineConfigDto;
-import org.eclipse.che.api.machine.shared.dto.MachineDto;
+import org.eclipse.che.api.machine.shared.dto.OldMachineConfigDto;
+import org.eclipse.che.api.machine.shared.dto.OldMachineDto;
 import org.eclipse.che.api.machine.shared.dto.MachineLogMessageDto;
 import org.eclipse.che.api.machine.shared.dto.event.MachineStatusEvent;
 import org.eclipse.che.api.machine.shared.dto.execagent.GetProcessesResponseDto;
 import org.eclipse.che.api.promises.client.Operation;
 import org.eclipse.che.api.promises.client.Promise;
 import org.eclipse.che.api.workspace.shared.dto.EnvironmentDto;
+import org.eclipse.che.api.workspace.shared.dto.RuntimeDto;
 import org.eclipse.che.api.workspace.shared.dto.WorkspaceConfigDto;
 import org.eclipse.che.api.workspace.shared.dto.WorkspaceDto;
-import org.eclipse.che.api.workspace.shared.dto.WorkspaceRuntimeDto;
 import org.eclipse.che.api.workspace.shared.dto.event.WorkspaceStatusEvent;
 import org.eclipse.che.ide.CoreLocalizationConstant;
 import org.eclipse.che.ide.actions.WorkspaceSnapshotCreator;
@@ -195,7 +195,7 @@ public class WorkspaceEventsHandlerTest {
 
     //    @Test disabled because of GWT timer usage
     public void shouldSubscribesOnWsAgentOutputWhenWorkspaceIsStarting() throws Exception {
-        WorkspaceRuntimeDto runtime = mock(WorkspaceRuntimeDto.class);
+        RuntimeDto runtime = mock(RuntimeDto.class);
         WorkspaceConfigDto workspaceConfig = mock(WorkspaceConfigDto.class);
         when(workspaceStatusEvent.getEventType()).thenReturn(STARTING);
         when(workspace.getRuntime()).thenReturn(runtime);
@@ -205,7 +205,7 @@ public class WorkspaceEventsHandlerTest {
         EnvironmentDto environment = mock(EnvironmentDto.class);
         environments.put(ACTIVE_ENV, environment);
         when(workspaceConfig.getEnvironments()).thenReturn(environments);
-        MachineConfigDto devMachineConfig = mock(MachineConfigDto.class);
+        OldMachineConfigDto devMachineConfig = mock(OldMachineConfigDto.class);
         when(devMachineConfig.getName()).thenReturn(MACHINE_NAME);
 
         workspaceEventsHandler.trackWorkspaceEvents(workspace, callback);
@@ -219,10 +219,10 @@ public class WorkspaceEventsHandlerTest {
 
     @Test
     public void shouldSubscribeOnWsAgentOutputWhenWorkspaceIsRunningAfterRefreshPage() throws Exception {
-        WorkspaceRuntimeDto runtime = mock(WorkspaceRuntimeDto.class);
+        RuntimeDto runtime = mock(RuntimeDto.class);
         WorkspaceConfigDto workspaceConfig = mock(WorkspaceConfigDto.class);
         when(workspace.getRuntime()).thenReturn(runtime);
-        MachineDto devMachine = mock(MachineDto.class);
+        OldMachineDto devMachine = mock(OldMachineDto.class);
         when(devMachine.getWorkspaceId()).thenReturn(WORKSPACE_ID);
         when(devMachine.getId()).thenReturn(MACHINE_NAME);
         //when(runtime.getDevMachine()).thenReturn(devMachine);
@@ -232,7 +232,7 @@ public class WorkspaceEventsHandlerTest {
         EnvironmentDto environment = mock(EnvironmentDto.class);
         environments.put(ACTIVE_ENV, environment);
         when(workspaceConfig.getEnvironments()).thenReturn(environments);
-        MachineConfigDto devMachineConfig = mock(MachineConfigDto.class);
+        OldMachineConfigDto devMachineConfig = mock(OldMachineConfigDto.class);
         when(devMachineConfig.getName()).thenReturn(MACHINE_NAME);
 
         workspaceEventsHandler.trackWorkspaceEvents(workspace, callback);
@@ -368,10 +368,10 @@ public class WorkspaceEventsHandlerTest {
 
     @Test
     public void onWsAgentOutputEventReceivedTest() throws Exception {
-        WorkspaceRuntimeDto runtime = mock(WorkspaceRuntimeDto.class);
+        RuntimeDto runtime = mock(RuntimeDto.class);
         WorkspaceConfigDto workspaceConfig = mock(WorkspaceConfigDto.class);
         when(workspace.getRuntime()).thenReturn(runtime);
-        MachineDto devMachine = mock(MachineDto.class);
+        OldMachineDto devMachine = mock(OldMachineDto.class);
         when(devMachine.getWorkspaceId()).thenReturn(WORKSPACE_ID);
         when(devMachine.getId()).thenReturn(MACHINE_NAME);
         //when(runtime.getDevMachine()).thenReturn(devMachine);
@@ -381,7 +381,7 @@ public class WorkspaceEventsHandlerTest {
         EnvironmentDto environment = mock(EnvironmentDto.class);
         environments.put(ACTIVE_ENV, environment);
         when(workspaceConfig.getEnvironments()).thenReturn(environments);
-        MachineConfigDto devMachineConfig = mock(MachineConfigDto.class);
+        OldMachineConfigDto devMachineConfig = mock(OldMachineConfigDto.class);
         when(devMachineConfig.getName()).thenReturn(MACHINE_NAME);
 
         workspaceEventsHandler.trackWorkspaceEvents(workspace, callback);

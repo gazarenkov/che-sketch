@@ -17,14 +17,14 @@ import com.google.inject.Inject;
 import com.google.inject.Provider;
 import com.google.inject.Singleton;
 
-import org.eclipse.che.api.machine.shared.dto.recipe.RecipeDescriptor;
+import org.eclipse.che.api.machine.shared.dto.recipe.OldRecipeDescriptor;
 import org.eclipse.che.api.promises.client.Operation;
 import org.eclipse.che.api.promises.client.OperationException;
 import org.eclipse.che.api.promises.client.Promise;
 import org.eclipse.che.api.promises.client.PromiseError;
 import org.eclipse.che.api.workspace.shared.dto.EnvironmentDto;
-import org.eclipse.che.api.workspace.shared.dto.EnvironmentRecipeDto;
-import org.eclipse.che.api.workspace.shared.dto.MachineConfig2Dto;
+import org.eclipse.che.api.workspace.shared.dto.RecipeDto;
+import org.eclipse.che.api.workspace.shared.dto.MachineConfigDto;
 import org.eclipse.che.api.workspace.shared.dto.WorkspaceConfigDto;
 import org.eclipse.che.api.workspace.shared.dto.WorkspaceDto;
 import org.eclipse.che.ide.CoreLocalizationConstant;
@@ -71,7 +71,7 @@ public class CreateWorkspacePresenter implements CreateWorkspaceView.ActionDeleg
     private final BrowserQueryFieldRenderer           browserQueryFieldRenderer;
 
     private Callback<Component, Exception> callback;
-    private List<RecipeDescriptor>         recipes;
+    private List<OldRecipeDescriptor>      recipes;
     private List<String>                   workspacesNames;
 
     @Inject
@@ -110,11 +110,11 @@ public class CreateWorkspacePresenter implements CreateWorkspaceView.ActionDeleg
             workspacesNames.add(workspace.getConfig().getName());
         }
 
-        Promise<List<RecipeDescriptor>> recipes = recipeService.getAllRecipes();
+        Promise<List<OldRecipeDescriptor>> recipes = recipeService.getAllRecipes();
 
-        recipes.then(new Operation<List<RecipeDescriptor>>() {
+        recipes.then(new Operation<List<OldRecipeDescriptor>>() {
             @Override
-            public void apply(List<RecipeDescriptor> recipeDescriptors) throws OperationException {
+            public void apply(List<OldRecipeDescriptor> recipeDescriptors) throws OperationException {
                 CreateWorkspacePresenter.this.recipes = recipeDescriptors;
             }
         });
@@ -179,9 +179,9 @@ public class CreateWorkspacePresenter implements CreateWorkspaceView.ActionDeleg
     /** {@inheritDoc} */
     @Override
     public void onTagsChanged(final HidePopupCallBack callBack) {
-        recipeService.searchRecipes(view.getTags(), RECIPE_TYPE, SKIP_COUNT, MAX_COUNT).then(new Operation<List<RecipeDescriptor>>() {
+        recipeService.searchRecipes(view.getTags(), RECIPE_TYPE, SKIP_COUNT, MAX_COUNT).then(new Operation<List<OldRecipeDescriptor>>() {
             @Override
-            public void apply(List<RecipeDescriptor> recipes) throws OperationException {
+            public void apply(List<OldRecipeDescriptor> recipes) throws OperationException {
                 boolean isRecipesEmpty = recipes.isEmpty();
 
                 if (isRecipesEmpty) {
@@ -229,13 +229,13 @@ public class CreateWorkspacePresenter implements CreateWorkspaceView.ActionDeleg
     private WorkspaceConfigDto getWorkspaceConfig() {
         String wsName = view.getWorkspaceName();
 
-        EnvironmentRecipeDto recipe = dtoFactory.createDto(EnvironmentRecipeDto.class)
-                                                .withType("dockerimage")
-                                                .withLocation(view.getRecipeUrl());
+        RecipeDto recipe = dtoFactory.createDto(RecipeDto.class)
+                                     .withType("dockerimage")
+                                     .withLocation(view.getRecipeUrl());
 
-        MachineConfig2Dto machine = dtoFactory.createDto(MachineConfig2Dto.class)
-                                              .withAgents(singletonList("org.eclipse.che.ws-agent"))
-                                              .withAttributes(singletonMap("memoryLimitBytes", MEMORY_LIMIT_BYTES));
+        MachineConfigDto machine = dtoFactory.createDto(MachineConfigDto.class)
+                                             .withAgents(singletonList("org.eclipse.che.ws-agent"))
+                                             .withAttributes(singletonMap("memoryLimitBytes", MEMORY_LIMIT_BYTES));
 
         EnvironmentDto environment = dtoFactory.createDto(EnvironmentDto.class)
                                                .withRecipe(recipe)

@@ -120,7 +120,7 @@ public class WorkspaceRuntimeIntegrationTest {
 //                                                           .withNamespace("namespace")
 //                                                           .withConfig(config);
 //        Instance instance = mock(Instance.class);
-//        MachineConfigImpl machineConfig = new MachineConfigImpl();
+//        OldMachineConfigImpl machineConfig = new OldMachineConfigImpl();
 //        machineConfig.setDev(true);
 //        machineConfig.setName("service1");
 //        when(instance.getWorkspaceId()).thenReturn(WORKSPACE_ID);

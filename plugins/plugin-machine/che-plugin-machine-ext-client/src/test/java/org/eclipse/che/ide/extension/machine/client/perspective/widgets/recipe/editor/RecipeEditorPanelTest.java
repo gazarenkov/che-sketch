@@ -13,7 +13,7 @@ package org.eclipse.che.ide.extension.machine.client.perspective.widgets.recipe.
 import com.google.gwtmockito.GwtMockitoTestRunner;
 import com.google.inject.Provider;
 
-import org.eclipse.che.api.machine.shared.dto.recipe.RecipeDescriptor;
+import org.eclipse.che.api.machine.shared.dto.recipe.OldRecipeDescriptor;
 import org.eclipse.che.ide.api.editor.document.Document;
 import org.eclipse.che.ide.api.filetypes.FileType;
 import org.eclipse.che.ide.api.filetypes.FileTypeRegistry;
@@ -49,7 +49,7 @@ public class RecipeEditorPanelTest {
     @Mock
     private FileTypeRegistry               fileTypeRegistry;
     @Mock
-    private RecipeDescriptor               recipeDescriptor;
+    private OldRecipeDescriptor            recipeDescriptor;
     @Mock
     private Provider<OrionEditorPresenter> orionTextEditorFactory;
 

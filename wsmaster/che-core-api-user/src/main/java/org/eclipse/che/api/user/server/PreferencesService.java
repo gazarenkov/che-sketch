@@ -57,7 +57,7 @@ public class PreferencesService extends Service {
                   notes = "If not all the preferences needed then 'filter' may be used, " +
                           "basically it is regex for filtering preferences by names")
     @ApiResponses({@ApiResponse(code = 200, message = "Preferences successfully fetched"),
-                   @ApiResponse(code = 500, message = "Internal Server Error")})
+                   @ApiResponse(code = 500, message = "Internal OldServer Error")})
     public Map<String, String> find(@ApiParam("Regex for filtering preferences by names, e.g. '.*github.*' " +
                                               "will return all the preferences which name contains github")
                                     @QueryParam("filter")

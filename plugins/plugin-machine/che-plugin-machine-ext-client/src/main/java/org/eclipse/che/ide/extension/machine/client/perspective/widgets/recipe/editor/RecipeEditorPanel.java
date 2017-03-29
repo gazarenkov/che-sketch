@@ -16,7 +16,7 @@ import com.google.inject.Provider;
 import com.google.inject.assistedinject.Assisted;
 import com.google.inject.assistedinject.AssistedInject;
 
-import org.eclipse.che.api.machine.shared.dto.recipe.RecipeDescriptor;
+import org.eclipse.che.api.machine.shared.dto.recipe.OldRecipeDescriptor;
 import org.eclipse.che.ide.api.editor.EditorPartPresenter;
 import org.eclipse.che.ide.api.editor.OpenEditorCallbackImpl;
 import org.eclipse.che.ide.api.editor.editorconfig.DefaultTextEditorConfiguration;
@@ -46,7 +46,7 @@ public class RecipeEditorPanel implements TabPresenter, RecipeEditorView.ActionD
     private final RecipeEditorView               view;
     private final RecipeFileFactory              recipeFileFactory;
     private final FileTypeRegistry               fileTypeRegistry;
-    private final RecipeDescriptor               recipeDescriptor;
+    private final OldRecipeDescriptor            recipeDescriptor;
     private final Provider<OrionEditorPresenter> orionTextEditorFactory;
 
     private EditorPartPresenter editor;
@@ -60,7 +60,7 @@ public class RecipeEditorPanel implements TabPresenter, RecipeEditorView.ActionD
                              FileTypeRegistry fileTypeRegistry,
                              Provider<OrionEditorPresenter> orionTextEditorFactory,
                              RecipeEditorView view,
-                             @Assisted @NotNull RecipeDescriptor recipeDescriptor) {
+                             @Assisted @NotNull OldRecipeDescriptor recipeDescriptor) {
         this.view = view;
         this.recipeFileFactory = recipeFileFactory;
         this.orionTextEditorFactory = orionTextEditorFactory;

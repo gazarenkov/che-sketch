@@ -13,7 +13,7 @@ package org.eclipse.che.ide.extension.machine.client;
 import com.google.gwt.i18n.client.Messages;
 
 /**
- * I18n constants for the Machine extension.
+ * I18n constants for the OldMachine extension.
  *
  * @author Artem Zatsarynnyi
  */

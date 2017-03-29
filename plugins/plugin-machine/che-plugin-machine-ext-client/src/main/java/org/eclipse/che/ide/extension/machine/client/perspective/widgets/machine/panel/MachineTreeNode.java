@@ -13,7 +13,7 @@ package org.eclipse.che.ide.extension.machine.client.perspective.widgets.machine
 import com.google.inject.Inject;
 import com.google.inject.assistedinject.Assisted;
 
-import org.eclipse.che.api.core.model.machine.Machine;
+import org.eclipse.che.api.core.model.machine.OldMachine;
 import org.eclipse.che.commons.annotation.Nullable;
 import org.eclipse.che.ide.ui.tree.TreeNodeElement;
 
@@ -45,8 +45,8 @@ public class MachineTreeNode {
         this.data = data;
         this.children = children;
 
-        if (data instanceof Machine) {
-            Machine machine = (Machine)data;
+        if (data instanceof OldMachine) {
+            OldMachine machine = (OldMachine)data;
             id = machine.getId();
             name = machine.getConfig().getName();
         } else {

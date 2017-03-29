@@ -11,7 +11,7 @@
 package org.eclipse.che.api.agent.server.launcher;
 
 import org.eclipse.che.api.agent.shared.model.Agent;
-import org.eclipse.che.api.core.model.workspace.runtime.ServerRuntime;
+import org.eclipse.che.api.core.model.workspace.runtime.Server;
 import org.eclipse.che.api.machine.server.exception.MachineException;
 import org.eclipse.che.api.machine.server.spi.Instance;
 import org.eclipse.che.api.machine.server.spi.InstanceProcess;
@@ -31,7 +31,7 @@ public class MappedPortIsListeningAgentChecker implements AgentLaunchingChecker 
 
     @Override
     public boolean isLaunched(Agent agent, InstanceProcess process, Instance machine) throws MachineException {
-        ServerRuntime server = machine.getRuntime().getServers().get(exposedPort);
+        Server server = machine.getRuntime().getServers().get(exposedPort);
 //        if (server != null) {
 //            try {
 //

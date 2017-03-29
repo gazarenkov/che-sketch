@@ -86,12 +86,12 @@ public class DockerConnectorConfiguration {
     public static final String DOCKER_HOST_PROPERTY = "DOCKER_HOST";
 
     /**
-     * Default URL of docker when using Docker Machine.
+     * Default URL of docker when using Docker OldMachine.
      */
     public static final URI DEFAULT_DOCKER_MACHINE_URI = URI.create("https://192.168.99.100:2376");
 
     /**
-     * Default of Docker Machine certificates (machine named default)
+     * Default of Docker OldMachine certificates (machine named default)
      */
     public static final String DEFAULT_DOCKER_MACHINE_CERTS_DIR = System.getProperty("user.home")
                                                                   + separatorChar + ".docker"

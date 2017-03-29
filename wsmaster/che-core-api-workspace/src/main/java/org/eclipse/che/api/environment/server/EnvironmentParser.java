@@ -14,8 +14,8 @@ import com.google.common.base.Joiner;
 
 import org.eclipse.che.api.core.ServerException;
 import org.eclipse.che.api.core.model.workspace.config.Environment;
-import org.eclipse.che.api.core.model.workspace.config.EnvironmentRecipe;
-import org.eclipse.che.api.core.model.workspace.config.MachineConfig2;
+import org.eclipse.che.api.core.model.workspace.config.Recipe;
+import org.eclipse.che.api.core.model.workspace.config.MachineConfig;
 import org.eclipse.che.api.environment.server.model.CheServiceImpl;
 import org.eclipse.che.api.environment.server.model.CheServicesEnvironmentImpl;
 
@@ -70,11 +70,11 @@ public class EnvironmentParser {
                                                                             ServerException {
 
         checkNotNull(environment, "Environment should not be null");
-        EnvironmentRecipe recipe = environment.getRecipe();
+        Recipe recipe = environment.getRecipe();
         checkNotNull(recipe, "Environment recipe should not be null");
         checkNotNull(recipe.getType(), "Environment recipe type should not be null");
         checkArgument(recipe.getContent() != null || recipe.getLocation() != null,
-                      "Recipe of environment must contain location or content");
+                      "OldRecipe of environment must contain location or content");
 
         String envType = recipe.getType();
         Set<String> envTypes = getEnvironmentTypes();
@@ -90,20 +90,20 @@ public class EnvironmentParser {
         CheServicesEnvironmentImpl cheServicesEnvironment = parser.parse(environment);
 
         cheServicesEnvironment.getServices().forEach((name, service) -> {
-            MachineConfig2 machineConfig2 = environment.getMachines().get(name);
-            if (machineConfig2 != null) {
-                normalizeMachine(name, service, machineConfig2);
+            MachineConfig machineConfig = environment.getMachines().get(name);
+            if (machineConfig != null) {
+                normalizeMachine(name, service, machineConfig);
             }
         });
 
         return cheServicesEnvironment;
     }
 
-    private void normalizeMachine(String name, CheServiceImpl service, MachineConfig2 machineConfig2) {
-        if (machineConfig2.getAttributes().containsKey("memoryLimitBytes")) {
+    private void normalizeMachine(String name, CheServiceImpl service, MachineConfig machineConfig) {
+        if (machineConfig.getAttributes().containsKey("memoryLimitBytes")) {
 
             try {
-                service.setMemLimit(Long.parseLong(machineConfig2.getAttributes().get("memoryLimitBytes")));
+                service.setMemLimit(Long.parseLong(machineConfig.getAttributes().get("memoryLimitBytes")));
             } catch (NumberFormatException e) {
                 throw new IllegalArgumentException(
                         format("Value of attribute 'memoryLimitBytes' of machine '%s' is illegal", name));
@@ -115,7 +115,7 @@ public class EnvironmentParser {
                                                 expose :
                                                 expose + "/tcp")
                                  .collect(toList()));
-        machineConfig2.getServers().forEach((serverRef, serverConf) -> {
+        machineConfig.getServers().forEach((serverRef, serverConf) -> {
             String normalizedPort = serverConf.getPort().contains("/") ?
                                     serverConf.getPort() :
                                     serverConf.getPort() + "/tcp";

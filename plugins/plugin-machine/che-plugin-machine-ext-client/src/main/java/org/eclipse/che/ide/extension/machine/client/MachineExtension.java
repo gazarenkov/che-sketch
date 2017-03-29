@@ -61,13 +61,13 @@ import static org.eclipse.che.ide.api.constraints.Anchor.AFTER;
 import static org.eclipse.che.ide.api.constraints.Constraints.FIRST;
 
 /**
- * Machine extension entry point.
+ * OldMachine extension entry point.
  *
  * @author Artem Zatsarynnyi
  * @author Dmitry Shnurenko
  */
 @Singleton
-@Extension(title = "Machine", version = "1.0.0")
+@Extension(title = "OldMachine", version = "1.0.0")
 public class MachineExtension {
 
     public static final String GROUP_MACHINE_TOOLBAR   = "MachineGroupToolbar";

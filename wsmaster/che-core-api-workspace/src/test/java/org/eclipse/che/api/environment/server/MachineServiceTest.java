@@ -41,7 +41,7 @@ public class MachineServiceTest {
 //    }
 //
 //    @Test(dataProvider = "illegalMachineConfigProvider")
-//    public void shouldReturnErrorOnStartMachineIfBodyIsInvalid(MachineConfig machineConfig) throws Exception {
+//    public void shouldReturnErrorOnStartMachineIfBodyIsInvalid(OldMachineConfig machineConfig) throws Exception {
 //        // given
 //        String workspaceId = "wsId";
 //
@@ -55,13 +55,13 @@ public class MachineServiceTest {
 //
 //        // then
 //        assertEquals(response.getStatusCode(), 400);
-//        verify(wsManager, never()).startMachine(any(MachineConfig.class), anyString());
+//        verify(wsManager, never()).startMachine(any(OldMachineConfig.class), anyString());
 //    }
 //
 //    @DataProvider(name = "illegalMachineConfigProvider")
 //    public static Object[][] illegalMachineConfigProvider() {
-//        MachineConfigImpl.MachineConfigImplBuilder builder =
-//                MachineConfigImpl.builder()
+//        OldMachineConfigImpl.MachineConfigImplBuilder builder =
+//                OldMachineConfigImpl.builder()
 //                                 .setDev(false)
 //                                 .setName("name")
 //                                 .setType("type")
@@ -83,7 +83,7 @@ public class MachineServiceTest {
 //    public void shouldStartMachine() throws Exception {
 //        // given
 //        String workspaceId = "wsId";
-//        MachineConfig machineConfig = MachineConfigImpl.builder()
+//        OldMachineConfig machineConfig = OldMachineConfigImpl.builder()
 //                                                       .setDev(false)
 //                                                       .setName("name")
 //                                                       .setType("type")
@@ -100,7 +100,7 @@ public class MachineServiceTest {
 //
 //        // then
 //        assertEquals(response.getStatusCode(), 204);
-//        verify(wsManager).startMachine(any(MachineConfig.class), eq(workspaceId));
+//        verify(wsManager).startMachine(any(OldMachineConfig.class), eq(workspaceId));
 //    }
 //
 //    @Test

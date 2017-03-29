@@ -45,7 +45,7 @@ public abstract class RuntimeInfrastructure {
     }
 
     /**
-     * @return Recipe Types supported by this Infrastructure
+     * @return OldRecipe Types supported by this Infrastructure
      */
     public final Set<String> getRecipeTypes() {
         return recipeTypes;
@@ -56,8 +56,8 @@ public abstract class RuntimeInfrastructure {
      * For example: for validating it before storing
      * The method SHOULD validate Environment. If it is valid, an Infrastructure MAY return more fine grained Environment
      * For example:
-     * - if Machines are not described this method may add machine descriptions calculated against Recipe
-     * - implementation may add additional Attributes based on incoming Recipe
+     * - if Machines are not described this method may add machine descriptions calculated against OldRecipe
+     * - implementation may add additional Attributes based on incoming OldRecipe
      *
      * @param environment incoming Environment to estimate
      * @return calculated environment if any or same environment as incoming or null.
@@ -71,7 +71,7 @@ public abstract class RuntimeInfrastructure {
      * An Infrastructure MAY track Runtimes. In this case the method should be overriden.
      *
      * One of the reason for infrastructure to support this is ability to recover infrastructure
-     * after shutting down Master Server. For this purpose an Infrastructure should also implement
+     * after shutting down Master OldServer. For this purpose an Infrastructure should also implement
      * getRuntime(id) method
      * @return list of tracked Runtimes' Identities.
      * @throws NotSupportedException if implementation does not support runtimes tracking
@@ -85,7 +85,7 @@ public abstract class RuntimeInfrastructure {
      * An Infrastructure MAY track Runtimes. In this case the method should be overriden.
      *
      * One of the reason for infrastructure to support this is ability to recover infrastructure
-     * after shutting down Master Server.
+     * after shutting down Master OldServer.
      *
      * @param id the RuntimeIdentity
      * @return the Runtime

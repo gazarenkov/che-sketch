@@ -97,7 +97,7 @@ public class NodeWidget extends Composite implements NodeEntry, ClickHandler {
         main.removeStyleName(resources.getCss().selectNode());
     }
 
-    /** Sets name of the Recipe. */
+    /** Sets name of the OldRecipe. */
     public void setName(@NotNull String name) {
         this.name.setText(name);
     }

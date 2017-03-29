@@ -12,7 +12,7 @@ package org.eclipse.che.ide.extension.machine.client.perspective.widgets.recipe.
 
 import com.google.gwtmockito.GwtMockitoTestRunner;
 
-import org.eclipse.che.api.machine.shared.dto.recipe.RecipeDescriptor;
+import org.eclipse.che.api.machine.shared.dto.recipe.OldRecipeDescriptor;
 import org.eclipse.che.ide.extension.machine.client.MachineResources;
 import org.eclipse.che.ide.extension.machine.client.MachineResources.Css;
 import org.junit.Before;
@@ -33,11 +33,11 @@ public class RecipeWidgetTest {
     private final String SOME_TEXT = "text";
 
     @Mock(answer = RETURNS_DEEP_STUBS)
-    private MachineResources resources;
+    private MachineResources    resources;
     @Mock
-    private RecipeDescriptor recipeDescriptor;
+    private OldRecipeDescriptor recipeDescriptor;
     @Mock
-    private Css              css;
+    private Css                 css;
 
     RecipeWidget recipeWidget;
 

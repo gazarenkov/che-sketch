@@ -21,7 +21,7 @@ import com.google.gwt.user.client.ui.Label;
 import com.google.gwt.user.client.ui.SimpleLayoutPanel;
 import com.google.gwt.user.client.ui.Widget;
 
-import org.eclipse.che.api.machine.shared.dto.recipe.RecipeDescriptor;
+import org.eclipse.che.api.machine.shared.dto.recipe.OldRecipeDescriptor;
 import org.eclipse.che.ide.extension.machine.client.MachineResources;
 import org.vectomatic.dom.svg.ui.SVGImage;
 
@@ -45,12 +45,12 @@ public class RecipeWidget extends Composite implements RecipeEntry, ClickHandler
     @UiField
     FlowPanel         main;
 
-    private final MachineResources resources;
-    private final RecipeDescriptor descriptor;
+    private final MachineResources    resources;
+    private final OldRecipeDescriptor descriptor;
 
     private ActionDelegate delegate;
 
-    public RecipeWidget(RecipeDescriptor recipe, MachineResources resources) {
+    public RecipeWidget(OldRecipeDescriptor recipe, MachineResources resources) {
         this.resources = resources;
         this.descriptor = recipe;
 
@@ -66,7 +66,7 @@ public class RecipeWidget extends Composite implements RecipeEntry, ClickHandler
 
     /** Returns the descriptor of current recipe */
     @NotNull
-    public RecipeDescriptor getDescriptor() {
+    public OldRecipeDescriptor getDescriptor() {
         return descriptor;
     }
 
@@ -94,7 +94,7 @@ public class RecipeWidget extends Composite implements RecipeEntry, ClickHandler
         main.addStyleName(resources.getCss().unSelectRecipe());
     }
 
-    /** Sets name of the Recipe. */
+    /** Sets name of the OldRecipe. */
     public void setName(@NotNull String name) {
         this.name.setText(name);
     }

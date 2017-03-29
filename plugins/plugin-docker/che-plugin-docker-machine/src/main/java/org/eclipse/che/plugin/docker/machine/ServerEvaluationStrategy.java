@@ -17,20 +17,16 @@ import java.util.List;
 import java.util.Map;
 
 import org.eclipse.che.api.core.model.machine.ServerProperties;
-import org.eclipse.che.api.machine.server.model.impl.ServerConfImpl;
-import org.eclipse.che.api.machine.server.model.impl.ServerImpl;
+import org.eclipse.che.api.machine.server.model.impl.OldServerConfImpl;
+import org.eclipse.che.api.machine.server.model.impl.OldServerImpl;
 import org.eclipse.che.api.machine.server.model.impl.ServerPropertiesImpl;
-import org.eclipse.che.commons.annotation.Nullable;
 import org.eclipse.che.plugin.docker.client.json.ContainerInfo;
 import org.eclipse.che.plugin.docker.client.json.PortBinding;
-
-import com.google.inject.Inject;
-import com.google.inject.name.Named;
 
 /**
  * Represents a strategy for resolving Servers associated with workspace containers.
  * Used to extract relevant information from e.g. {@link ContainerInfo} into a map of
- * {@link ServerImpl} objects.
+ * {@link OldServerImpl} objects.
  *
  * @author Angel Misevski <amisevsk@redhat.com>
  * @see ServerEvaluationStrategyProvider
@@ -66,7 +62,7 @@ public abstract class ServerEvaluationStrategy {
                                                                         String internalAddress);
 
     /**
-     * Constructs a map of {@link ServerImpl} from provided parameters, using selected strategy
+     * Constructs a map of {@link OldServerImpl} from provided parameters, using selected strategy
      * for evaluating addresses and ports.
      *
      * <p>Keys consist of port number and transport protocol (tcp or udp) separated by
@@ -74,13 +70,13 @@ public abstract class ServerEvaluationStrategy {
      *
      * @param containerInfo the {@link ContainerInfo} describing the container.
      * @param internalHost alternative hostname to use, if address cannot be obtained from containerInfo
-     * @param serverConfMap additional Map of {@link ServerConfImpl}. Configurations here override those found
+     * @param serverConfMap additional Map of {@link OldServerConfImpl}. Configurations here override those found
      *        in containerInfo.
      * @return a Map of the servers exposed by the container.
      */
-    public Map<String, ServerImpl> getServers(ContainerInfo containerInfo,
-                                              String internalHost,
-                                              Map<String, ServerConfImpl> serverConfMap) {
+    public Map<String, OldServerImpl> getServers(ContainerInfo containerInfo,
+                                                 String internalHost,
+                                                 Map<String, OldServerConfImpl> serverConfMap) {
 
         Map<String, List<PortBinding>> portBindings;
         Map<String, String> labels = Collections.emptyMap();;
@@ -98,12 +94,12 @@ public abstract class ServerEvaluationStrategy {
         Map<String, String> internalAddressesAndPorts = getInternalAddressesAndPorts(containerInfo, internalHost);
         Map<String, String> externalAddressesAndPorts = getExternalAddressesAndPorts(containerInfo, internalHost);
 
-        Map<String, ServerImpl> servers = new LinkedHashMap<>();
+        Map<String, OldServerImpl> servers = new LinkedHashMap<>();
 
         for (String portProtocol : portBindings.keySet()) {
             String internalAddressAndPort = internalAddressesAndPorts.get(portProtocol);
             String externalAddressAndPort = externalAddressesAndPorts.get(portProtocol);
-            ServerConfImpl serverConf = getServerConfImpl(portProtocol, labels, serverConfMap);
+            OldServerConfImpl serverConf = getServerConfImpl(portProtocol, labels, serverConfMap);
 
             // Add protocol and path to internal/external address, if applicable
             String internalUrl = null;
@@ -125,18 +121,18 @@ public abstract class ServerEvaluationStrategy {
                                                                    internalAddressAndPort,
                                                                    internalUrl);
 
-            servers.put(portProtocol, new ServerImpl(serverConf.getRef(),
-                                                     serverConf.getProtocol(),
-                                                     externalAddressAndPort,
-                                                     externalUrl,
-                                                     properties));
+            servers.put(portProtocol, new OldServerImpl(serverConf.getRef(),
+                                                        serverConf.getProtocol(),
+                                                        externalAddressAndPort,
+                                                        externalUrl,
+                                                        properties));
         }
 
         return servers;
     }
 
     /**
-     * Gets the {@link ServerConfImpl} object associated with {@code portProtocol}.
+     * Gets the {@link OldServerConfImpl} object associated with {@code portProtocol}.
      * The provided labels should have keys matching e.g.
      *
      * <p>{@code che:server:<portProtocol>:[ref|path|protocol]}
@@ -144,18 +140,18 @@ public abstract class ServerEvaluationStrategy {
      * @param portProtocol the port binding associated with the server
      * @param labels a map holding the relevant values for reference, protocol, and path
      *        for the given {@code portProtocol}
-     * @param serverConfMap a map of {@link ServerConfImpl} with {@code portProtocol} as
+     * @param serverConfMap a map of {@link OldServerConfImpl} with {@code portProtocol} as
      *        keys.
-     * @return {@code ServerConfImpl}, obtained from {@code serverConfMap} if possible,
+     * @return {@code OldServerConfImpl}, obtained from {@code serverConfMap} if possible,
      *         or from {@code labels} if there is no entry in {@code serverConfMap}.
      */
-    private ServerConfImpl getServerConfImpl(String portProtocol,
-                                             Map<String, String> labels,
-                                             Map<String, ServerConfImpl> serverConfMap) {
+    private OldServerConfImpl getServerConfImpl(String portProtocol,
+                                                Map<String, String> labels,
+                                                Map<String, OldServerConfImpl> serverConfMap) {
         // Label can be specified without protocol -- e.g. 4401 refers to 4401/tcp
         String port = portProtocol.substring(0, portProtocol.length() - 4);
 
-        ServerConfImpl serverConf;
+        OldServerConfImpl serverConf;
         // provided serverConf map takes precedence
         if (serverConfMap.get(portProtocol) != null) {
             serverConf = serverConfMap.get(portProtocol);
@@ -179,12 +175,12 @@ public abstract class ServerEvaluationStrategy {
                 path = labels.get(String.format(SERVER_CONF_LABEL_PATH_KEY, port));
             }
 
-            serverConf = new ServerConfImpl(ref, portProtocol, protocol, path);
+            serverConf = new OldServerConfImpl(ref, portProtocol, protocol, path);
         }
 
         if (serverConf.getRef() == null) {
             // Add default reference to server if it was not set above
-            serverConf.setRef("Server-" + portProtocol.replace('/', '-'));
+            serverConf.setRef("OldServer-" + portProtocol.replace('/', '-'));
         }
         return serverConf;
     }

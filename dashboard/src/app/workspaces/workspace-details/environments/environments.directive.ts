@@ -43,7 +43,7 @@ export class WorkspaceEnvironments {
   constructor () {
     // scope values
     this.scope = {
-      workspaceRuntime: '=',
+      runtime: '=',
       workspaceCreationFlow: '=',
       workspaceName: '=',
       stackId: '=',

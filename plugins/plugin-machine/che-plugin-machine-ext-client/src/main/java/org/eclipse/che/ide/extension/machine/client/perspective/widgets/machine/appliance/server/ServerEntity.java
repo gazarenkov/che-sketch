@@ -13,7 +13,7 @@ package org.eclipse.che.ide.extension.machine.client.perspective.widgets.machine
 import com.google.inject.Inject;
 import com.google.inject.assistedinject.Assisted;
 
-import org.eclipse.che.api.core.model.workspace.runtime.ServerRuntime;
+import org.eclipse.che.api.core.model.workspace.runtime.Server;
 
 import javax.validation.constraints.NotNull;
 import java.util.Objects;
@@ -25,11 +25,11 @@ import java.util.Objects;
  */
 public class ServerEntity  {
 
-    private final ServerRuntime descriptor;
-    private final String    ref;
+    private final Server descriptor;
+    private final String ref;
 
     @Inject
-    public ServerEntity(@Assisted String ref, @Assisted ServerRuntime descriptor) {
+    public ServerEntity(@Assisted String ref, @Assisted Server descriptor) {
         this.ref = ref;
         this.descriptor = descriptor;
     }
@@ -85,7 +85,7 @@ public class ServerEntity  {
 
     @Override
     public String toString() {
-        return "Server{" +
+        return "OldServer{" +
                "descriptor=" + descriptor +
                ", ref='" + ref + '\'' +
                '}';

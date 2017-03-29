@@ -16,7 +16,7 @@ import com.google.inject.multibindings.MapBinder;
 import com.google.inject.multibindings.Multibinder;
 import com.google.inject.name.Names;
 
-import org.eclipse.che.api.core.model.machine.ServerConf;
+import org.eclipse.che.api.core.model.machine.OldServerConf;
 import org.eclipse.che.api.environment.server.TypeSpecificEnvironmentParser;
 import org.eclipse.che.plugin.docker.machine.parser.DockerImageEnvironmentParser;
 import org.eclipse.che.plugin.docker.machine.parser.DockerfileEnvironmentParser;
@@ -45,13 +45,13 @@ public class DockerMachineModule extends AbstractModule {
                                          Names.named("machine.docker.machine_env"))
                            .permitDuplicates();
 
-        @SuppressWarnings("unused") Multibinder<ServerConf> devMachineServers =
+        @SuppressWarnings("unused") Multibinder<OldServerConf> devMachineServers =
                 Multibinder.newSetBinder(binder(),
-                                         ServerConf.class,
+                                         OldServerConf.class,
                                          Names.named("machine.docker.dev_machine.machine_servers"));
-        @SuppressWarnings("unused") Multibinder<ServerConf> machineServers =
+        @SuppressWarnings("unused") Multibinder<OldServerConf> machineServers =
                 Multibinder.newSetBinder(binder(),
-                                         ServerConf.class,
+                                         OldServerConf.class,
                                          Names.named("machine.docker.machine_servers"));
 
         @SuppressWarnings("unused") Multibinder<String> devMachineVolumes =

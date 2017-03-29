@@ -34,7 +34,7 @@ import java.util.Map;
  *    <b>strictfp</b>
  * </pre>
  * <p>
- * The numeric values of these flags match the ones for class files as described in the Java Virtual Machine Specification. Note
+ * The numeric values of these flags match the ones for class files as described in the Java Virtual OldMachine Specification. Note
  * that Java model class {@link org.eclipse.jdt.core.Flags} also provides the same constants as this class.
  * </p>
  *
@@ -150,7 +150,7 @@ public final class Modifier /*extends ASTNode implements IExtendedModifier*/ {
          * @param keyword
          *         the character sequence for the modifier
          * @param flagValue
-         *         flag value as described in the Java Virtual Machine Specification
+         *         flag value as described in the Java Virtual OldMachine Specification
          */
         private ModifierKeyword(String keyword, int flagValue) {
             this.keyword = keyword;
@@ -159,7 +159,7 @@ public final class Modifier /*extends ASTNode implements IExtendedModifier*/ {
 
         /**
          * Returns the modifier flag value corresponding to this modifier keyword. These flag values are as described in the Java
-         * Virtual Machine Specification.
+         * Virtual OldMachine Specification.
          *
          * @return one of the <code>Modifier</code> constants
          * @see #fromFlagValue(int)

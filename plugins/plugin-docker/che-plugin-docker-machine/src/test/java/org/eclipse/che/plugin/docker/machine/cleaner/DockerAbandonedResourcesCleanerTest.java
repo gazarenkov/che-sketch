@@ -59,9 +59,9 @@ public class DockerAbandonedResourcesCleanerTest {
 //    @Mock
 //    private Instance instance;
 //    @Mock
-//    private MachineImpl machineImpl1;
+//    private OldMachineImpl machineImpl1;
 //    @Mock
-//    private MachineImpl machineImpl2;
+//    private OldMachineImpl machineImpl2;
 //
 //    @Mock
 //    private ContainerListEntry container1;

@@ -48,20 +48,20 @@ public class RunCommandActionTest {
 //        when(event.getParameters()).thenReturn(Collections.singletonMap("otherParam", "MCI"));
 //        action.actionPerformed(event);
 //
-//        verify(commandManager, never()).executeCommand(any(CommandImpl.class), any(Machine.class));
+//        verify(commandManager, never()).executeCommand(any(CommandImpl.class), any(OldMachine.class));
 //    }
 //
 //    @Test
 //    public void actionShouldBePerformed() {
 //        when(event.getParameters()).thenReturn(Collections.singletonMap(NAME_PROPERTY, "MCI"));
 //        final DevMachine devMachine = mock(DevMachine.class);
-//        final Machine machine = mock(Machine.class);
+//        final OldMachine machine = mock(OldMachine.class);
 //        when(devMachine.getDescriptor()).thenReturn(machine);
 //        when(appContext.getDevMachine()).thenReturn(devMachine);
 //
 //        action.actionPerformed(event);
 //
-//        verify(commandManager).executeCommand(eq(command), any(Machine.class));
+//        verify(commandManager).executeCommand(eq(command), any(OldMachine.class));
 //    }
 
 }

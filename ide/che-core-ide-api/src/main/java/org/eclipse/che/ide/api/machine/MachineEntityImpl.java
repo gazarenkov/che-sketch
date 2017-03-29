@@ -10,8 +10,8 @@
  *******************************************************************************/
 package org.eclipse.che.ide.api.machine;
 
-import org.eclipse.che.api.core.model.workspace.runtime.MachineRuntime;
-import org.eclipse.che.api.core.model.workspace.runtime.ServerRuntime;
+import org.eclipse.che.api.core.model.workspace.runtime.Machine;
+import org.eclipse.che.api.core.model.workspace.runtime.Server;
 import org.eclipse.che.api.core.model.workspace.config.Environment;
 import org.eclipse.che.api.core.model.workspace.Workspace;
 import org.eclipse.che.api.machine.shared.Constants;
@@ -26,8 +26,8 @@ import java.util.Objects;
 
 public class MachineEntityImpl implements MachineEntity {
 
-    //protected final Machine machineDescriptor;
-    //protected final MachineConfig machineConfig;
+    //protected final OldMachine machineDescriptor;
+    //protected final OldMachineConfig machineConfig;
 
     //protected final Map<String, MachineServer> servers;
     //protected final Map<String, String>        runtimeProperties;
@@ -36,7 +36,7 @@ public class MachineEntityImpl implements MachineEntity {
 
     protected final Environment environment;
 
-    protected final MachineRuntime machineRuntime;
+    protected final Machine machine;
 
 //    protected final ExtendedMachineDto extendedMachine;
 
@@ -48,13 +48,13 @@ public class MachineEntityImpl implements MachineEntity {
 
     protected final boolean dev;
 
-//    public MachineEntityImpl(@NotNull Machine machineDescriptor) {
+//    public MachineEntityImpl(@NotNull OldMachine machineDescriptor) {
 //
 //    }
 
     public MachineEntityImpl(Workspace workspace, String machineName) {
 
-   //     public MachineEntityImpl(@NotNull Machine machineDescriptor) {
+   //     public MachineEntityImpl(@NotNull OldMachine machineDescriptor) {
 
 
 
@@ -69,10 +69,10 @@ public class MachineEntityImpl implements MachineEntity {
 
 //        extendedMachine = environment.getMachines().get(machineName);
 
-        machineRuntime = workspace.getRuntime().getMachines().get(machineName);
+        machine = workspace.getRuntime().getMachines().get(machineName);
 
 
-        dev = machineRuntime.getServers().containsKey(Constants.WSAGENT_REFERENCE);
+        dev = machine.getServers().containsKey(Constants.WSAGENT_REFERENCE);
 
 
 //        //this.machineConfig = machineDescriptor != null ? machineDescriptor.getConfig() : null;
@@ -83,14 +83,14 @@ public class MachineEntityImpl implements MachineEntity {
 //            runtimeProperties = null;
 //            //envVariables = null;
 //        } else {
-//            MachineRuntime machineRuntime = machineDescriptor.getRuntime();
-//            Map<String, ? extends Server> serverDtoMap = machineRuntime.getServers();
+//            Machine machine = machineDescriptor.getRuntime();
+//            Map<String, ? extends OldServer> serverDtoMap = machine.getServers();
 //            servers = new HashMap<>(serverDtoMap.size());
 //            for (String s : serverDtoMap.keySet()) {
 //                servers.put(s, new MachineServer(serverDtoMap.get(s)));
 //            }
-//            runtimeProperties = machineRuntime.getProperties();
-//            //envVariables = machineRuntime.getEnvVariables();
+//            runtimeProperties = machine.getProperties();
+//            //envVariables = machine.getEnvVariables();
 //        }
 //
 
@@ -103,7 +103,7 @@ public class MachineEntityImpl implements MachineEntity {
     }
 
 //    @Override
-//    public MachineConfig getConfig() {
+//    public OldMachineConfig getConfig() {
 //        return machineConfig;
 //    }
 
@@ -133,7 +133,7 @@ public class MachineEntityImpl implements MachineEntity {
 //    }
 
 //    @Override
-//    public MachineRuntime getRuntime() {
+//    public Machine getRuntime() {
 //        return machineDescriptor.getRuntime();
 //    }
 
@@ -159,17 +159,17 @@ public class MachineEntityImpl implements MachineEntity {
 
     @Override
     public Map<String, String> getProperties() {
-        return machineRuntime.getProperties();
+        return machine.getProperties();
     }
 
     @Override
     public String getTerminalUrl() {
-        return machineRuntime.getServers().get(Constants.TERMINAL_REFERENCE).getUrl();
+        return machine.getServers().get(Constants.TERMINAL_REFERENCE).getUrl();
     }
 
     @Override
     public String getExecAgentUrl() {
-        return machineRuntime.getServers().get(Constants.EXEC_AGENT_REFERENCE).getUrl();
+        return machine.getServers().get(Constants.EXEC_AGENT_REFERENCE).getUrl();
     }
 
 //    public String getTerminalUrl() {
@@ -202,7 +202,7 @@ public class MachineEntityImpl implements MachineEntity {
 
 
         Map<String, MachineServer> servers = new HashMap<>();
-        for(Map.Entry<String, ? extends ServerRuntime> dto : machineRuntime.getServers().entrySet()) {
+        for(Map.Entry<String, ? extends Server> dto : machine.getServers().entrySet()) {
             servers.put(dto.getKey(), new MachineServer(dto.getValue()));
         }
 
@@ -244,9 +244,9 @@ public class MachineEntityImpl implements MachineEntity {
 //        return envVariables;
 //    }
 
-//    /** Returns {@link Machine descriptor} of the Workspace Agent. */
+//    /** Returns {@link OldMachine descriptor} of the Workspace Agent. */
 //    @Override
-//    public Machine getDescriptor() {
+//    public OldMachine getDescriptor() {
 //        return machineDescriptor;
 //    }
 

@@ -26,17 +26,17 @@ public interface EnvironmentDto extends Environment {
 
     @Override
     @FactoryParameter(obligation = MANDATORY)
-    EnvironmentRecipeDto getRecipe();
+    RecipeDto getRecipe();
 
-    void setRecipe(EnvironmentRecipeDto recipe);
+    void setRecipe(RecipeDto recipe);
 
-    EnvironmentDto withRecipe(EnvironmentRecipeDto recipe);
+    EnvironmentDto withRecipe(RecipeDto recipe);
 
     @Override
     @FactoryParameter(obligation = MANDATORY)
-    Map<String, MachineConfig2Dto> getMachines();
+    Map<String, MachineConfigDto> getMachines();
 
-    void setMachines(Map<String, MachineConfig2Dto> machines);
+    void setMachines(Map<String, MachineConfigDto> machines);
 
-    EnvironmentDto withMachines(Map<String, MachineConfig2Dto> machines);
+    EnvironmentDto withMachines(Map<String, MachineConfigDto> machines);
 }

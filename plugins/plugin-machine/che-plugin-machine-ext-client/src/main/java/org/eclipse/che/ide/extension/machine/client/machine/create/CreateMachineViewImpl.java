@@ -38,7 +38,7 @@ import com.google.gwt.user.client.ui.Widget;
 import com.google.inject.Inject;
 import com.google.inject.Singleton;
 
-import org.eclipse.che.api.machine.shared.dto.recipe.RecipeDescriptor;
+import org.eclipse.che.api.machine.shared.dto.recipe.OldRecipeDescriptor;
 import org.eclipse.che.ide.api.autocomplete.AutoCompleteResources;
 import org.eclipse.che.ide.extension.machine.client.MachineLocalizationConstant;
 import org.eclipse.che.ide.extension.machine.client.MachineResources;
@@ -72,10 +72,10 @@ public class CreateMachineViewImpl extends Window implements CreateMachineView {
     private final MachineResources              machineResources;
     private final org.eclipse.che.ide.Resources coreResources;
     private final AutoCompleteResources.Css     css;
-    private final SimpleList.ListItemRenderer<RecipeDescriptor> listItemRenderer =
-            new SimpleList.ListItemRenderer<RecipeDescriptor>() {
+    private final SimpleList.ListItemRenderer<OldRecipeDescriptor> listItemRenderer =
+            new SimpleList.ListItemRenderer<OldRecipeDescriptor>() {
                 @Override
-                public void render(Element itemElement, RecipeDescriptor itemData) {
+                public void render(Element itemElement, OldRecipeDescriptor itemData) {
                     final TableCellElement icon = Elements.createTDElement(css.proposalIcon());
                     final TableCellElement label = Elements.createTDElement(css.proposalLabel());
                     final TableCellElement group = Elements.createTDElement(css.proposalGroup());
@@ -116,16 +116,16 @@ public class CreateMachineViewImpl extends Window implements CreateMachineView {
 
     private ToolbarResources    toolbarResources;
 
-    private SimpleList<RecipeDescriptor> list;
-    private ActionDelegate               delegate;
-    private final SimpleList.ListEventDelegate<RecipeDescriptor> eventDelegate = new SimpleList.ListEventDelegate<RecipeDescriptor>() {
+    private SimpleList<OldRecipeDescriptor> list;
+    private ActionDelegate                  delegate;
+    private final SimpleList.ListEventDelegate<OldRecipeDescriptor> eventDelegate = new SimpleList.ListEventDelegate<OldRecipeDescriptor>() {
         @Override
-        public void onListItemClicked(Element listItemBase, RecipeDescriptor itemData) {
+        public void onListItemClicked(Element listItemBase, OldRecipeDescriptor itemData) {
             list.getSelectionModel().setSelectedItem(itemData);
         }
 
         @Override
-        public void onListItemDoubleClicked(Element listItemBase, RecipeDescriptor itemData) {
+        public void onListItemDoubleClicked(Element listItemBase, OldRecipeDescriptor itemData) {
             delegate.onRecipeSelected(itemData);
             popupPanel.hide();
             tags.setFocus(true);
@@ -281,7 +281,7 @@ public class CreateMachineViewImpl extends Window implements CreateMachineView {
     }
 
     @Override
-    public void setRecipes(List<RecipeDescriptor> recipes) {
+    public void setRecipes(List<OldRecipeDescriptor> recipes) {
         if (recipes.isEmpty()) {
             popupPanel.hide();
             return;

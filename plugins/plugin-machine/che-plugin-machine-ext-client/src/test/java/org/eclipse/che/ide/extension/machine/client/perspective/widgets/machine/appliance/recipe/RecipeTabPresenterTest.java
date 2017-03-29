@@ -84,7 +84,7 @@ public class RecipeTabPresenterTest {
 //
 //        presenter.updateInfo(machine);
 //
-//        verify(view).setScript("Recipe type is null for machine 'machine123'");
+//        verify(view).setScript("OldRecipe type is null for machine 'machine123'");
 //    }
 //
 ////    @Test

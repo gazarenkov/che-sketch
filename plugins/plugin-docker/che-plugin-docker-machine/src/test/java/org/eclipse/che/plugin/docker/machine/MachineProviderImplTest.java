@@ -11,13 +11,13 @@
 package org.eclipse.che.plugin.docker.machine;
 
 import org.eclipse.che.api.core.ServerException;
-import org.eclipse.che.api.core.model.machine.Machine;
-import org.eclipse.che.api.core.model.machine.MachineConfig;
-import org.eclipse.che.api.core.model.machine.ServerConf;
+import org.eclipse.che.api.core.model.machine.OldMachine;
+import org.eclipse.che.api.core.model.machine.OldMachineConfig;
+import org.eclipse.che.api.core.model.machine.OldServerConf;
 import org.eclipse.che.api.core.util.LineConsumer;
 import org.eclipse.che.api.environment.server.model.CheServiceImpl;
-import org.eclipse.che.api.machine.server.model.impl.ServerConfImpl;
-import org.eclipse.che.api.machine.server.recipe.RecipeImpl;
+import org.eclipse.che.api.machine.server.model.impl.OldServerConfImpl;
+import org.eclipse.che.api.machine.server.recipe.OldRecipeImpl;
 import org.eclipse.che.api.machine.server.util.RecipeRetriever;
 import org.eclipse.che.commons.env.EnvironmentContext;
 import org.eclipse.che.commons.lang.os.WindowsPathEscaper;
@@ -130,8 +130,8 @@ public class MachineProviderImplTest {
         EnvironmentContext.setCurrent(envCont);
 
 
-        when(recipeRetriever.getRecipe(any(MachineConfig.class)))
-                .thenReturn(new RecipeImpl().withType(DOCKER_FILE_TYPE).withScript("FROM codenvy"));
+        when(recipeRetriever.getRecipe(any(OldMachineConfig.class)))
+                .thenReturn(new OldRecipeImpl().withType(DOCKER_FILE_TYPE).withScript("FROM codenvy"));
 
         when(dockerMachineFactory.createNode(anyString(), anyString())).thenReturn(dockerNode);
         when(dockerConnector.createContainer(any(CreateContainerParams.class)))
@@ -424,7 +424,7 @@ public class MachineProviderImplTest {
         createInstanceFromRecipe(service);
 
 
-        verify(dockerMachineFactory).createInstance(any(Machine.class),
+        verify(dockerMachineFactory).createInstance(any(OldMachine.class),
                                                     eq(CONTAINER_ID),
                                                     eq("eclipse-che/" + service.getContainerName()),
                                                     eq(dockerNode),
@@ -494,18 +494,18 @@ public class MachineProviderImplTest {
     @Test
     public void shouldExposeCommonAndDevPortsToContainerOnDevInstanceCreationFromRecipe() throws Exception {
         List<String> expectedExposedPorts = new ArrayList<>();
-        final Set<ServerConf> commonServers =
-                new HashSet<>(asList(new ServerConfImpl("reference1", "8080", "http", null),
-                                     new ServerConfImpl("reference2", "8081", "ftp", null)));
+        final Set<OldServerConf> commonServers =
+                new HashSet<>(asList(new OldServerConfImpl("reference1", "8080", "http", null),
+                                     new OldServerConfImpl("reference2", "8081", "ftp", null)));
         expectedExposedPorts.addAll(commonServers.stream()
-                                                 .map(ServerConf::getPort)
+                                                 .map(OldServerConf::getPort)
                                                  .collect(Collectors.toList()));
 
-        final Set<ServerConf> devServers = new HashSet<>(asList(new ServerConfImpl("reference3", "8082", "https", null),
-                                                                new ServerConfImpl("reference4", "8083", "sftp",
-                                                                                   null)));
+        final Set<OldServerConf> devServers = new HashSet<>(asList(new OldServerConfImpl("reference3", "8082", "https", null),
+                                                                   new OldServerConfImpl("reference4", "8083", "sftp",
+                                                                                         null)));
         expectedExposedPorts.addAll(devServers.stream()
-                                              .map(ServerConf::getPort)
+                                              .map(OldServerConf::getPort)
                                               .collect(Collectors.toList()));
 
         provider = new MachineProviderBuilder().setDevMachineServers(devServers)
@@ -531,11 +531,11 @@ public class MachineProviderImplTest {
     @Test
     public void shouldExposeOnlyCommonPortsToContainerOnNonDevInstanceCreationFromRecipe() throws Exception {
         List<String> expectedExposedPorts = new ArrayList<>();
-        final Set<ServerConf> commonServers =
-                new HashSet<>(asList(new ServerConfImpl("reference1", "8080", "http", null),
-                                     new ServerConfImpl("reference2", "8081", "ftp", null)));
+        final Set<OldServerConf> commonServers =
+                new HashSet<>(asList(new OldServerConfImpl("reference1", "8080", "http", null),
+                                     new OldServerConfImpl("reference2", "8081", "ftp", null)));
         expectedExposedPorts.addAll(commonServers.stream()
-                                                 .map(ServerConf::getPort)
+                                                 .map(OldServerConf::getPort)
                                                  .collect(Collectors.toList()));
 
         provider = new MachineProviderBuilder().setAllMachineServers(commonServers)
@@ -560,18 +560,18 @@ public class MachineProviderImplTest {
     @Test
     public void shouldExposeCommonAndDevPortsToContainerOnDevInstanceCreationFromSnapshot() throws Exception {
         List<String> expectedExposedPorts = new ArrayList<>();
-        final Set<ServerConf> commonServers =
-                new HashSet<>(asList(new ServerConfImpl("reference1", "8080", "http", null),
-                                     new ServerConfImpl("reference2", "8081", "ftp", null)));
+        final Set<OldServerConf> commonServers =
+                new HashSet<>(asList(new OldServerConfImpl("reference1", "8080", "http", null),
+                                     new OldServerConfImpl("reference2", "8081", "ftp", null)));
         expectedExposedPorts.addAll(commonServers.stream()
-                                                 .map(ServerConf::getPort)
+                                                 .map(OldServerConf::getPort)
                                                  .collect(Collectors.toList()));
 
-        final Set<ServerConf> devServers = new HashSet<>(asList(new ServerConfImpl("reference3", "8082", "https", null),
-                                                                new ServerConfImpl("reference4", "8083", "sftp",
-                                                                                   null)));
+        final Set<OldServerConf> devServers = new HashSet<>(asList(new OldServerConfImpl("reference3", "8082", "https", null),
+                                                                   new OldServerConfImpl("reference4", "8083", "sftp",
+                                                                                         null)));
         expectedExposedPorts.addAll(devServers.stream()
-                                              .map(ServerConf::getPort)
+                                              .map(OldServerConf::getPort)
                                               .collect(Collectors.toList()));
 
         provider = new MachineProviderBuilder().setDevMachineServers(devServers)
@@ -597,11 +597,11 @@ public class MachineProviderImplTest {
     @Test
     public void shouldExposeOnlyCommonPortsToContainerOnNonDevInstanceCreationFromSnapshot() throws Exception {
         List<String> expectedExposedPorts = new ArrayList<>();
-        final Set<ServerConf> commonServers =
-                new HashSet<>(asList(new ServerConfImpl("reference1", "8080", "http", null),
-                                     new ServerConfImpl("reference2", "8081", "ftp", null)));
+        final Set<OldServerConf> commonServers =
+                new HashSet<>(asList(new OldServerConfImpl("reference1", "8080", "http", null),
+                                     new OldServerConfImpl("reference2", "8081", "ftp", null)));
         expectedExposedPorts.addAll(commonServers.stream()
-                                                 .map(ServerConf::getPort)
+                                                 .map(OldServerConf::getPort)
                                                  .collect(Collectors.toList()));
 
         provider = new MachineProviderBuilder().setAllMachineServers(commonServers)
@@ -1193,18 +1193,18 @@ public class MachineProviderImplTest {
     }
 
     private class MachineProviderBuilder {
-        private Set<ServerConf>  devMachineServers;
-        private Set<ServerConf>  allMachineServers;
-        private Set<String>      devMachineVolumes;
-        private Set<String>      allMachineVolumes;
-        private Set<Set<String>> extraHosts;
-        private boolean          doForcePullOnBuild;
-        private boolean          privilegedMode;
-        private int              pidsLimit;
-        private Set<String>      devMachineEnvVars;
-        private Set<String>      allMachineEnvVars;
-        private boolean          snapshotUseRegistry;
-        private Set<Set<String>> additionalNetworks;
+        private Set<OldServerConf> devMachineServers;
+        private Set<OldServerConf> allMachineServers;
+        private Set<String>        devMachineVolumes;
+        private Set<String>        allMachineVolumes;
+        private Set<Set<String>>   extraHosts;
+        private boolean            doForcePullOnBuild;
+        private boolean            privilegedMode;
+        private int                pidsLimit;
+        private Set<String>        devMachineEnvVars;
+        private Set<String>        allMachineEnvVars;
+        private boolean            snapshotUseRegistry;
+        private Set<Set<String>>   additionalNetworks;
         private double           memorySwapMultiplier;
         private String           networkDriver;
         private String           parentCgroup;
@@ -1258,12 +1258,12 @@ public class MachineProviderImplTest {
             return this;
         }
 
-        public MachineProviderBuilder setDevMachineServers(Set<ServerConf> devMachineServers) {
+        public MachineProviderBuilder setDevMachineServers(Set<OldServerConf> devMachineServers) {
             this.devMachineServers = devMachineServers;
             return this;
         }
 
-        public MachineProviderBuilder setAllMachineServers(Set<ServerConf> allMachineServers) {
+        public MachineProviderBuilder setAllMachineServers(Set<OldServerConf> allMachineServers) {
             this.allMachineServers = allMachineServers;
             return this;
         }

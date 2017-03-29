@@ -38,7 +38,7 @@ export class WorkspaceEnvironmentsController {
   };
 
   stackId: string;
-  workspaceRuntime: any;
+  runtime: any;
   workspaceConfig: che.IWorkspaceConfig;
   environment: any;
   environmentName: string;
@@ -100,7 +100,7 @@ export class WorkspaceEnvironmentsController {
 
     this.editorOptions.mode = this.environmentManager.editorMode;
 
-    this.machines = this.environmentManager.getMachines(this.environment, this.workspaceRuntime);
+    this.machines = this.environmentManager.getMachines(this.environment, this.runtime);
     this.devMachineName = this.getDevMachineName();
 
     if (!this.machinesViewStatus[this.environmentName]) {

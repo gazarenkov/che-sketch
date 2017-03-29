@@ -34,7 +34,7 @@ public class KeysInjectorTest {
 //    @Mock
 //    Instance       instance;
 //    @Mock
-//    MachineRuntime machineRuntime;
+//    Machine machineRuntime;
 //    @Mock
 //    Exec           exec;
 //    @Mock

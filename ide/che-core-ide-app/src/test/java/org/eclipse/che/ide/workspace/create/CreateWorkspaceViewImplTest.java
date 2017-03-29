@@ -16,7 +16,7 @@ import com.google.gwt.user.client.ui.FlowPanel;
 import com.google.gwt.user.client.ui.PopupPanel;
 import com.google.gwtmockito.GwtMockitoTestRunner;
 
-import org.eclipse.che.api.machine.shared.dto.recipe.RecipeDescriptor;
+import org.eclipse.che.api.machine.shared.dto.recipe.OldRecipeDescriptor;
 import org.eclipse.che.ide.CoreLocalizationConstant;
 import org.eclipse.che.ide.workspace.WorkspaceWidgetFactory;
 import org.eclipse.che.ide.workspace.create.CreateWorkspaceView.ActionDelegate;
@@ -60,15 +60,15 @@ public class CreateWorkspaceViewImplTest {
 
     //additional mocks
     @Mock
-    private RecipeDescriptor descriptor;
+    private OldRecipeDescriptor descriptor;
     @Mock
-    private RecipeWidget     tag;
+    private RecipeWidget        tag;
     @Mock
-    private ActionDelegate   delegate;
+    private ActionDelegate      delegate;
     @Mock
-    private KeyUpEvent       keyUpEvent;
+    private KeyUpEvent          keyUpEvent;
     @Mock
-    private ClickEvent       clickEvent;
+    private ClickEvent          clickEvent;
 
     @InjectMocks
     private CreateWorkspaceViewImpl view;

@@ -25,15 +25,15 @@ public class WsAgentPingRequestFactoryTest {
 //    @Mock
 //    private HttpJsonRequest        httpJsonRequest;
 //    @Mock
-//    private Machine                devMachine;
+//    private OldMachine                devMachine;
 //    @Mock
-//    private Server                 server;
+//    private OldServer                 server;
 //    @Mock
-//    private MachineRuntime         machineRuntimeInfo;
+//    private Machine         machineRuntimeInfo;
 //    @Mock
 //    private ServerProperties       serverProperties;
 //
-//    private Map<String, Server> servers = new HashMap<>(1);
+//    private Map<String, OldServer> servers = new HashMap<>(1);
 //
 //    private WsAgentPingRequestFactory factory;
 //

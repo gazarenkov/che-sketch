@@ -13,7 +13,7 @@ package org.eclipse.che.plugin.machine.ssh;
 import java.util.Objects;
 
 /**
- * Recipe of connection to ssh machine using ssh protocol.
+ * OldRecipe of connection to ssh machine using ssh protocol.
  *
  * @author Alexander Garagatyi
  */

@@ -65,7 +65,7 @@ public class MachineAppliancePresenter extends PartStackPresenter implements Act
 
     /**
      * Contains info about active tab for corresponding machine.
-     * Machine ID is the key and active tab is the value
+     * OldMachine ID is the key and active tab is the value
      */
     private final Map<String, String> activeTabs;
 

@@ -13,7 +13,7 @@ package org.eclipse.che.ide.ext.gwt.client.command;
 import org.eclipse.che.ide.CommandLine;
 
 /**
- * Model of the command line for launching GWT Code Server.
+ * Model of the command line for launching GWT Code OldServer.
  *
  * @author Artem Zatsarynnyi
  */

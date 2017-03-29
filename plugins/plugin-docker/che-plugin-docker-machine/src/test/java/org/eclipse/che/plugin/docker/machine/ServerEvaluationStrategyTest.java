@@ -11,6 +11,8 @@
 
 package org.eclipse.che.plugin.docker.machine;
 
+import org.eclipse.che.api.machine.server.model.impl.OldServerConfImpl;
+import org.eclipse.che.api.machine.server.model.impl.OldServerImpl;
 import org.testng.annotations.Test;
 
 import static org.eclipse.che.plugin.docker.machine.ServerEvaluationStrategy.SERVER_CONF_LABEL_PATH_KEY;
@@ -24,8 +26,6 @@ import java.util.HashMap;
 import java.util.List;
 import java.util.Map;
 
-import org.eclipse.che.api.machine.server.model.impl.ServerConfImpl;
-import org.eclipse.che.api.machine.server.model.impl.ServerImpl;
 import org.eclipse.che.api.machine.server.model.impl.ServerPropertiesImpl;
 import org.eclipse.che.plugin.docker.client.json.ContainerConfig;
 import org.eclipse.che.plugin.docker.client.json.ContainerInfo;
@@ -50,7 +50,7 @@ public class ServerEvaluationStrategyTest {
     @Mock
     private NetworkSettings networkSettings;
 
-    private Map<String, ServerConfImpl> serverConfs;
+    private Map<String, OldServerConfImpl> serverConfs;
 
     private Map<String, String> labels;
 
@@ -83,9 +83,9 @@ public class ServerEvaluationStrategyTest {
         Map<String, List<PortBinding>> ports = getPorts();
         when(networkSettings.getPorts()).thenReturn(ports);
         // when
-        final Map<String, ServerImpl> servers = strategy.getServers(containerInfo,
-                                                                    DEFAULT_HOSTNAME,
-                                                                    serverConfs);
+        final Map<String, OldServerImpl> servers = strategy.getServers(containerInfo,
+                                                                       DEFAULT_HOSTNAME,
+                                                                       serverConfs);
         // then
         assertEquals(servers.keySet(), ports.keySet());
     }
@@ -96,19 +96,19 @@ public class ServerEvaluationStrategyTest {
         Map<String, List<PortBinding>> ports = getPorts();
         when(networkSettings.getPorts()).thenReturn(ports);
 
-        final HashMap<String, ServerImpl> expectedServers = new HashMap<>();
-        expectedServers.put("8080/tcp", new ServerImpl("Server-8080-tcp",
-                                                       null,
+        final HashMap<String, OldServerImpl> expectedServers = new HashMap<>();
+        expectedServers.put("8080/tcp", new OldServerImpl("OldServer-8080-tcp",
+                                                          null,
                                                        CONTAINERINFO_GATEWAY + ":32100",
-                                                       null,
-                                                       new ServerPropertiesImpl(null, CONTAINERINFO_GATEWAY + ":32100", null)));
-        expectedServers.put("9090/udp", new ServerImpl("Server-9090-udp",
-                                                       null,
+                                                          null,
+                                                          new ServerPropertiesImpl(null, CONTAINERINFO_GATEWAY + ":32100", null)));
+        expectedServers.put("9090/udp", new OldServerImpl("OldServer-9090-udp",
+                                                          null,
                                                        CONTAINERINFO_GATEWAY + ":32101",
-                                                       null,
-                                                       new ServerPropertiesImpl(null, CONTAINERINFO_GATEWAY + ":32101", null)));
+                                                          null,
+                                                          new ServerPropertiesImpl(null, CONTAINERINFO_GATEWAY + ":32101", null)));
         // when
-        final Map<String, ServerImpl> servers = strategy.getServers(containerInfo, DEFAULT_HOSTNAME, serverConfs);
+        final Map<String, OldServerImpl> servers = strategy.getServers(containerInfo, DEFAULT_HOSTNAME, serverConfs);
 
         // then
         assertEquals(servers, expectedServers);
@@ -120,27 +120,27 @@ public class ServerEvaluationStrategyTest {
         Map<String, List<PortBinding>> ports = getPorts();
         when(networkSettings.getPorts()).thenReturn(ports);
 
-        serverConfs.put("8080/tcp", new ServerConfImpl("myserv1", "8080/tcp", "http", null));
-        serverConfs.put("9090/udp", new ServerConfImpl("myserv2", "9090/udp", "dhcp", "/some/path"));
+        serverConfs.put("8080/tcp", new OldServerConfImpl("myserv1", "8080/tcp", "http", null));
+        serverConfs.put("9090/udp", new OldServerConfImpl("myserv2", "9090/udp", "dhcp", "/some/path"));
 
-        final HashMap<String, ServerImpl> expectedServers = new HashMap<>();
-        expectedServers.put("8080/tcp", new ServerImpl("myserv1",
-                                                       "http",
+        final HashMap<String, OldServerImpl> expectedServers = new HashMap<>();
+        expectedServers.put("8080/tcp", new OldServerImpl("myserv1",
+                                                          "http",
                                                        CONTAINERINFO_GATEWAY  + ":32100",
                                                        "http://" + CONTAINERINFO_GATEWAY  + ":32100",
-                                                        new ServerPropertiesImpl(null,
+                                                          new ServerPropertiesImpl(null,
                                                                                  CONTAINERINFO_GATEWAY  + ":32100",
                                                                                  "http://" + CONTAINERINFO_GATEWAY  + ":32100")));
-        expectedServers.put("9090/udp", new ServerImpl("myserv2",
-                                                       "dhcp",
+        expectedServers.put("9090/udp", new OldServerImpl("myserv2",
+                                                          "dhcp",
                                                        CONTAINERINFO_GATEWAY  + ":32101",
                                                        "dhcp://" + CONTAINERINFO_GATEWAY  + ":32101/some/path",
-                                                       new ServerPropertiesImpl("/some/path",
+                                                          new ServerPropertiesImpl("/some/path",
                                                                                 CONTAINERINFO_GATEWAY  + ":32101",
                                                                                 "dhcp://" + CONTAINERINFO_GATEWAY  + ":32101/some/path")));
 
         // when
-        final Map<String, ServerImpl> servers = strategy.getServers(containerInfo, DEFAULT_HOSTNAME, serverConfs);
+        final Map<String, OldServerImpl> servers = strategy.getServers(containerInfo, DEFAULT_HOSTNAME, serverConfs);
 
         // then
         assertEquals(servers, expectedServers);
@@ -152,27 +152,27 @@ public class ServerEvaluationStrategyTest {
         Map<String, List<PortBinding>> ports = getPorts();
         when(networkSettings.getPorts()).thenReturn(ports);
 
-        serverConfs.put("8080",     new ServerConfImpl("myserv1", "8080", "http", "/some"));
-        serverConfs.put("9090/udp", new ServerConfImpl("myserv1-tftp", "9090/udp", "tftp", "/path"));
+        serverConfs.put("8080",     new OldServerConfImpl("myserv1", "8080", "http", "/some"));
+        serverConfs.put("9090/udp", new OldServerConfImpl("myserv1-tftp", "9090/udp", "tftp", "/path"));
 
-        final HashMap<String, ServerImpl> expectedServers = new HashMap<>();
-        expectedServers.put("8080/tcp", new ServerImpl("myserv1",
-                                                       "http",
+        final HashMap<String, OldServerImpl> expectedServers = new HashMap<>();
+        expectedServers.put("8080/tcp", new OldServerImpl("myserv1",
+                                                          "http",
                                                        CONTAINERINFO_GATEWAY + ":32100",
                                                        "http://" + CONTAINERINFO_GATEWAY + ":32100/some",
-                                                       new ServerPropertiesImpl("/some",
+                                                          new ServerPropertiesImpl("/some",
                                                                                 CONTAINERINFO_GATEWAY + ":32100",
                                                                                 "http://" + CONTAINERINFO_GATEWAY + ":32100/some")));
-        expectedServers.put("9090/udp", new ServerImpl("myserv1-tftp",
-                                                       "tftp",
+        expectedServers.put("9090/udp", new OldServerImpl("myserv1-tftp",
+                                                          "tftp",
                                                        CONTAINERINFO_GATEWAY  + ":32101",
                                                        "tftp://" + CONTAINERINFO_GATEWAY  + ":32101/path",
-                                                       new ServerPropertiesImpl("/path",
+                                                          new ServerPropertiesImpl("/path",
                                                                                 CONTAINERINFO_GATEWAY  + ":32101",
                                                                                 "tftp://" + CONTAINERINFO_GATEWAY  + ":32101/path")));
 
         // when
-        final Map<String, ServerImpl> servers = strategy.getServers(containerInfo, DEFAULT_HOSTNAME, serverConfs);
+        final Map<String, OldServerImpl> servers = strategy.getServers(containerInfo, DEFAULT_HOSTNAME, serverConfs);
 
         // then
         assertEquals(servers, expectedServers);
@@ -196,24 +196,24 @@ public class ServerEvaluationStrategyTest {
         labels.put(String.format(SERVER_CONF_LABEL_PROTOCOL_KEY, "9090/udp"), "dhcp");
         labels.put(String.format(SERVER_CONF_LABEL_PATH_KEY,     "9090/udp"), "some/path");
 
-        final HashMap<String, ServerImpl> expectedServers = new HashMap<>();
-        expectedServers.put("8080/tcp", new ServerImpl("myserv1",
-                                                       "http",
+        final HashMap<String, OldServerImpl> expectedServers = new HashMap<>();
+        expectedServers.put("8080/tcp", new OldServerImpl("myserv1",
+                                                          "http",
                                                        CONTAINERINFO_GATEWAY  + ":32100",
                                                        "http://" + CONTAINERINFO_GATEWAY  + ":32100/some/path",
-                                                       new ServerPropertiesImpl("/some/path",
+                                                          new ServerPropertiesImpl("/some/path",
                                                                                 CONTAINERINFO_GATEWAY  + ":32100",
                                                                                 "http://" + CONTAINERINFO_GATEWAY  + ":32100/some/path")));
-        expectedServers.put("9090/udp", new ServerImpl("Server-9090-udp",
-                                                       "dhcp",
+        expectedServers.put("9090/udp", new OldServerImpl("OldServer-9090-udp",
+                                                          "dhcp",
                                                        CONTAINERINFO_GATEWAY  + ":32101",
                                                        "dhcp://" + CONTAINERINFO_GATEWAY  + ":32101/some/path",
-                                                       new ServerPropertiesImpl("some/path",
+                                                          new ServerPropertiesImpl("some/path",
                                                                                 CONTAINERINFO_GATEWAY  + ":32101",
                                                                                 "dhcp://" + CONTAINERINFO_GATEWAY  + ":32101/some/path")));
 
         // when
-        final Map<String, ServerImpl> servers = strategy.getServers(containerInfo, DEFAULT_HOSTNAME, serverConfs);
+        final Map<String, OldServerImpl> servers = strategy.getServers(containerInfo, DEFAULT_HOSTNAME, serverConfs);
 
         // then
         assertEquals(servers, expectedServers);
@@ -231,24 +231,24 @@ public class ServerEvaluationStrategyTest {
         labels.put(String.format(SERVER_CONF_LABEL_REF_KEY,      "9090/udp"), "myserv1-tftp");
         labels.put(String.format(SERVER_CONF_LABEL_PROTOCOL_KEY, "9090/udp"), "tftp");
 
-        final HashMap<String, ServerImpl> expectedServers = new HashMap<>();
-        expectedServers.put("8080/tcp", new ServerImpl("myserv1",
-                                                       "http",
+        final HashMap<String, OldServerImpl> expectedServers = new HashMap<>();
+        expectedServers.put("8080/tcp", new OldServerImpl("myserv1",
+                                                          "http",
                                                        CONTAINERINFO_GATEWAY  + ":32100",
                                                        "http://" + CONTAINERINFO_GATEWAY  + ":32100",
-                                                       new ServerPropertiesImpl(null,
+                                                          new ServerPropertiesImpl(null,
                                                                                 CONTAINERINFO_GATEWAY  + ":32100",
                                                                                 "http://" + CONTAINERINFO_GATEWAY + ":32100")));
-        expectedServers.put("9090/udp", new ServerImpl("myserv1-tftp",
-                                                       "tftp",
+        expectedServers.put("9090/udp", new OldServerImpl("myserv1-tftp",
+                                                          "tftp",
                                                        CONTAINERINFO_GATEWAY  + ":32101",
                                                        "tftp://" + CONTAINERINFO_GATEWAY  + ":32101",
-                                                       new ServerPropertiesImpl(null,
+                                                          new ServerPropertiesImpl(null,
                                                                                 CONTAINERINFO_GATEWAY  + ":32101",
                                                                                 "tftp://" + CONTAINERINFO_GATEWAY + ":32101")));
 
         // when
-        final Map<String, ServerImpl> servers = strategy.getServers(containerInfo, DEFAULT_HOSTNAME, serverConfs);
+        final Map<String, OldServerImpl> servers = strategy.getServers(containerInfo, DEFAULT_HOSTNAME, serverConfs);
 
         // then
         assertEquals(servers, expectedServers);
@@ -267,26 +267,26 @@ public class ServerEvaluationStrategyTest {
         labels.put(String.format(SERVER_CONF_LABEL_PROTOCOL_KEY, "9090/udp"), "dhcp");
         labels.put(String.format(SERVER_CONF_LABEL_PATH_KEY,     "9090/udp"), "/path");
 
-        serverConfs.put("8080/tcp", new ServerConfImpl("myserv1conf", "8080/tcp", "http", null));
+        serverConfs.put("8080/tcp", new OldServerConfImpl("myserv1conf", "8080/tcp", "http", null));
 
-        final HashMap<String, ServerImpl> expectedServers = new HashMap<>();
-        expectedServers.put("8080/tcp", new ServerImpl("myserv1conf",
-                                                       "http",
+        final HashMap<String, OldServerImpl> expectedServers = new HashMap<>();
+        expectedServers.put("8080/tcp", new OldServerImpl("myserv1conf",
+                                                          "http",
                                                        CONTAINERINFO_GATEWAY  + ":32100",
                                                        "http://" + CONTAINERINFO_GATEWAY  + ":32100",
-                                                       new ServerPropertiesImpl(null,
+                                                          new ServerPropertiesImpl(null,
                                                                                 CONTAINERINFO_GATEWAY  + ":32100",
                                                                                 "http://" + CONTAINERINFO_GATEWAY + ":32100")));
-        expectedServers.put("9090/udp", new ServerImpl("myserv2label",
-                                                       "dhcp",
+        expectedServers.put("9090/udp", new OldServerImpl("myserv2label",
+                                                          "dhcp",
                                                        CONTAINERINFO_GATEWAY  + ":32101",
                                                        "dhcp://" + CONTAINERINFO_GATEWAY  + ":32101/path",
-                                                       new ServerPropertiesImpl("/path",
+                                                          new ServerPropertiesImpl("/path",
                                                                                 CONTAINERINFO_GATEWAY  + ":32101",
                                                                                 "dhcp://" + CONTAINERINFO_GATEWAY + ":32101/path")));
 
         // when
-        final Map<String, ServerImpl> servers = strategy.getServers(containerInfo, DEFAULT_HOSTNAME, serverConfs);
+        final Map<String, OldServerImpl> servers = strategy.getServers(containerInfo, DEFAULT_HOSTNAME, serverConfs);
 
         // then
         assertEquals(servers, expectedServers);
@@ -298,27 +298,27 @@ public class ServerEvaluationStrategyTest {
         Map<String, List<PortBinding>> ports = getPorts();
         when(networkSettings.getPorts()).thenReturn(ports);
 
-        serverConfs.put("8080",     new ServerConfImpl("myserv1", "8080", "http", "some"));
-        serverConfs.put("9090/udp", new ServerConfImpl("myserv1-tftp", "9090/udp", "tftp", "some/path"));
+        serverConfs.put("8080",     new OldServerConfImpl("myserv1", "8080", "http", "some"));
+        serverConfs.put("9090/udp", new OldServerConfImpl("myserv1-tftp", "9090/udp", "tftp", "some/path"));
 
-        final HashMap<String, ServerImpl> expectedServers = new HashMap<>();
-        expectedServers.put("8080/tcp", new ServerImpl("myserv1",
-                                                       "http",
+        final HashMap<String, OldServerImpl> expectedServers = new HashMap<>();
+        expectedServers.put("8080/tcp", new OldServerImpl("myserv1",
+                                                          "http",
                                                        CONTAINERINFO_GATEWAY + ":32100",
                                                        "http://" + CONTAINERINFO_GATEWAY + ":32100/some",
-                                                       new ServerPropertiesImpl("some",
+                                                          new ServerPropertiesImpl("some",
                                                                                 CONTAINERINFO_GATEWAY + ":32100",
                                                                                 "http://" + CONTAINERINFO_GATEWAY + ":32100/some")));
-        expectedServers.put("9090/udp", new ServerImpl("myserv1-tftp",
-                                                       "tftp",
+        expectedServers.put("9090/udp", new OldServerImpl("myserv1-tftp",
+                                                          "tftp",
                                                        CONTAINERINFO_GATEWAY  + ":32101",
                                                        "tftp://" + CONTAINERINFO_GATEWAY  + ":32101/some/path",
-                                                       new ServerPropertiesImpl("some/path",
+                                                          new ServerPropertiesImpl("some/path",
                                                                                 CONTAINERINFO_GATEWAY  + ":32101",
                                                                                 "tftp://" + CONTAINERINFO_GATEWAY  + ":32101/some/path")));
 
         // when
-        final Map<String, ServerImpl> servers = strategy.getServers(containerInfo, DEFAULT_HOSTNAME, serverConfs);
+        final Map<String, OldServerImpl> servers = strategy.getServers(containerInfo, DEFAULT_HOSTNAME, serverConfs);
 
         // then
         assertEquals(servers, expectedServers);

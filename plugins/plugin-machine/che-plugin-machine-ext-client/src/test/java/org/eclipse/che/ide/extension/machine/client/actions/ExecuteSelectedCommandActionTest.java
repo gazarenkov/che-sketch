@@ -33,7 +33,7 @@ public class ExecuteSelectedCommandActionTest {
 //    @Mock
 //    private CommandImpl command;
 //    @Mock
-//    private MachineDto  machine;
+//    private OldMachineDto  machine;
 //
 //    @InjectMocks
 //    private ExecuteSelectedCommandAction action;

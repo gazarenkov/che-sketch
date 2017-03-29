@@ -19,11 +19,10 @@ import org.eclipse.che.api.core.NotFoundException;
 import org.eclipse.che.api.core.ServerException;
 import org.eclipse.che.api.local.storage.LocalStorage;
 import org.eclipse.che.api.local.storage.LocalStorageFactory;
-import org.eclipse.che.api.machine.server.recipe.RecipeImpl;
+import org.eclipse.che.api.machine.server.recipe.OldRecipeImpl;
 import org.eclipse.che.api.machine.server.spi.RecipeDao;
 
 import javax.annotation.PostConstruct;
-import javax.annotation.PreDestroy;
 import javax.inject.Singleton;
 import java.io.IOException;
 import java.util.HashMap;
@@ -50,7 +49,7 @@ public class LocalRecipeDaoImpl implements RecipeDao {
     public static final String FILENAME = "recipes.json";
 
     @VisibleForTesting
-    final Map<String, RecipeImpl> recipes;
+    final Map<String, OldRecipeImpl> recipes;
 
     private final LocalStorage recipeStorage;
 
@@ -62,7 +61,7 @@ public class LocalRecipeDaoImpl implements RecipeDao {
 
     @PostConstruct
     public synchronized void loadRecipes() {
-        recipes.putAll(recipeStorage.loadMap(new TypeToken<Map<String, RecipeImpl>>() {}));
+        recipes.putAll(recipeStorage.loadMap(new TypeToken<Map<String, OldRecipeImpl>>() {}));
     }
 
     public synchronized void saveRecipes() throws IOException {
@@ -70,18 +69,18 @@ public class LocalRecipeDaoImpl implements RecipeDao {
     }
 
     @Override
-    public synchronized void create(RecipeImpl recipe) throws ConflictException {
+    public synchronized void create(OldRecipeImpl recipe) throws ConflictException {
         if (recipes.containsKey(recipe.getId())) {
-            throw new ConflictException(format("Recipe with id %s already exists", recipe.getId()));
+            throw new ConflictException(format("OldRecipe with id %s already exists", recipe.getId()));
         }
         recipes.put(recipe.getId(), recipe);
     }
 
     @Override
-    public synchronized RecipeImpl update(RecipeImpl update) throws NotFoundException {
-        final RecipeImpl target = recipes.get(update.getId());
+    public synchronized OldRecipeImpl update(OldRecipeImpl update) throws NotFoundException {
+        final OldRecipeImpl target = recipes.get(update.getId());
         if (target == null) {
-            throw new NotFoundException(format("Recipe with id '%s' was not found", update.getId()));
+            throw new NotFoundException(format("OldRecipe with id '%s' was not found", update.getId()));
         }
         if (update.getType() != null) {
             target.setType(update.getType());
@@ -102,7 +101,7 @@ public class LocalRecipeDaoImpl implements RecipeDao {
             target.setTags(update.getTags());
         }
 
-        return new RecipeImpl(target);
+        return new OldRecipeImpl(target);
     }
 
     @Override
@@ -112,23 +111,23 @@ public class LocalRecipeDaoImpl implements RecipeDao {
     }
 
     @Override
-    public synchronized RecipeImpl getById(String id) throws NotFoundException {
+    public synchronized OldRecipeImpl getById(String id) throws NotFoundException {
         requireNonNull(id);
-        final RecipeImpl recipe = recipes.get(id);
+        final OldRecipeImpl recipe = recipes.get(id);
         if (recipe == null) {
-            throw new NotFoundException(format("Recipe with id %s was not found", id));
+            throw new NotFoundException(format("OldRecipe with id %s was not found", id));
         }
-        return new RecipeImpl(recipe);
+        return new OldRecipeImpl(recipe);
     }
 
     @Override
-    public synchronized List<RecipeImpl> search(String user, List<String> tags, String type, int skipCount, int maxItems)
+    public synchronized List<OldRecipeImpl> search(String user, List<String> tags, String type, int skipCount, int maxItems)
             throws ServerException {
-        Stream<RecipeImpl> recipesStream = recipes.values()
-                                                  .stream()
-                                                  .filter(recipe -> (tags == null || recipe.getTags().containsAll(tags))
+        Stream<OldRecipeImpl> recipesStream = recipes.values()
+                                                     .stream()
+                                                     .filter(recipe -> (tags == null || recipe.getTags().containsAll(tags))
                                                                     && (type == null || type.equals(recipe.getType())))
-                                                  .skip(skipCount);
+                                                     .skip(skipCount);
         if (maxItems != 0) {
             recipesStream = recipesStream.limit(maxItems);
         }

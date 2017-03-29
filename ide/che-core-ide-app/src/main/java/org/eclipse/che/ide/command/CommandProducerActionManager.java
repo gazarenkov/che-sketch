@@ -15,7 +15,7 @@ import com.google.inject.Inject;
 import com.google.inject.Singleton;
 import com.google.web.bindery.event.shared.EventBus;
 
-import org.eclipse.che.api.core.model.machine.Machine;
+import org.eclipse.che.api.core.model.machine.OldMachine;
 import org.eclipse.che.ide.Resources;
 import org.eclipse.che.ide.api.action.Action;
 import org.eclipse.che.ide.api.action.ActionEvent;
@@ -117,9 +117,9 @@ public class CommandProducerActionManager implements MachineStateEvent.Handler, 
 
     @Override
     public void start(final Callback<Component, Exception> callback) {
-//        machineServiceClient.getMachines(appContext.getWorkspaceId()).then(new Operation<List<MachineDto>>() {
+//        machineServiceClient.getMachines(appContext.getWorkspaceId()).then(new Operation<List<OldMachineDto>>() {
 //            @Override
-//            public void apply(List<MachineDto> arg) throws OperationException {
+//            public void apply(List<OldMachineDto> arg) throws OperationException {
 //                machines.addAll(arg);
 //
 //                callback.onSuccess(CommandProducerActionManager.this);
@@ -208,7 +208,7 @@ public class CommandProducerActionManager implements MachineStateEvent.Handler, 
         }
     }
 
-    private void removeActionsForMachine(Machine machine) {
+    private void removeActionsForMachine(OldMachine machine) {
         List<Action> actions = actionsByMachines.remove(machine);
         if (actions != null) {
             for (Action action : actions) {

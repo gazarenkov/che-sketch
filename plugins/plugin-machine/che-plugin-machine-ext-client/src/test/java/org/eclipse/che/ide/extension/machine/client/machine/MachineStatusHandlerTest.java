@@ -36,7 +36,7 @@ public class MachineStatusHandlerTest {
 //
 //    //additional mocks
 //    @Mock
-//    private MachineDto                              machineDto;
+//    private OldMachineDto                              machineDto;
 //    @Mock
 //    private MachineEntity                           machine;
 //    @Mock
@@ -48,7 +48,7 @@ public class MachineStatusHandlerTest {
 //    @Mock
 //    private WorkspaceDto                            workspace;
 //    @Mock
-//    private WorkspaceRuntimeDto                     workspaceRuntime;
+//    private RuntimeDto                     runtime;
 //    @Captor
 //    private ArgumentCaptor<Operation<WorkspaceDto>> workspaceCaptor;
 //
@@ -64,8 +64,8 @@ public class MachineStatusHandlerTest {
 //        when(machine.getDisplayName()).thenReturn(MACHINE_NAME);
 //        when(machineDto.getId()).thenReturn(MACHINE_ID);
 //        when(entityFactory.createMachine(machineDto)).thenReturn(machine);
-//        when(workspace.getRuntime()).thenReturn(workspaceRuntime);
-//        when(workspaceRuntime.getMachines()).thenReturn(Collections.singletonList(machineDto));
+//        when(workspace.getRuntime()).thenReturn(runtime);
+//        when(runtime.getMachines()).thenReturn(Collections.singletonList(machineDto));
 //        when(machineStatusChangedEvent.getMachineId()).thenReturn(MACHINE_ID);
 //        when(machineStatusChangedEvent.getWorkspaceId()).thenReturn(WORKSPACE_ID);
 //        when(machineStatusChangedEvent.getMachineName()).thenReturn(MACHINE_NAME);

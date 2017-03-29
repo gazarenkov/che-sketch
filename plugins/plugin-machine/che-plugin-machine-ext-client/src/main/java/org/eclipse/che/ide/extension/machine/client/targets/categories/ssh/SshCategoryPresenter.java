@@ -14,13 +14,13 @@ import com.google.gwt.user.client.ui.AcceptsOneWidget;
 import com.google.inject.Inject;
 import com.google.web.bindery.event.shared.EventBus;
 
-import org.eclipse.che.api.machine.shared.dto.MachineConfigDto;
+import org.eclipse.che.api.machine.shared.dto.OldMachineConfigDto;
 import org.eclipse.che.api.machine.shared.dto.MachineLimitsDto;
 import org.eclipse.che.api.machine.shared.dto.MachineSourceDto;
 import org.eclipse.che.api.machine.shared.dto.event.MachineStatusEvent;
-import org.eclipse.che.api.machine.shared.dto.recipe.NewRecipe;
-import org.eclipse.che.api.machine.shared.dto.recipe.RecipeDescriptor;
-import org.eclipse.che.api.machine.shared.dto.recipe.RecipeUpdate;
+import org.eclipse.che.api.machine.shared.dto.recipe.NewOldRecipe;
+import org.eclipse.che.api.machine.shared.dto.recipe.OldRecipeDescriptor;
+import org.eclipse.che.api.machine.shared.dto.recipe.OldRecipeUpdate;
 import org.eclipse.che.api.promises.client.Operation;
 import org.eclipse.che.api.promises.client.OperationException;
 import org.eclipse.che.api.promises.client.Promise;
@@ -134,7 +134,7 @@ public class SshCategoryPresenter implements CategoryPage, TargetManager, SshVie
             return false;
         }
         if (selectedTarget != null && targetName.equals(selectedTarget.getName())) {
-            RecipeDescriptor recipe = selectedTarget.getRecipe();
+            OldRecipeDescriptor recipe = selectedTarget.getRecipe();
             if (recipe != null && recipe.getName().equals(targetName)) {
                 return true;
             }
@@ -306,21 +306,21 @@ public class SshCategoryPresenter implements CategoryPage, TargetManager, SshVie
         List<String> tags = new ArrayList<>();
         tags.add(this.getCategory());
 
-        NewRecipe newRecipe = dtoFactory.createDto(NewRecipe.class)
-                                        .withName(selectedTarget.getName())
-                                        .withType(getCategory())
-                                        .withScript("{" +
+        NewOldRecipe newRecipe = dtoFactory.createDto(NewOldRecipe.class)
+                                           .withName(selectedTarget.getName())
+                                           .withType(getCategory())
+                                           .withScript("{" +
                                                     "\"host\": \"" + selectedTarget.getHost() + "\", " +
                                                     "\"port\": \"" + selectedTarget.getPort() + "\", " +
                                                     "\"username\": \"" + selectedTarget.getUserName() + "\", " +
                                                     "\"password\": \"" + selectedTarget.getPassword() + "\"" +
                                                     "}")
-                                        .withTags(tags);
+                                           .withTags(tags);
 
-        Promise<RecipeDescriptor> createRecipe = recipeServiceClient.createRecipe(newRecipe);
-        createRecipe.then(new Operation<RecipeDescriptor>() {
+        Promise<OldRecipeDescriptor> createRecipe = recipeServiceClient.createRecipe(newRecipe);
+        createRecipe.then(new Operation<OldRecipeDescriptor>() {
             @Override
-            public void apply(RecipeDescriptor recipe) throws OperationException {
+            public void apply(OldRecipeDescriptor recipe) throws OperationException {
                 onTargetSaved(recipe);
             }
         });
@@ -337,23 +337,23 @@ public class SshCategoryPresenter implements CategoryPage, TargetManager, SshVie
      * Updates as existent target recipe and save it.
      */
     private void updateTargetRecipe() {
-        RecipeUpdate recipeUpdate = dtoFactory.createDto(RecipeUpdate.class)
-                                              .withId(selectedTarget.getRecipe().getId())
-                                              .withName(sshView.getTargetName())
-                                              .withType(selectedTarget.getRecipe().getType())
-                                              .withTags(selectedTarget.getRecipe().getTags())
-                                              .withDescription(selectedTarget.getRecipe().getDescription())
-                                              .withScript("{" +
+        OldRecipeUpdate recipeUpdate = dtoFactory.createDto(OldRecipeUpdate.class)
+                                                 .withId(selectedTarget.getRecipe().getId())
+                                                 .withName(sshView.getTargetName())
+                                                 .withType(selectedTarget.getRecipe().getType())
+                                                 .withTags(selectedTarget.getRecipe().getTags())
+                                                 .withDescription(selectedTarget.getRecipe().getDescription())
+                                                 .withScript("{" +
                                                       "\"host\": \"" + selectedTarget.getHost() + "\", " +
                                                       "\"port\": \"" + selectedTarget.getPort() + "\", " +
                                                       "\"username\": \"" + selectedTarget.getUserName() + "\", " +
                                                       "\"password\": \"" + selectedTarget.getPassword() + "\"" +
                                                       "}");
 
-        Promise<RecipeDescriptor> updateRecipe = recipeServiceClient.updateRecipe(recipeUpdate);
-        updateRecipe.then(new Operation<RecipeDescriptor>() {
+        Promise<OldRecipeDescriptor> updateRecipe = recipeServiceClient.updateRecipe(recipeUpdate);
+        updateRecipe.then(new Operation<OldRecipeDescriptor>() {
             @Override
-            public void apply(RecipeDescriptor recipe) throws OperationException {
+            public void apply(OldRecipeDescriptor recipe) throws OperationException {
                 onTargetSaved(recipe);
             }
         });
@@ -369,7 +369,7 @@ public class SshCategoryPresenter implements CategoryPage, TargetManager, SshVie
     /**
      * Performs actions when target is saved.
      */
-    private void onTargetSaved(RecipeDescriptor recipe) {
+    private void onTargetSaved(OldRecipeDescriptor recipe) {
         selectedTarget.setRecipe(recipe);
         selectedTarget.setDirty(false);
 
@@ -426,12 +426,12 @@ public class SshCategoryPresenter implements CategoryPage, TargetManager, SshVie
         MachineLimitsDto limitsDto = dtoFactory.createDto(MachineLimitsDto.class).withRam(1024);
         MachineSourceDto sourceDto = dtoFactory.createDto(MachineSourceDto.class).withType("ssh-config").withLocation(recipeURL);
 
-        MachineConfigDto configDto = dtoFactory.createDto(MachineConfigDto.class)
-                                               .withDev(false)
-                                               .withName(selectedTarget.getName())
-                                               .withSource(sourceDto)
-                                               .withLimits(limitsDto)
-                                               .withType(getCategory());
+        OldMachineConfigDto configDto = dtoFactory.createDto(OldMachineConfigDto.class)
+                                                  .withDev(false)
+                                                  .withName(selectedTarget.getName())
+                                                  .withSource(sourceDto)
+                                                  .withLimits(limitsDto)
+                                                  .withType(getCategory());
 
         Promise<Void> machinePromise = workspaceServiceClient.createMachine(appContext.getWorkspaceId(), configDto);
 
@@ -592,12 +592,12 @@ public class SshCategoryPresenter implements CategoryPage, TargetManager, SshVie
 //        return workspaceServiceClient.getWorkspace(workspaceId).then(new Function<WorkspaceDto, MachineEntity>() {
 //            @Override
 //            public MachineEntity apply(WorkspaceDto workspace) throws FunctionException {
-//                WorkspaceRuntimeDto workspaceRuntime = workspace.getRuntime();
-//                if (workspaceRuntime == null) {
+//                RuntimeDto runtime = workspace.getRuntime();
+//                if (runtime == null) {
 //                    return null;
 //                }
 //
-//                for (MachineDto machineDto : workspaceRuntime.getMachines()) {
+//                for (OldMachineDto machineDto : runtime.getMachines()) {
 //                    if (machineId.equals(machineDto.getId())) {
 //                        return entityFactory.createMachine(machineDto);
 //                    }

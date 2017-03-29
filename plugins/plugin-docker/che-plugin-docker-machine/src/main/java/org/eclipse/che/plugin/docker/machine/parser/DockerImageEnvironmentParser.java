@@ -12,7 +12,7 @@ package org.eclipse.che.plugin.docker.machine.parser;
 
 import org.eclipse.che.api.core.ServerException;
 import org.eclipse.che.api.core.model.workspace.config.Environment;
-import org.eclipse.che.api.core.model.workspace.config.EnvironmentRecipe;
+import org.eclipse.che.api.core.model.workspace.config.Recipe;
 import org.eclipse.che.api.environment.server.model.CheServiceImpl;
 import org.eclipse.che.api.environment.server.model.CheServicesEnvironmentImpl;
 
@@ -28,7 +28,7 @@ public class DockerImageEnvironmentParser extends DockerEnvironmentParser {
 
     @Override
     public CheServicesEnvironmentImpl parse(Environment environment) throws IllegalArgumentException, ServerException {
-        EnvironmentRecipe recipe = environment.getRecipe();
+        Recipe recipe = environment.getRecipe();
 
         if (!"dockerimage".equals(recipe.getType())) {
             throw new IllegalArgumentException(format("Docker image environment parser doesn't support recipe type '%s'",

@@ -71,7 +71,7 @@ import org.eclipse.che.ide.extension.machine.client.targets.categories.ssh.SshVi
 import org.eclipse.che.ide.extension.machine.client.targets.categories.ssh.SshViewImpl;
 
 /**
- * GIN module for Machine extension.
+ * GIN module for OldMachine extension.
  *
  * @author Artem Zatsarynnyi
  * @author Dmitry Shnurenko

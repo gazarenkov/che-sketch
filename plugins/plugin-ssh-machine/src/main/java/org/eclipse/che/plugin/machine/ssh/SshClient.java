@@ -16,7 +16,7 @@ import org.eclipse.che.api.machine.server.exception.MachineException;
  * Client for communication with ssh machine using SSH protocol.
  *
  * <p/>Client should be started with {{@link #start()}} before performing communication with a server.
- * <br/>Server should be stopped with {{@link #stop()}} after finishing of communication with a server.
+ * <br/>OldServer should be stopped with {{@link #stop()}} after finishing of communication with a server.
  *
  * @author Alexander Garagatyi
  */

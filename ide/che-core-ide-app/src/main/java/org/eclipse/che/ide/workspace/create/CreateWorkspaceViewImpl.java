@@ -26,7 +26,7 @@ import com.google.gwt.user.client.ui.Widget;
 import com.google.inject.Inject;
 import com.google.inject.Singleton;
 
-import org.eclipse.che.api.machine.shared.dto.recipe.RecipeDescriptor;
+import org.eclipse.che.api.machine.shared.dto.recipe.OldRecipeDescriptor;
 import org.eclipse.che.ide.CoreLocalizationConstant;
 import org.eclipse.che.ide.ui.window.Window;
 import org.eclipse.che.ide.workspace.WorkspaceWidgetFactory;
@@ -158,7 +158,7 @@ class CreateWorkspaceViewImpl extends Window implements CreateWorkspaceView, Rec
 
     /** {@inheritDoc} */
     @Override
-    public void showFoundByTagRecipes(List<RecipeDescriptor> recipes) {
+    public void showFoundByTagRecipes(List<OldRecipeDescriptor> recipes) {
         addRecipesToPanel(recipes);
 
         int xPanelCoordinate = tags.getAbsoluteLeft() + BORDER_WIDTH;
@@ -168,10 +168,10 @@ class CreateWorkspaceViewImpl extends Window implements CreateWorkspaceView, Rec
         popupPanel.show();
     }
 
-    private void addRecipesToPanel(List<RecipeDescriptor> recipes) {
+    private void addRecipesToPanel(List<OldRecipeDescriptor> recipes) {
         tagsPanel.clear();
 
-        for (RecipeDescriptor descriptor : recipes) {
+        for (OldRecipeDescriptor descriptor : recipes) {
             RecipeWidget tag = tagFactory.create(descriptor);
             tag.setDelegate(this);
 
@@ -183,7 +183,7 @@ class CreateWorkspaceViewImpl extends Window implements CreateWorkspaceView, Rec
 
     /** {@inheritDoc} */
     @Override
-    public void showPredefinedRecipes(List<RecipeDescriptor> recipes) {
+    public void showPredefinedRecipes(List<OldRecipeDescriptor> recipes) {
         addRecipesToPanel(recipes);
 
         int xPanelCoordinate = predefinedRecipes.getAbsoluteLeft() + BORDER_WIDTH;

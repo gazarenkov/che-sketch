@@ -19,9 +19,9 @@ import java.util.HashMap;
 import java.util.List;
 import java.util.Map;
 
-import org.eclipse.che.api.core.model.machine.MachineConfig;
-import org.eclipse.che.api.machine.server.model.impl.ServerConfImpl;
-import org.eclipse.che.api.machine.server.model.impl.ServerImpl;
+import org.eclipse.che.api.core.model.machine.OldMachineConfig;
+import org.eclipse.che.api.machine.server.model.impl.OldServerConfImpl;
+import org.eclipse.che.api.machine.server.model.impl.OldServerImpl;
 import org.eclipse.che.api.machine.server.model.impl.ServerPropertiesImpl;
 import org.eclipse.che.plugin.docker.client.json.ContainerConfig;
 import org.eclipse.che.plugin.docker.client.json.ContainerInfo;
@@ -44,17 +44,17 @@ public class LocalDockerServerEvaluationStrategyTest {
     private static final String DEFAULT_HOSTNAME         = "localhost";
 
     @Mock
-    private ContainerInfo   containerInfo;
+    private ContainerInfo    containerInfo;
     @Mock
-    private MachineConfig   machineConfig;
+    private OldMachineConfig machineConfig;
     @Mock
-    private ContainerConfig containerConfig;
+    private ContainerConfig  containerConfig;
     @Mock
-    private NetworkSettings networkSettings;
+    private NetworkSettings  networkSettings;
 
     private ServerEvaluationStrategy strategy;
 
-    private Map<String, ServerConfImpl> serverConfs;
+    private Map<String, OldServerConfImpl> serverConfs;
 
     private Map<String, List<PortBinding>> ports;
 
@@ -62,8 +62,8 @@ public class LocalDockerServerEvaluationStrategyTest {
     public void setUp() {
 
         serverConfs = new HashMap<>();
-        serverConfs.put("4301/tcp", new ServerConfImpl("sysServer1-tcp", "4301/tcp", "http", "/some/path1"));
-        serverConfs.put("4305/udp", new ServerConfImpl("devSysServer1-udp", "4305/udp", null, "some/path4"));
+        serverConfs.put("4301/tcp", new OldServerConfImpl("sysServer1-tcp", "4301/tcp", "http", "/some/path1"));
+        serverConfs.put("4305/udp", new OldServerConfImpl("devSysServer1-udp", "4305/udp", null, "some/path4"));
 
         ports = new HashMap<>();
         ports.put("4301/tcp", Collections.singletonList(new PortBinding().withHostIp(ALL_IP_ADDRESS )
@@ -88,14 +88,14 @@ public class LocalDockerServerEvaluationStrategyTest {
         // given
         strategy = new LocalDockerServerEvaluationStrategy(null, null);
 
-        final Map<String, ServerImpl> expectedServers = getExpectedServers(CONTAINERINFO_GATEWAY,
-                                                                           CONTAINERINFO_IP_ADDRESS,
-                                                                           true);
+        final Map<String, OldServerImpl> expectedServers = getExpectedServers(CONTAINERINFO_GATEWAY,
+                                                                              CONTAINERINFO_IP_ADDRESS,
+                                                                              true);
 
         // when
-        final Map<String, ServerImpl> servers = strategy.getServers(containerInfo,
-                                                                    DEFAULT_HOSTNAME,
-                                                                    serverConfs);
+        final Map<String, OldServerImpl> servers = strategy.getServers(containerInfo,
+                                                                       DEFAULT_HOSTNAME,
+                                                                       serverConfs);
 
         // then
         assertEquals(servers, expectedServers);
@@ -110,14 +110,14 @@ public class LocalDockerServerEvaluationStrategyTest {
         // given
         strategy = new LocalDockerServerEvaluationStrategy(CHE_DOCKER_IP, null);
 
-        final Map<String, ServerImpl> expectedServers = getExpectedServers(CONTAINERINFO_GATEWAY,
-                                                                           CONTAINERINFO_IP_ADDRESS,
-                                                                           true);
+        final Map<String, OldServerImpl> expectedServers = getExpectedServers(CONTAINERINFO_GATEWAY,
+                                                                              CONTAINERINFO_IP_ADDRESS,
+                                                                              true);
 
         // when
-        final Map<String, ServerImpl> servers = strategy.getServers(containerInfo,
-                                                                    DEFAULT_HOSTNAME,
-                                                                    serverConfs);
+        final Map<String, OldServerImpl> servers = strategy.getServers(containerInfo,
+                                                                       DEFAULT_HOSTNAME,
+                                                                       serverConfs);
 
         // then
         assertEquals(servers, expectedServers);
@@ -133,14 +133,14 @@ public class LocalDockerServerEvaluationStrategyTest {
         strategy = new LocalDockerServerEvaluationStrategy(CHE_DOCKER_IP, null);
         when(networkSettings.getIpAddress()).thenReturn("");
 
-        final Map<String, ServerImpl> expectedServers = getExpectedServers(CONTAINERINFO_GATEWAY,
-                                                                           DEFAULT_HOSTNAME,
-                                                                           false);
+        final Map<String, OldServerImpl> expectedServers = getExpectedServers(CONTAINERINFO_GATEWAY,
+                                                                              DEFAULT_HOSTNAME,
+                                                                              false);
 
         // when
-        final Map<String, ServerImpl> servers = strategy.getServers(containerInfo,
-                                                                    DEFAULT_HOSTNAME,
-                                                                    serverConfs);
+        final Map<String, OldServerImpl> servers = strategy.getServers(containerInfo,
+                                                                       DEFAULT_HOSTNAME,
+                                                                       serverConfs);
 
         // then
         assertEquals(servers, expectedServers);
@@ -155,14 +155,14 @@ public class LocalDockerServerEvaluationStrategyTest {
         // given
         strategy = new LocalDockerServerEvaluationStrategy(CHE_DOCKER_IP, CHE_DOCKER_IP_EXTERNAL);
 
-        final Map<String, ServerImpl> expectedServers = getExpectedServers(CHE_DOCKER_IP_EXTERNAL,
-                                                                           CONTAINERINFO_IP_ADDRESS,
-                                                                           true);
+        final Map<String, OldServerImpl> expectedServers = getExpectedServers(CHE_DOCKER_IP_EXTERNAL,
+                                                                              CONTAINERINFO_IP_ADDRESS,
+                                                                              true);
 
         // when
-        final Map<String, ServerImpl> servers = strategy.getServers(containerInfo,
-                                                                    DEFAULT_HOSTNAME,
-                                                                    serverConfs);
+        final Map<String, OldServerImpl> servers = strategy.getServers(containerInfo,
+                                                                       DEFAULT_HOSTNAME,
+                                                                       serverConfs);
 
         // then
         assertEquals(servers, expectedServers);
@@ -177,14 +177,14 @@ public class LocalDockerServerEvaluationStrategyTest {
         // given
         strategy = new LocalDockerServerEvaluationStrategy(CHE_DOCKER_IP, null);
 
-        final Map<String, ServerImpl> expectedServers = getExpectedServers(CONTAINERINFO_GATEWAY,
-                                                                           CONTAINERINFO_IP_ADDRESS,
-                                                                           true);
+        final Map<String, OldServerImpl> expectedServers = getExpectedServers(CONTAINERINFO_GATEWAY,
+                                                                              CONTAINERINFO_IP_ADDRESS,
+                                                                              true);
 
         // when
-        final Map<String, ServerImpl> servers = strategy.getServers(containerInfo,
-                                                                    DEFAULT_HOSTNAME,
-                                                                    serverConfs);
+        final Map<String, OldServerImpl> servers = strategy.getServers(containerInfo,
+                                                                       DEFAULT_HOSTNAME,
+                                                                       serverConfs);
 
         // then
         assertEquals(servers, expectedServers);
@@ -200,22 +200,22 @@ public class LocalDockerServerEvaluationStrategyTest {
         strategy = new LocalDockerServerEvaluationStrategy(CHE_DOCKER_IP, null);
         when(networkSettings.getGateway()).thenReturn("");
 
-        final Map<String, ServerImpl> expectedServers = getExpectedServers(DEFAULT_HOSTNAME,
-                                                                           CONTAINERINFO_IP_ADDRESS,
-                                                                           true);
+        final Map<String, OldServerImpl> expectedServers = getExpectedServers(DEFAULT_HOSTNAME,
+                                                                              CONTAINERINFO_IP_ADDRESS,
+                                                                              true);
 
         // when
-        final Map<String, ServerImpl> servers = strategy.getServers(containerInfo,
-                                                                    DEFAULT_HOSTNAME,
-                                                                    serverConfs);
+        final Map<String, OldServerImpl> servers = strategy.getServers(containerInfo,
+                                                                       DEFAULT_HOSTNAME,
+                                                                       serverConfs);
 
         // then
         assertEquals(servers, expectedServers);
     }
 
-    private Map<String, ServerImpl> getExpectedServers(String externalAddress,
-                                                       String internalAddress,
-                                                       boolean useExposedPorts) {
+    private Map<String, OldServerImpl> getExpectedServers(String externalAddress,
+                                                          String internalAddress,
+                                                          boolean useExposedPorts) {
         String port1;
         String port2;
         if (useExposedPorts) {
@@ -225,19 +225,19 @@ public class LocalDockerServerEvaluationStrategyTest {
             port1 = ":32100";
             port2 = ":32103";
         }
-        Map<String, ServerImpl> expectedServers = new HashMap<>();
-        expectedServers.put("4301/tcp", new ServerImpl("sysServer1-tcp",
-                "http",
+        Map<String, OldServerImpl> expectedServers = new HashMap<>();
+        expectedServers.put("4301/tcp", new OldServerImpl("sysServer1-tcp",
+                                                          "http",
                 externalAddress + ":32100",
                 "http://" + externalAddress + ":32100/some/path1",
-                new ServerPropertiesImpl("/some/path1",
+                                                          new ServerPropertiesImpl("/some/path1",
                                          internalAddress + port1,
                                          "http://" + internalAddress + port1 + "/some/path1")));
-        expectedServers.put("4305/udp", new ServerImpl("devSysServer1-udp",
-                null,
+        expectedServers.put("4305/udp", new OldServerImpl("devSysServer1-udp",
+                                                          null,
                 externalAddress + ":32103",
-                null,
-                new ServerPropertiesImpl("some/path4",
+                                                          null,
+                                                          new ServerPropertiesImpl("some/path4",
                                          internalAddress + port2,
                                          null)));
         return expectedServers;

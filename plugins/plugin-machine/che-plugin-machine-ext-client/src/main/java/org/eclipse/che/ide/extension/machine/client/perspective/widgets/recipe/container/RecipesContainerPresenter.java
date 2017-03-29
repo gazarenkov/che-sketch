@@ -15,7 +15,7 @@ import com.google.gwt.user.client.ui.IsWidget;
 import com.google.inject.Inject;
 import com.google.inject.Singleton;
 
-import org.eclipse.che.api.machine.shared.dto.recipe.RecipeDescriptor;
+import org.eclipse.che.api.machine.shared.dto.recipe.OldRecipeDescriptor;
 import org.eclipse.che.ide.extension.machine.client.inject.factories.EntityFactory;
 import org.eclipse.che.ide.extension.machine.client.perspective.widgets.recipe.editor.RecipeEditorPanel;
 import org.eclipse.che.ide.extension.machine.client.perspective.widgets.recipe.editor.RecipeEditorView;
@@ -63,7 +63,7 @@ public class RecipesContainerPresenter implements TabPresenter, RecipesContainer
         recipePanels.put(recipe, editorPanel);
 
         RecipeEditorView editorView = ((RecipeEditorView)editorPanel.getView());
-        RecipeDescriptor recipeDescriptor = recipe.getDescriptor();
+        OldRecipeDescriptor recipeDescriptor = recipe.getDescriptor();
         editorView.setScriptUrl(recipeDescriptor.getLink("get recipe script").getHref());
 
         editorView.setTags(recipeDescriptor.getTags());

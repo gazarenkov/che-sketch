@@ -15,7 +15,7 @@ import com.google.gwt.user.client.rpc.AsyncCallback;
 import com.google.inject.Inject;
 
 import org.eclipse.che.api.machine.shared.dto.CommandDto;
-import org.eclipse.che.api.machine.shared.dto.MachineConfigDto;
+import org.eclipse.che.api.machine.shared.dto.OldMachineConfigDto;
 import org.eclipse.che.api.machine.shared.dto.SnapshotDto;
 import org.eclipse.che.api.promises.client.Function;
 import org.eclipse.che.api.promises.client.FunctionException;
@@ -347,7 +347,7 @@ public class WorkspaceServiceClientImpl implements WorkspaceServiceClient {
     }
 
     @Override
-    public Promise<Void> createMachine(final String wsId, final MachineConfigDto machineConfig) {
+    public Promise<Void> createMachine(final String wsId, final OldMachineConfigDto machineConfig) {
         return newPromise(new RequestCall<Void>() {
             @Override
             public void makeCall(AsyncCallback<Void> callback) {
@@ -357,7 +357,7 @@ public class WorkspaceServiceClientImpl implements WorkspaceServiceClient {
     }
 
     private void createMachine(@NotNull String wsId,
-                               @NotNull MachineConfigDto newMachine,
+                               @NotNull OldMachineConfigDto newMachine,
                                @NotNull AsyncCallback<Void> callback) {
         String url = baseHttpUrl + '/' + wsId + "/machine";
         asyncRequestFactory.createPostRequest(url, newMachine)

@@ -126,7 +126,7 @@ public class ProjectService extends Service {
                   response = ProjectConfigDto.class,
                   responseContainer = "List")
     @ApiResponses({@ApiResponse(code = 200, message = "OK"),
-                   @ApiResponse(code = 500, message = "Server error")})
+                   @ApiResponse(code = 500, message = "OldServer error")})
     @GenerateLink(rel = LINK_REL_GET_PROJECTS)
     public List<ProjectConfigDto> getProjects() throws IOException,
                                                        ServerException,
@@ -146,7 +146,7 @@ public class ProjectService extends Service {
     @ApiResponses({@ApiResponse(code = 200, message = "OK"),
                    @ApiResponse(code = 404, message = "Project with specified path doesn't exist in workspace"),
                    @ApiResponse(code = 403, message = "Access to requested project is forbidden"),
-                   @ApiResponse(code = 500, message = "Server error")})
+                   @ApiResponse(code = 500, message = "OldServer error")})
     public ProjectConfigDto getProject(@ApiParam(value = "Path to requested project", required = true)
                                        @PathParam("path") String path) throws NotFoundException,
                                                                               ForbiddenException,
@@ -163,7 +163,7 @@ public class ProjectService extends Service {
     @ApiResponses({@ApiResponse(code = 200, message = "OK"),
                    @ApiResponse(code = 403, message = "Operation is forbidden"),
                    @ApiResponse(code = 409, message = "Project with specified name already exist in workspace"),
-                   @ApiResponse(code = 500, message = "Server error")})
+                   @ApiResponse(code = 500, message = "OldServer error")})
     @GenerateLink(rel = LINK_REL_CREATE_PROJECT)
     /**
      * NOTE: parentPath is added to make a module
@@ -212,7 +212,7 @@ public class ProjectService extends Service {
                    @ApiResponse(code = 400, message = "Path for new project should be defined"),
                    @ApiResponse(code = 403, message = "Operation is forbidden"),
                    @ApiResponse(code = 409, message = "Project with specified name already exist in workspace"),
-                   @ApiResponse(code = 500, message = "Server error")})
+                   @ApiResponse(code = 500, message = "OldServer error")})
     @GenerateLink(rel = LINK_REL_CREATE_BATCH_PROJECTS)
     public List<ProjectConfigDto> createBatchProjects(
             @Description("list of descriptors for projects") List<NewProjectConfigDto> projectConfigList,
@@ -244,7 +244,7 @@ public class ProjectService extends Service {
                    @ApiResponse(code = 404, message = "Project with specified path doesn't exist in workspace"),
                    @ApiResponse(code = 403, message = "Operation is forbidden"),
                    @ApiResponse(code = 409, message = "Update operation causes conflicts"),
-                   @ApiResponse(code = 500, message = "Server error")})
+                   @ApiResponse(code = 500, message = "OldServer error")})
     public ProjectConfigDto updateProject(@ApiParam(value = "Path to updated project", required = true)
                                           @PathParam("path") String path,
                                           ProjectConfigDto projectConfigDto) throws NotFoundException,
@@ -267,7 +267,7 @@ public class ProjectService extends Service {
     @ApiResponses({@ApiResponse(code = 204, message = ""),
                    @ApiResponse(code = 403, message = "User not authorized to call this operation"),
                    @ApiResponse(code = 404, message = "Not found"),
-                   @ApiResponse(code = 500, message = "Internal Server Error")})
+                   @ApiResponse(code = 500, message = "Internal OldServer Error")})
     public void delete(@ApiParam("Path to a resource to be deleted")
                        @PathParam("path") String path) throws NotFoundException, ForbiddenException, ConflictException, ServerException {
         projectManager.delete(path);
@@ -281,7 +281,7 @@ public class ProjectService extends Service {
     @ApiResponses({@ApiResponse(code = 200, message = "OK"),
                    @ApiResponse(code = 404, message = "Project with specified path doesn't exist in workspace"),
                    @ApiResponse(code = 403, message = "Access to requested project is forbidden"),
-                   @ApiResponse(code = 500, message = "Server error")})
+                   @ApiResponse(code = 500, message = "OldServer error")})
     public SourceEstimation estimateProject(@ApiParam(value = "Path to requested project", required = true)
                                             @PathParam("path") String path,
                                             @ApiParam(value = "Project Type ID to estimate against", required = true)
@@ -365,7 +365,7 @@ public class ProjectService extends Service {
                    @ApiResponse(code = 403, message = "User not authorized to call this operation"),
                    @ApiResponse(code = 404, message = "Not found"),
                    @ApiResponse(code = 409, message = "File already exists"),
-                   @ApiResponse(code = 500, message = "Internal Server Error")})
+                   @ApiResponse(code = 500, message = "Internal OldServer Error")})
     public Response createFile(@ApiParam(value = "Path to a target directory", required = true)
                                @PathParam("parent") String parentPath,
                                @ApiParam(value = "New file name", required = true)
@@ -402,7 +402,7 @@ public class ProjectService extends Service {
                    @ApiResponse(code = 403, message = "User not authorized to call this operation"),
                    @ApiResponse(code = 404, message = "Not found"),
                    @ApiResponse(code = 409, message = "File already exists"),
-                   @ApiResponse(code = 500, message = "Internal Server Error")})
+                   @ApiResponse(code = 500, message = "Internal OldServer Error")})
     public Response createFolder(@ApiParam(value = "Path to a new folder destination", required = true)
                                  @PathParam("path") String path) throws ConflictException,
                                                                         ForbiddenException,
@@ -434,7 +434,7 @@ public class ProjectService extends Service {
                    @ApiResponse(code = 403, message = "User not authorized to call this operation"),
                    @ApiResponse(code = 404, message = "Not found"),
                    @ApiResponse(code = 409, message = "File already exists"),
-                   @ApiResponse(code = 500, message = "Internal Server Error")})
+                   @ApiResponse(code = 500, message = "Internal OldServer Error")})
     public Response uploadFile(@ApiParam(value = "Destination path", required = true)
                                @PathParam("parent") String parentPath,
                                Iterator<FileItem> formData) throws NotFoundException,
@@ -462,7 +462,7 @@ public class ProjectService extends Service {
                    @ApiResponse(code = 403, message = "Forbidden operation"),
                    @ApiResponse(code = 404, message = "Not found"),
                    @ApiResponse(code = 409, message = "Resource already exists"),
-                   @ApiResponse(code = 500, message = "Internal Server Error")})
+                   @ApiResponse(code = 500, message = "Internal OldServer Error")})
     public Response uploadFolderFromZip(@ApiParam(value = "Path in the project", required = true)
                                         @PathParam("path") String path,
                                         Iterator<FileItem> formData) throws ServerException,
@@ -483,7 +483,7 @@ public class ProjectService extends Service {
     @ApiResponses({@ApiResponse(code = 200, message = "OK"),
                    @ApiResponse(code = 403, message = "User not authorized to call this operation"),
                    @ApiResponse(code = 404, message = "Not found"),
-                   @ApiResponse(code = 500, message = "Internal Server Error")})
+                   @ApiResponse(code = 500, message = "Internal OldServer Error")})
     @GET
     @Path("/file/{path:.*}")
     public Response getFile(@ApiParam(value = "Path to a file", required = true)
@@ -503,7 +503,7 @@ public class ProjectService extends Service {
     @ApiResponses({@ApiResponse(code = 200, message = ""),
                    @ApiResponse(code = 403, message = "User not authorized to call this operation"),
                    @ApiResponse(code = 404, message = "Not found"),
-                   @ApiResponse(code = 500, message = "Internal Server Error")})
+                   @ApiResponse(code = 500, message = "Internal OldServer Error")})
     public Response updateFile(@ApiParam(value = "Full path to a file", required = true)
                                @PathParam("path") String path,
                                InputStream content) throws NotFoundException, ForbiddenException, ServerException {
@@ -533,7 +533,7 @@ public class ProjectService extends Service {
                    @ApiResponse(code = 403, message = "User not authorized to call this operation"),
                    @ApiResponse(code = 404, message = "Not found"),
                    @ApiResponse(code = 409, message = "Resource already exists"),
-                   @ApiResponse(code = 500, message = "Internal Server Error")})
+                   @ApiResponse(code = 500, message = "Internal OldServer Error")})
     public Response copy(@ApiParam("Path to a resource") @PathParam("path") String path,
                          @ApiParam(value = "Path to a new location", required = true) @QueryParam("to") String newParent,
                          CopyOptions copyOptions) throws NotFoundException,
@@ -583,7 +583,7 @@ public class ProjectService extends Service {
                    @ApiResponse(code = 403, message = "User not authorized to call this operation"),
                    @ApiResponse(code = 404, message = "Not found"),
                    @ApiResponse(code = 409, message = "Resource already exists"),
-                   @ApiResponse(code = 500, message = "Internal Server Error")})
+                   @ApiResponse(code = 500, message = "Internal OldServer Error")})
     public Response move(@ApiParam("Path to a resource to be moved") @PathParam("path") String path,
                          @ApiParam("Path to a new location") @QueryParam("to") String newParent,
                          MoveOptions moveOptions) throws NotFoundException, ForbiddenException, ConflictException, ServerException {
@@ -684,7 +684,7 @@ public class ProjectService extends Service {
                    @ApiResponse(code = 403, message = "User not authorized to call this operation"),
                    @ApiResponse(code = 404, message = "Not found"),
                    @ApiResponse(code = 409, message = "Resource already exists"),
-                   @ApiResponse(code = 500, message = "Internal Server Error")})
+                   @ApiResponse(code = 500, message = "Internal OldServer Error")})
     public Response importZip(@ApiParam(value = "Path to a location (where import to?)")
                               @PathParam("path") String path,
                               InputStream zip,
@@ -721,7 +721,7 @@ public class ProjectService extends Service {
     @ApiResponses({@ApiResponse(code = 201, message = ""),
                    @ApiResponse(code = 403, message = "User not authorized to call this operation"),
                    @ApiResponse(code = 404, message = "Not found"),
-                   @ApiResponse(code = 500, message = "Internal Server Error")})
+                   @ApiResponse(code = 500, message = "Internal OldServer Error")})
     public InputStream exportZip(@ApiParam(value = "Path to resource to be exported")
                                  @PathParam("path") String path) throws NotFoundException, ForbiddenException, ServerException {
 
@@ -765,7 +765,7 @@ public class ProjectService extends Service {
     @ApiResponses({@ApiResponse(code = 200, message = "OK"),
                    @ApiResponse(code = 403, message = "User not authorized to call this operation"),
                    @ApiResponse(code = 404, message = "Not found"),
-                   @ApiResponse(code = 500, message = "Internal Server Error")})
+                   @ApiResponse(code = 500, message = "Internal OldServer Error")})
     public List<ItemReference> getChildren(@ApiParam(value = "Path to a project", required = true)
                                            @PathParam("parent") String path) throws NotFoundException,
                                                                                     ForbiddenException,
@@ -798,7 +798,7 @@ public class ProjectService extends Service {
     @ApiResponses({@ApiResponse(code = 200, message = "OK"),
                    @ApiResponse(code = 403, message = "User not authorized to call this operation"),
                    @ApiResponse(code = 404, message = "Not found"),
-                   @ApiResponse(code = 500, message = "Internal Server Error")})
+                   @ApiResponse(code = 500, message = "Internal OldServer Error")})
     public TreeElement getTree(@ApiParam(value = "Path to resource. Can be project or its folders", required = true)
                                @PathParam("parent") String path,
                                @ApiParam(value = "Tree depth. This parameter can be dropped. If not specified ?depth=1 is used by default")
@@ -822,7 +822,7 @@ public class ProjectService extends Service {
     @ApiResponses({@ApiResponse(code = 200, message = "OK"),
                    @ApiResponse(code = 403, message = "User not authorized to call this operation"),
                    @ApiResponse(code = 404, message = "Not found"),
-                   @ApiResponse(code = 500, message = "Internal Server Error")})
+                   @ApiResponse(code = 500, message = "Internal OldServer Error")})
     public ItemReference getItem(@ApiParam(value = "Path to resource. Can be project or its folders", required = true)
                                  @PathParam("path") String path) throws NotFoundException,
                                                                         ForbiddenException,
@@ -851,7 +851,7 @@ public class ProjectService extends Service {
                    @ApiResponse(code = 403, message = "User not authorized to call this operation"),
                    @ApiResponse(code = 404, message = "Not found"),
                    @ApiResponse(code = 409, message = "Conflict error"),
-                   @ApiResponse(code = 500, message = "Internal Server Error")})
+                   @ApiResponse(code = 500, message = "Internal OldServer Error")})
     public List<ItemReference> search(@ApiParam(value = "Path to resource, i.e. where to search?", required = true)
                                       @PathParam("path") String path,
                                       @ApiParam(value = "Resource name")

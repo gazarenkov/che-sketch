@@ -164,7 +164,7 @@ public class WorkspaceServiceLinksInjector {
 //    }
 
 //    protected void injectRuntimeLinks(WorkspaceDto workspace, URI ideUri, UriBuilder uriBuilder, ServiceContext serviceContext) {
-//        final WorkspaceRuntimeDto runtime = workspace.getRuntime();
+//        final RuntimeDto runtime = workspace.getRuntime();
 //        // add links for running workspace
 //        if (workspace.getStatus() == RUNNING && runtime != null) {
 //            runtime.getLinks()
@@ -178,9 +178,9 @@ public class WorkspaceServiceLinksInjector {
 //            // TODO review
 ////            runtime.getMachines().forEach(machine -> injectMachineLinks(machine, serviceContext));
 //
-////            final MachineDto devMachine = runtime.getDevMachine();
+////            final OldMachineDto devMachine = runtime.getDevMachine();
 ////            if (devMachine != null) {
-////                final Collection<ServerDto> servers = devMachine.getRuntime()
+////                final Collection<OldServerDto> servers = devMachine.getRuntime()
 ////                                                                .getServers()
 ////                                                                .values();
 ////                servers.stream()
@@ -235,7 +235,7 @@ public class WorkspaceServiceLinksInjector {
 //        }
 //    }
 
-//    public MachineDto injectMachineLinks(MachineDto machine, ServiceContext serviceContext) {
+//    public OldMachineDto injectMachineLinks(OldMachineDto machine, ServiceContext serviceContext) {
 //        return machineLinksInjector.injectLinks(machine, serviceContext);
 //    }
 }

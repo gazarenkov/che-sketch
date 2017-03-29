@@ -16,10 +16,10 @@ import com.google.inject.Inject;
 import com.google.inject.Singleton;
 import com.google.web.bindery.event.shared.EventBus;
 
+import org.eclipse.che.api.machine.shared.dto.recipe.NewOldRecipe;
+import org.eclipse.che.api.machine.shared.dto.recipe.OldRecipeDescriptor;
 import org.eclipse.che.ide.api.machine.RecipeServiceClient;
-import org.eclipse.che.api.machine.shared.dto.recipe.NewRecipe;
-import org.eclipse.che.api.machine.shared.dto.recipe.RecipeDescriptor;
-import org.eclipse.che.api.machine.shared.dto.recipe.RecipeUpdate;
+import org.eclipse.che.api.machine.shared.dto.recipe.OldRecipeUpdate;
 import org.eclipse.che.api.promises.client.Operation;
 import org.eclipse.che.api.promises.client.OperationException;
 import org.eclipse.che.api.promises.client.Promise;
@@ -69,8 +69,8 @@ public class RecipePartPresenter extends BasePresenter implements RecipePartView
     private final RecipeServiceClient         service;
     private final DtoFactory                  dtoFactory;
 
-    private RecipeWidget                            selectedRecipe;
-    private HashMap<RecipeWidget, RecipeDescriptor> recipes;
+    private RecipeWidget                               selectedRecipe;
+    private HashMap<RecipeWidget, OldRecipeDescriptor> recipes;
 
     @Inject
     public RecipePartPresenter(RecipePartView view,
@@ -97,12 +97,12 @@ public class RecipePartPresenter extends BasePresenter implements RecipePartView
 
     /** Shows all created recipes. */
     public void showRecipes() {
-        Promise<List<RecipeDescriptor>> recipesPromise = service.getAllRecipes();
-        recipesPromise.then(new Operation<List<RecipeDescriptor>>() {
+        Promise<List<OldRecipeDescriptor>> recipesPromise = service.getAllRecipes();
+        recipesPromise.then(new Operation<List<OldRecipeDescriptor>>() {
             @Override
-            public void apply(List<RecipeDescriptor> recipeDescriptors) throws OperationException {
+            public void apply(List<OldRecipeDescriptor> recipeDescriptors) throws OperationException {
                 view.clear();
-                for (RecipeDescriptor recipeDescriptor : recipeDescriptors) {
+                for (OldRecipeDescriptor recipeDescriptor : recipeDescriptors) {
                     addRecipe(recipeDescriptor);
                 }
                 if (recipes.isEmpty()) {
@@ -121,7 +121,7 @@ public class RecipePartPresenter extends BasePresenter implements RecipePartView
      *         a descriptor of new recipe
      */
     @NotNull
-    private RecipeWidget addRecipe(@NotNull RecipeDescriptor recipeDescriptor) {
+    private RecipeWidget addRecipe(@NotNull OldRecipeDescriptor recipeDescriptor) {
         RecipeWidget recipe = new RecipeWidget(recipeDescriptor, resources);
         recipe.setDelegate(this);
         view.addRecipe(recipe);
@@ -134,12 +134,12 @@ public class RecipePartPresenter extends BasePresenter implements RecipePartView
     /** {@inheritDoc} */
     @Override
     public void onDeleteButtonClicked() {
-        final RecipeDescriptor selectedRecipeDescriptor = recipes.get(selectedRecipe);
+        final OldRecipeDescriptor selectedRecipeDescriptor = recipes.get(selectedRecipe);
         Promise<Void> recipeRemoved = service.removeRecipe(selectedRecipeDescriptor.getId());
         recipeRemoved.then(new Operation<Void>() {
             @Override
             public void apply(Void arg) throws OperationException {
-                notificationManager.notify("Recipe \"" + selectedRecipeDescriptor.getName() + "\"  was deleted.");
+                notificationManager.notify("OldRecipe \"" + selectedRecipeDescriptor.getName() + "\"  was deleted.");
                 recipes.remove(selectedRecipe);
                 view.removeRecipe(selectedRecipe);
                 recipesContainerPresenter.removeRecipePanel(selectedRecipe);
@@ -157,15 +157,15 @@ public class RecipePartPresenter extends BasePresenter implements RecipePartView
     /** {@inheritDoc} */
     @Override
     public void onCloneButtonClicked() {
-        RecipeDescriptor selectedRecipeDescriptor = recipes.get(selectedRecipe);
+        OldRecipeDescriptor selectedRecipeDescriptor = recipes.get(selectedRecipe);
 
         String recipeName = NameGenerator.generateCopy(selectedRecipeDescriptor.getName(), recipes.keySet());
 
-        NewRecipe newRecipe = dtoFactory.createDto(NewRecipe.class)
-                                        .withType(selectedRecipeDescriptor.getType())
-                                        .withScript(selectedRecipeDescriptor.getScript())
-                                        .withName(recipeName)
-                                        .withTags(selectedRecipeDescriptor.getTags());
+        NewOldRecipe newRecipe = dtoFactory.createDto(NewOldRecipe.class)
+                                           .withType(selectedRecipeDescriptor.getType())
+                                           .withScript(selectedRecipeDescriptor.getScript())
+                                           .withName(recipeName)
+                                           .withTags(selectedRecipeDescriptor.getTags());
 
         createRecipe(newRecipe);
     }
@@ -182,20 +182,20 @@ public class RecipePartPresenter extends BasePresenter implements RecipePartView
             stubPanel.setTags(Collections.<String>emptyList());
         }
 
-        NewRecipe newRecipe = dtoFactory.createDto(NewRecipe.class)
-                                        .withType(RECIPE_TYPE)
-                                        .withScript(resources.recipeTemplate().getText())
-                                        .withName(recipeName)
-                                        .withTags(tags);
+        NewOldRecipe newRecipe = dtoFactory.createDto(NewOldRecipe.class)
+                                           .withType(RECIPE_TYPE)
+                                           .withScript(resources.recipeTemplate().getText())
+                                           .withName(recipeName)
+                                           .withTags(tags);
 
         createRecipe(newRecipe);
     }
 
-    private void createRecipe(@NotNull NewRecipe newRecipe) {
-        Promise<RecipeDescriptor> createRecipe = service.createRecipe(newRecipe);
-        createRecipe.then(new Operation<RecipeDescriptor>() {
+    private void createRecipe(@NotNull NewOldRecipe newRecipe) {
+        Promise<OldRecipeDescriptor> createRecipe = service.createRecipe(newRecipe);
+        createRecipe.then(new Operation<OldRecipeDescriptor>() {
             @Override
-            public void apply(RecipeDescriptor recipeDescriptor) throws OperationException {
+            public void apply(OldRecipeDescriptor recipeDescriptor) throws OperationException {
                 RecipeWidget createdRecipeWidget = addRecipe(recipeDescriptor);
                 onRecipeClicked(createdRecipeWidget);
             }
@@ -215,25 +215,25 @@ public class RecipePartPresenter extends BasePresenter implements RecipePartView
     @Override
     public void onSaveButtonClicked() {
         RecipeEditorPanel editorPanel = recipesContainerPresenter.getEditorPanel(selectedRecipe);
-        RecipeDescriptor recipeDescriptor = selectedRecipe.getDescriptor();
-        final RecipeUpdate recipeUpdate = dtoFactory.createDto(RecipeUpdate.class)
-                                                    .withId(recipeDescriptor.getId())
-                                                    .withType(recipeDescriptor.getType())
-                                                    .withScript(editorPanel.getScript())
-                                                    .withName(editorPanel.getName())
-                                                    .withTags(editorPanel.getTags());
-        Promise<RecipeDescriptor> updateRecipe = service.updateRecipe(recipeUpdate);
-        updateRecipe.then(new Operation<RecipeDescriptor>() {
+        OldRecipeDescriptor recipeDescriptor = selectedRecipe.getDescriptor();
+        final OldRecipeUpdate recipeUpdate = dtoFactory.createDto(OldRecipeUpdate.class)
+                                                       .withId(recipeDescriptor.getId())
+                                                       .withType(recipeDescriptor.getType())
+                                                       .withScript(editorPanel.getScript())
+                                                       .withName(editorPanel.getName())
+                                                       .withTags(editorPanel.getTags());
+        Promise<OldRecipeDescriptor> updateRecipe = service.updateRecipe(recipeUpdate);
+        updateRecipe.then(new Operation<OldRecipeDescriptor>() {
             @Override
-            public void apply(RecipeDescriptor recipeDescriptor) throws OperationException {
-                RecipeDescriptor selectedRecipeDescriptor = recipes.get(selectedRecipe);
+            public void apply(OldRecipeDescriptor recipeDescriptor) throws OperationException {
+                OldRecipeDescriptor selectedRecipeDescriptor = recipes.get(selectedRecipe);
                 selectedRecipeDescriptor.setScript(recipeDescriptor.getScript());
                 selectedRecipeDescriptor.setTags(recipeDescriptor.getTags());
                 selectedRecipeDescriptor.setName(recipeDescriptor.getName());
 
                 selectedRecipe.setName(recipeDescriptor.getName());
 
-                notificationManager.notify("Recipe \"" + recipeDescriptor.getName() + "\" was saved.");
+                notificationManager.notify("OldRecipe \"" + recipeDescriptor.getName() + "\" was saved.");
             }
         });
 

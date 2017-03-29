@@ -44,7 +44,7 @@ import static org.testng.Assert.assertEquals;
 public class DockerConnectorConfigurationTest {
 
     /**
-     * On Linux, if Docker Machine properties are not defined, then unix socket should be used
+     * On Linux, if Docker OldMachine properties are not defined, then unix socket should be used
      */
     @Test
     public void testDockerOnLinuxIfDockerMachinePropertiesUndefined() {
@@ -53,7 +53,7 @@ public class DockerConnectorConfigurationTest {
     }
 
     /**
-     * On Linux, if Docker Machine properties are defined, it should use them
+     * On Linux, if Docker OldMachine properties are defined, it should use them
      * TLS enabled
      */
     @Test
@@ -68,7 +68,7 @@ public class DockerConnectorConfigurationTest {
     }
 
     /**
-     * On Linux, if Docker Machine properties are defined, it should use them
+     * On Linux, if Docker OldMachine properties are defined, it should use them
      * TLS disable
      */
     @Test
@@ -82,7 +82,7 @@ public class DockerConnectorConfigurationTest {
     }
 
     /**
-     * On Linux, if Docker Machine properties are defined, it should use them
+     * On Linux, if Docker OldMachine properties are defined, it should use them
      * TLS disable
      */
     @Test
@@ -127,7 +127,7 @@ public class DockerConnectorConfigurationTest {
     }
 
     /**
-     * On non-Linux, if Docker Machine properties are defined, it should use them
+     * On non-Linux, if Docker OldMachine properties are defined, it should use them
      * TLS enabled
      */
     @Test
@@ -143,7 +143,7 @@ public class DockerConnectorConfigurationTest {
     }
 
     /**
-     * On non-Linux, if Docker Machine properties are defined, it should use them
+     * On non-Linux, if Docker OldMachine properties are defined, it should use them
      * TLS disable
      */
     @Test
@@ -159,7 +159,7 @@ public class DockerConnectorConfigurationTest {
 
 
     /**
-     * On non-Linux, if Docker Machine properties are defined, it should use them
+     * On non-Linux, if Docker OldMachine properties are defined, it should use them
      * TLS disable
      */
     @Test
@@ -175,7 +175,7 @@ public class DockerConnectorConfigurationTest {
 
 
     /**
-     * On non-Linux, if Docker Machine properties are not defined, it should use them
+     * On non-Linux, if Docker OldMachine properties are not defined, it should use them
      * TLS disable
      */
     @Test

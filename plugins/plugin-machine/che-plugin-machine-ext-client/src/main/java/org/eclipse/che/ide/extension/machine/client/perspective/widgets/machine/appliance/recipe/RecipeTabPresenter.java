@@ -47,8 +47,8 @@ public class RecipeTabPresenter implements TabPresenter {
      */
     public void updateInfo(@NotNull final MachineEntity machine) {
         /*if (machine.getRecipeType() == null) {
-            Log.error(RecipeTabPresenter.class, "Recipe type is null for machine '" + machine.getId() + "'");
-            view.setScript("Recipe type is null for machine '" + machine.getId() + "'");
+            Log.error(RecipeTabPresenter.class, "OldRecipe type is null for machine '" + machine.getId() + "'");
+            view.setScript("OldRecipe type is null for machine '" + machine.getId() + "'");
             return;
         }
         switch (machine.getRecipeType()) {
@@ -71,7 +71,7 @@ public class RecipeTabPresenter implements TabPresenter {
                 });
                 break;
             case "default":
-                view.setScript("Recipe type: " + machine.getRecipeType());
+                view.setScript("OldRecipe type: " + machine.getRecipeType());
         }*/
     }
 

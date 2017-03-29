@@ -18,7 +18,7 @@ import org.eclipse.che.ide.ext.java.shared.dto.Problem;
 import java.util.List;
 
 /**
- * Client for Maven Server API.
+ * Client for Maven OldServer API.
  *
  * @author Valeriy Svydenko
  */

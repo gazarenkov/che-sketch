@@ -13,7 +13,7 @@ package org.eclipse.che.plugin.nativeaccessexample.machine.client.command;
 import com.google.inject.Inject;
 import com.google.inject.Singleton;
 
-import org.eclipse.che.api.core.model.machine.Machine;
+import org.eclipse.che.api.core.model.machine.OldMachine;
 import org.eclipse.che.api.machine.shared.dto.CommandDto;
 import org.eclipse.che.api.machine.shared.dto.execagent.ProcessStartResponseDto;
 import org.eclipse.che.api.promises.client.Operation;
@@ -23,7 +23,6 @@ import org.eclipse.che.ide.api.machine.ExecAgentCommandManager;
 import org.eclipse.che.ide.api.machine.execagent.ExecAgentPromise;
 import org.eclipse.che.ide.api.notification.NotificationManager;
 import org.eclipse.che.ide.dto.DtoFactory;
-import org.eclipse.che.ide.util.UUID;
 
 import javax.validation.constraints.NotNull;
 
@@ -54,7 +53,7 @@ public class CommandManager {
      * Execute the the given command command within the workspace Docker container.
      */
     public void execute(String commandLine) {
-        final Machine machine = appContext.getDevMachine().getDescriptor();
+        final OldMachine machine = appContext.getDevMachine().getDescriptor();
         if (machine == null) {
             return;
         }

@@ -23,17 +23,17 @@ public class WsAgentHealthCheckerTest {
 //    @Mock
 //    private WsAgentPingRequestFactory wsAgentPingRequestFactory;
 //    @Mock
-//    private Machine                   devMachine;
+//    private OldMachine                   devMachine;
 //    @Mock
-//    private MachineRuntime            machineRuntimeInfo;
+//    private Machine            machineRuntimeInfo;
 //    @Mock
-//    private Server                    server;
+//    private OldServer                    server;
 //    @Mock
 //    private HttpJsonRequest           httpJsonRequest;
 //    @Mock
 //    private HttpJsonResponse          httpJsonResponse;
 //
-//    private Map<String, Server> servers = new HashMap<>(1);
+//    private Map<String, OldServer> servers = new HashMap<>(1);
 //
 //    private WsAgentHealthCheckerImpl checker;
 //

@@ -22,7 +22,7 @@ public class ServerEntityTest {
 //    private static final String SOME_TEXT = "someText";
 //
 //    @Mock
-//    private ServerDto descriptor;
+//    private OldServerDto descriptor;
 //
 //    @Mock
 //    private ServerPropertiesDto descriptor2;

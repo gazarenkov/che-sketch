@@ -13,11 +13,11 @@ package org.eclipse.che.plugin.machine.ssh;
 import com.google.gson.Gson;
 
 import org.eclipse.che.api.core.NotFoundException;
-import org.eclipse.che.api.core.model.machine.Machine;
-import org.eclipse.che.api.core.model.machine.MachineConfig;
+import org.eclipse.che.api.core.model.machine.OldMachine;
+import org.eclipse.che.api.core.model.machine.OldMachineConfig;
 import org.eclipse.che.api.core.model.machine.MachineSource;
 import org.eclipse.che.api.core.model.machine.MachineStatus;
-import org.eclipse.che.api.core.model.machine.Recipe;
+import org.eclipse.che.api.core.model.machine.OldRecipe;
 import org.eclipse.che.api.core.util.LineConsumer;
 import org.eclipse.che.api.machine.server.exception.InvalidRecipeException;
 import org.eclipse.che.api.machine.server.exception.MachineException;
@@ -39,7 +39,7 @@ import static java.util.Objects.requireNonNull;
  *
  * <p>Ssh machine can't be actually created and exists somewhere outside of the control.<br>
  * So this implementation just performs command execution in such machines.<br>
- * This implementation ignores machine limits {@link MachineConfig#getLimits()}.
+ * This implementation ignores machine limits {@link OldMachineConfig#getLimits()}.
  *
  * @author Alexander Garagatyi
  */
@@ -70,7 +70,7 @@ public class SshMachineInstanceProvider implements InstanceProvider {
 
     /**
      * Creates instance from scratch or by reusing a previously one by using specified {@link MachineSource}
-     * data in {@link MachineConfig}.
+     * data in {@link OldMachineConfig}.
      *
      * @param machine
      *         machine description
@@ -87,7 +87,7 @@ public class SshMachineInstanceProvider implements InstanceProvider {
      *         if other error occurs
      */
     @Override
-    public Instance createInstance(Machine machine, LineConsumer lineConsumer)
+    public Instance createInstance(OldMachine machine, LineConsumer lineConsumer)
             throws UnsupportedRecipeException, InvalidRecipeException, NotFoundException, MachineException {
         requireNonNull(machine, "Non null machine required");
         requireNonNull(lineConsumer, "Non null logs consumer required");
@@ -97,16 +97,16 @@ public class SshMachineInstanceProvider implements InstanceProvider {
             throw new MachineException("Dev machine is not supported for Ssh machine implementation");
         }
 
-        Recipe recipe = recipeDownloader.getRecipe(machine.getConfig());
+        OldRecipe recipe = recipeDownloader.getRecipe(machine.getConfig());
         SshMachineRecipe sshMachineRecipe = GSON.fromJson(recipe.getScript(), SshMachineRecipe.class);
 
         SshClient sshClient = sshMachineFactory.createSshClient(sshMachineRecipe,
                                                                 machine.getConfig().getEnvVariables());
         sshClient.start();
 
-        SshMachineInstance instance = sshMachineFactory.createInstance(machine,
-                                                                       sshClient,
-                                                                       lineConsumer);
+        SshOldMachineInstance instance = sshMachineFactory.createInstance(machine,
+                                                                          sshClient,
+                                                                          lineConsumer);
 
         instance.setStatus(MachineStatus.RUNNING);
         return instance;

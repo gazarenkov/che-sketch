@@ -55,7 +55,7 @@ public class MachineManagerImplTest {
 //    private ArgumentCaptor<Operation<Void>> operationArgumentCaptor;
 //
 //    @Captor
-//    private ArgumentCaptor<MachineConfigDto> machineConfigDtoArgumentCaptor;
+//    private ArgumentCaptor<OldMachineConfigDto> machineConfigDtoArgumentCaptor;
 //
 //
 //    @InjectMocks
@@ -87,7 +87,7 @@ public class MachineManagerImplTest {
 //        when(promise.then(Matchers.<Operation<Void>>anyObject())).thenReturn(promiseThen);
 //
 //        MachineSource machineSource = mock(MachineSource.class);
-//        MachineConfig machineConfig = mock(MachineConfig.class);
+//        OldMachineConfig machineConfig = mock(OldMachineConfig.class);
 //        when(machineState.getConfig()).thenReturn(machineConfig);
 //        when(machineConfig.getSource()).thenReturn(machineSource);
 //        when(machineConfig.getName()).thenReturn(DISPLAY_NAME);
@@ -104,8 +104,8 @@ public class MachineManagerImplTest {
 //        when(dtoFactory.createDto(MachineLimitsDto.class)).thenReturn(limitsDto);
 //        when(limitsDto.withRam(anyInt())).thenReturn(limitsDto);
 //
-//        MachineConfigDto machineConfigDto = mock(MachineConfigDto.class);
-//        when(dtoFactory.createDto(MachineConfigDto.class)).thenReturn(machineConfigDto);
+//        OldMachineConfigDto machineConfigDto = mock(OldMachineConfigDto.class);
+//        when(dtoFactory.createDto(OldMachineConfigDto.class)).thenReturn(machineConfigDto);
 //        when(machineConfigDto.withDev(anyBoolean())).thenReturn(machineConfigDto);
 //        when(machineConfigDto.withName(anyString())).thenReturn(machineConfigDto);
 //        when(machineConfigDto.withSource(machineSourceDto)).thenReturn(machineConfigDto);
@@ -118,7 +118,7 @@ public class MachineManagerImplTest {
 //        when(devMachine.getId()).thenReturn(ID);
 //
 //        Promise<Void> promiseEmpty = mock(Promise.class);
-//        when(workspaceServiceClient.createMachine(anyString(), any(MachineConfigDto.class))).thenReturn(promiseEmpty);
+//        when(workspaceServiceClient.createMachine(anyString(), any(OldMachineConfigDto.class))).thenReturn(promiseEmpty);
 //
 //        machineManager.restartMachine(machineState);
 //

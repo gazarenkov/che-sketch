@@ -32,7 +32,7 @@ public class GwtCheCommandPagePresenter implements GwtCheCommandPageView.ActionD
 
     // initial value of the 'GWT module' parameter
     private String gwtModuleInitial;
-    // initial value of the 'Code Server address' parameter
+    // initial value of the 'Code OldServer address' parameter
     private String codeServerAddressInitial;
     // initial value of the 'Classpath' parameter
     private String classPathInitial;

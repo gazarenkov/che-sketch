@@ -18,7 +18,7 @@ import com.google.inject.Provider;
 import com.google.inject.Singleton;
 import com.google.web.bindery.event.shared.EventBus;
 
-import org.eclipse.che.api.core.model.workspace.WorkspaceRuntime;
+import org.eclipse.che.api.core.model.workspace.Runtime;
 import org.eclipse.che.api.core.rest.shared.dto.Link;
 import org.eclipse.che.api.core.rest.shared.dto.LinkParameter;
 import org.eclipse.che.api.machine.shared.dto.MachineLogMessageDto;
@@ -339,7 +339,7 @@ public class WorkspaceEventsHandler {
     }
 
     private String getDevMachineName(final WorkspaceDto workspace) {
-        WorkspaceRuntime runtime = workspace.getRuntime();
+        Runtime runtime = workspace.getRuntime();
         if (runtime == null) {
             return null;
         }

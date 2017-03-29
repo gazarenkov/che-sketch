@@ -13,7 +13,7 @@ package org.eclipse.che.ide.extension.machine.client.targets.categories.ssh;
 import com.google.gwt.user.client.ui.AcceptsOneWidget;
 import com.google.web.bindery.event.shared.EventBus;
 
-import org.eclipse.che.api.machine.shared.dto.recipe.RecipeDescriptor;
+import org.eclipse.che.api.machine.shared.dto.recipe.OldRecipeDescriptor;
 import org.eclipse.che.api.promises.client.Operation;
 import org.eclipse.che.api.promises.client.Promise;
 import org.eclipse.che.ide.api.app.AppContext;
@@ -128,7 +128,7 @@ public class SshCategoryPresenterTest {
         final String deleteProposal = "Are you sure you want to delete target " + deletingTargetName + " ?";
         final String deleteSuccessMessage = "Target recipe " + deletingTargetName + " successfully deleted";
         final SshMachineTarget target = Mockito.mock(SshMachineTarget.class);
-        final RecipeDescriptor recipe = Mockito.mock(RecipeDescriptor.class);
+        final OldRecipeDescriptor recipe = Mockito.mock(OldRecipeDescriptor.class);
         when(target.getName()).thenReturn(deletingTargetName);
         when(target.getRecipe()).thenReturn(recipe);
         when(recipe.getId()).thenReturn(recipeId);

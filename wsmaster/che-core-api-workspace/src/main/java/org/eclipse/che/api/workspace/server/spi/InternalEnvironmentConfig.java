@@ -2,8 +2,8 @@ package org.eclipse.che.api.workspace.server.spi;
 
 import org.eclipse.che.api.core.ApiException;
 import org.eclipse.che.api.core.model.workspace.config.Environment;
-import org.eclipse.che.api.core.model.workspace.config.EnvironmentRecipe;
-import org.eclipse.che.api.core.model.workspace.config.MachineConfig2;
+import org.eclipse.che.api.core.model.workspace.config.Recipe;
+import org.eclipse.che.api.core.model.workspace.config.MachineConfig;
 import org.eclipse.che.api.core.rest.DefaultHttpJsonRequest;
 import org.eclipse.che.api.workspace.server.model.impl.EnvironmentImpl;
 
@@ -25,25 +25,25 @@ public class InternalEnvironmentConfig {
 
         this.recipe = new InternalRecipeConfig(environment.getRecipe());
 
-        Map<String, ? extends MachineConfig2> effectiveMachines = environment.getMachines();
+        Map<String, ? extends MachineConfig> effectiveMachines = environment.getMachines();
 
 //        if(effectiveMachines.isEmpty())
 //            effectiveMachines = analyzeRecipe(recipe.getScript());
 
-        for(Map.Entry<String, ? extends MachineConfig2> entry : effectiveMachines.entrySet()) {
+        for(Map.Entry<String, ? extends MachineConfig> entry : effectiveMachines.entrySet()) {
             internalMachines.put(entry.getKey(), new InternalMachineConfig(entry.getValue(), registryEndpoint));
         }
     }
 
 
 
-    //protected abstract Map<String, ? extends MachineConfig2> analyzeRecipe(String recipe);
+    //protected abstract Map<String, ? extends MachineConfig> analyzeRecipe(String recipe);
 
     private class InternalRecipeConfig {
         private String script;
 
-        public InternalRecipeConfig(EnvironmentRecipe recipe) throws ApiException, IOException {
-            //this.recipe = new EnvironmentRecipeImpl(recipe.getType(), recipe.getContentType(), recipe.getContent(), recipe.getLocation());
+        public InternalRecipeConfig(Recipe recipe) throws ApiException, IOException {
+            //this.recipe = new RecipeImpl(recipe.getType(), recipe.getContentType(), recipe.getContent(), recipe.getLocation());
             if(recipe.getContent() != null && !recipe.getContent().isEmpty()) {
                 script = recipe.getContent();
             } else if(recipe.getLocation() != null && !recipe.getLocation().isEmpty()) {

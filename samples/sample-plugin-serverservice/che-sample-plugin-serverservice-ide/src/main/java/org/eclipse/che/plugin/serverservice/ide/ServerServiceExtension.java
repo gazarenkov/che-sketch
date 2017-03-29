@@ -19,11 +19,11 @@ import org.eclipse.che.ide.api.extension.Extension;
 import org.eclipse.che.plugin.serverservice.ide.action.MyAction;
 
 /**
- * Server service extension that registers action which calls a service.
+ * OldServer service extension that registers action which calls a service.
  *
  * @author Edgar Mueller
  */
-@Extension(title = "Server Service Sample Extension", version = "0.0.1")
+@Extension(title = "OldServer Service Sample Extension", version = "0.0.1")
 public class ServerServiceExtension {
 
     /**

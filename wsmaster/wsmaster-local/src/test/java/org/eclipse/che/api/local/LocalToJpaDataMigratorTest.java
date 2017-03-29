@@ -29,7 +29,7 @@ import org.eclipse.che.api.local.storage.LocalStorageFactory;
 import org.eclipse.che.api.local.storage.stack.StackLocalStorage;
 import org.eclipse.che.api.machine.server.jpa.MachineJpaModule;
 import org.eclipse.che.api.machine.server.model.impl.SnapshotImpl;
-import org.eclipse.che.api.machine.server.recipe.RecipeImpl;
+import org.eclipse.che.api.machine.server.recipe.OldRecipeImpl;
 import org.eclipse.che.api.machine.server.spi.RecipeDao;
 import org.eclipse.che.api.machine.server.spi.SnapshotDao;
 import org.eclipse.che.api.ssh.server.jpa.SshJpaModule;
@@ -184,7 +184,7 @@ public class LocalToJpaDataMigratorTest {
         final SshPairImpl pair = createSshPair(user.getId(), "service", "name");
         final WorkspaceImpl workspace = createWorkspace("id", user.getAccount());
         final SnapshotImpl snapshot = createSnapshot("snapshot123", workspace.getId());
-        final RecipeImpl recipe = createRecipe("recipe123");
+        final OldRecipeImpl recipe = createRecipe("recipe123");
         final StackImpl stack = createStack("stack123", "stack-name");
         factory.create(LocalUserDaoImpl.FILENAME).store(singletonMap(user.getId(), user));
         factory.create(LocalProfileDaoImpl.FILENAME).store(singletonMap(profile.getUserId(), profile));
@@ -269,14 +269,14 @@ public class LocalToJpaDataMigratorTest {
                                 snapshotId + "env-name");
     }
 
-    public static RecipeImpl createRecipe(String id) {
-        return new RecipeImpl(id,
+    public static OldRecipeImpl createRecipe(String id) {
+        return new OldRecipeImpl(id,
                               "recipe-name-" + id,
-                              "recipe-creator",
-                              "recipe-type",
-                              "recipe-script",
-                              asList("recipe-tag1", "recipe-tag2"),
-                              "recipe-description");
+                                 "recipe-creator",
+                                 "recipe-type",
+                                 "recipe-script",
+                                 asList("recipe-tag1", "recipe-tag2"),
+                                 "recipe-description");
     }
 
     public static StackImpl createStack(String id, String name) {

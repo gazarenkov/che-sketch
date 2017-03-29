@@ -89,7 +89,7 @@ public class LanguageServerEditorProvider implements AsyncEditorProvider, Editor
 
             Promise<InitializeResult> promise =
                     registry.getOrInitializeServer(resource.getRelatedProject().get().getPath(), resource.getExtension(), resource.getLocation().toString());
-            final MessageLoader loader = loaderFactory.newLoader("Initializing Language Server for " + resource.getExtension());
+            final MessageLoader loader = loaderFactory.newLoader("Initializing Language OldServer for " + resource.getExtension());
             loader.show();
             return promise.thenPromise(new Function<InitializeResult, Promise<EditorPartPresenter>>() {
                 @Override

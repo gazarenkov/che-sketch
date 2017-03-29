@@ -12,7 +12,7 @@ package org.eclipse.che.ide.api.machine;
 
 import com.google.inject.Inject;
 
-import org.eclipse.che.api.machine.shared.dto.MachineDto;
+import org.eclipse.che.api.machine.shared.dto.OldMachineDto;
 import org.eclipse.che.api.promises.client.Promise;
 import org.eclipse.che.ide.api.app.AppContext;
 import org.eclipse.che.ide.rest.AsyncRequestFactory;
@@ -50,11 +50,11 @@ public class MachineServiceClientImpl implements MachineServiceClient {
     }
 
     @Override
-    public Promise<List<MachineDto>> getMachines(String workspaceId) {
+    public Promise<List<OldMachineDto>> getMachines(String workspaceId) {
         return asyncRequestFactory.createGetRequest(baseHttpUrl + workspaceId + "/machine")
                                   .header(ACCEPT, APPLICATION_JSON)
                                   .loader(loaderFactory.newLoader("Getting info about bound machines..."))
-                                  .send(dtoUnmarshallerFactory.newListUnmarshaller(MachineDto.class));
+                                  .send(dtoUnmarshallerFactory.newListUnmarshaller(OldMachineDto.class));
     }
 
     @Override

@@ -10,7 +10,7 @@
  *******************************************************************************/
 package org.eclipse.che.ide.api.machine;
 
-import org.eclipse.che.api.core.model.workspace.runtime.ServerRuntime;
+import org.eclipse.che.api.core.model.workspace.runtime.Server;
 import org.eclipse.che.api.core.model.workspace.Workspace;
 import org.eclipse.che.api.machine.shared.Constants;
 import org.eclipse.che.ide.util.loging.Log;
@@ -34,9 +34,9 @@ public class DevMachine extends MachineEntityImpl {
 
     public String getWsAgentWebSocketUrl() {
 
-        ServerRuntime ws = machineRuntime.getServers().get(Constants.WSAGENT_WEBSOCKET_REFERENCE);
+        Server ws = machine.getServers().get(Constants.WSAGENT_WEBSOCKET_REFERENCE);
         if(ws == null) {
-            final String message = "Server " + Constants.WSAGENT_WEBSOCKET_REFERENCE + " not defined in DevMachine ";
+            final String message = "OldServer " + Constants.WSAGENT_WEBSOCKET_REFERENCE + " not defined in DevMachine ";
             Log.error(getClass(), message);
             throw new RuntimeException(message);
         }
@@ -58,7 +58,7 @@ public class DevMachine extends MachineEntityImpl {
         if(getProperties().containsKey("projectsRoot"))
             return getProperties().get("projectsRoot");
 
-        throw new RuntimeException("No projects root found in Dev Machine " + machineName);
+        throw new RuntimeException("No projects root found in Dev OldMachine " + machineName);
 
     }
 

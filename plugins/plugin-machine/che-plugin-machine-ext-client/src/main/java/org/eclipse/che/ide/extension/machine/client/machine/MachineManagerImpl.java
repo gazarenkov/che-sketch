@@ -62,7 +62,7 @@ public class MachineManagerImpl implements MachineManager {
 //        destroyMachine(machineState).then(new Operation<Void>() {
 //            @Override
 //            public void apply(Void arg) throws OperationException {
-//                //final MachineConfig machineConfig = machineState.getConfig();
+//                //final OldMachineConfig machineConfig = machineState.getConfig();
 //                final MachineSource machineSource = machineConfig.getSource();
 //                final String displayName = machineConfig.getName();
 //                final boolean isDev = machineConfig.isDev();
@@ -131,7 +131,7 @@ public class MachineManagerImpl implements MachineManager {
 //            limitsDto.withRam(3072);
 //        }
 //
-//        MachineConfigDto configDto = dtoFactory.createDto(MachineConfigDto.class)
+//        OldMachineConfigDto configDto = dtoFactory.createDto(OldMachineConfigDto.class)
 //                                               .withDev(isDev)
 //                                               .withName(displayName)
 //                                               .withSource(machineSourceDto)

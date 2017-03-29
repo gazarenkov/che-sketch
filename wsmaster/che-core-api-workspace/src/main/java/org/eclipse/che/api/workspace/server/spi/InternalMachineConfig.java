@@ -1,8 +1,8 @@
 package org.eclipse.che.api.workspace.server.spi;
 
 import org.eclipse.che.api.core.ApiException;
-import org.eclipse.che.api.core.model.workspace.config.MachineConfig2;
-import org.eclipse.che.api.core.model.workspace.config.ServerConf2;
+import org.eclipse.che.api.core.model.workspace.config.MachineConfig;
+import org.eclipse.che.api.core.model.workspace.config.ServerConfig;
 
 import java.io.IOException;
 import java.net.URL;
@@ -12,19 +12,19 @@ import java.util.List;
 import java.util.Map;
 
 /**
- * "pre-processed" Machine Config. Form useful for
+ * "pre-processed" OldMachine Config. Form useful for
  * @author gazarenkov
  */
 public class InternalMachineConfig {
 
     // ordered agent scripts to launch on start
-    private final EffectiveAgents agents  = new EffectiveAgents();
+    private final EffectiveAgents           agents  = new EffectiveAgents();
     // set of servers
-    private final Map<String, ServerConf2> servers = new HashMap<>();
+    private final Map<String, ServerConfig> servers = new HashMap<>();
 
     private final Map<String, String> attributes = new HashMap<>();
 
-    public InternalMachineConfig(MachineConfig2 originalConfig, URL agentRegistry ) throws ApiException, IOException {
+    public InternalMachineConfig(MachineConfig originalConfig, URL agentRegistry) throws ApiException, IOException {
 
         initAgents(originalConfig.getAgents(), agentRegistry);
 
@@ -62,7 +62,7 @@ public class InternalMachineConfig {
      *
      * @return
      */
-    public Map<String, ServerConf2> getServers() {
+    public Map<String, ServerConfig> getServers() {
         return servers;
     }
 
@@ -73,7 +73,7 @@ public class InternalMachineConfig {
     private class EffectiveAgents {
         private List <String> agentScripts = new ArrayList<>();
 
-        private Map <String, ServerConf2> getAllServers() {
+        private Map <String, ServerConfig> getAllServers() {
             return null;
         }
     }

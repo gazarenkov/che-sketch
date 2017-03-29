@@ -12,12 +12,12 @@ package org.eclipse.che.plugin.docker.machine.parser;
 
 import org.eclipse.che.api.core.ServerException;
 import org.eclipse.che.api.core.model.workspace.config.Environment;
-import org.eclipse.che.api.core.model.workspace.config.EnvironmentRecipe;
+import org.eclipse.che.api.core.model.workspace.config.Recipe;
 import org.eclipse.che.api.environment.server.model.CheServiceImpl;
 import org.eclipse.che.api.environment.server.model.CheServicesEnvironmentImpl;
 import org.eclipse.che.api.workspace.server.model.impl.EnvironmentImpl;
-import org.eclipse.che.api.workspace.server.model.impl.EnvironmentRecipeImpl;
-import org.eclipse.che.api.workspace.server.model.impl.MachineConfig2Impl;
+import org.eclipse.che.api.workspace.server.model.impl.RecipeImpl;
+import org.eclipse.che.api.workspace.server.model.impl.MachineConfigImpl;
 import org.mockito.InjectMocks;
 import org.mockito.Mock;
 import org.mockito.testng.MockitoTestNGListener;
@@ -40,9 +40,9 @@ public class DockerImageEnvironmentParserTest {
     private static final String DEFAULT_DOCKER_IMAGE = "codenvy/ubuntu_jdk8";
 
     @Mock
-    private Environment       environment;
+    private Environment environment;
     @Mock
-    private EnvironmentRecipe recipe;
+    private Recipe      recipe;
 
     @InjectMocks
     public DockerImageEnvironmentParser parser;
@@ -51,7 +51,7 @@ public class DockerImageEnvironmentParserTest {
           expectedExceptionsMessageRegExp = "Environment of type '.*' doesn't support multiple machines, but contains machines: .*")
     public void shouldThrowExceptionOnParseOfDockerimageEnvWithSeveralExtendedMachines() throws Exception {
         EnvironmentImpl environment = createDockerimageEnvConfig();
-        environment.getMachines().put("anotherMachine", new MachineConfig2Impl(emptyList(), emptyMap(), emptyMap()));
+        environment.getMachines().put("anotherMachine", new MachineConfigImpl(emptyList(), emptyMap(), emptyMap()));
 
         // when
         parser.parse(environment);
@@ -88,13 +88,13 @@ public class DockerImageEnvironmentParserTest {
     }
 
     private static EnvironmentImpl createDockerimageEnvConfig(String image, String machineName) {
-        return new EnvironmentImpl(new EnvironmentRecipeImpl("dockerimage",
-                                                             null,
-                                                             null,
-                                                             image),
+        return new EnvironmentImpl(new RecipeImpl("dockerimage",
+                                                  null,
+                                                  null,
+                                                  image),
                                    singletonMap(machineName,
-                                                new MachineConfig2Impl(emptyList(),
-                                                                       emptyMap(),
-                                                                       emptyMap())));
+                                                new MachineConfigImpl(emptyList(),
+                                                                      emptyMap(),
+                                                                      emptyMap())));
     }
 }

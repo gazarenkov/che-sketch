@@ -10,9 +10,9 @@
  *******************************************************************************/
 package org.eclipse.che.ide.api.machine;
 
-import org.eclipse.che.api.core.model.machine.Machine;
-import org.eclipse.che.api.core.model.machine.Server;
-import org.eclipse.che.api.core.model.workspace.runtime.ServerRuntime;
+import org.eclipse.che.api.core.model.machine.OldMachine;
+import org.eclipse.che.api.core.model.machine.OldServer;
+import org.eclipse.che.api.core.model.workspace.runtime.Server;
 
 import java.util.Map;
 
@@ -21,14 +21,14 @@ import java.util.Map;
  *
  * @author Roman Nikitenko
  */
-public interface MachineEntity /*extends Machine*/ {
+public interface MachineEntity /*extends OldMachine*/ {
 
     String getId();
 
     /** Returns {@code true} when the machine entity is development machine and {@code false} otherwise */
     boolean isDev();
 
-    /** Machine type (i.e. "docker"). */
+    /** OldMachine type (i.e. "docker"). */
     String getType();
 
     /** Returns current machine's display name */
@@ -43,11 +43,11 @@ public interface MachineEntity /*extends Machine*/ {
     /** Returns url to connects to special WebSocket which allows execute command on given machine */
     String getExecAgentUrl();
 
-    /** Returns mapping of exposed ports to {@link Server}. */
-    Map<String, ? extends ServerRuntime> getServers();
+    /** Returns mapping of exposed ports to {@link OldServer}. */
+    Map<String, ? extends Server> getServers();
 
-    /** Returns {@link Server} by reference or null if it not exists. */
-    ServerRuntime getServer(String ref);
+    /** Returns {@link OldServer} by reference or null if it not exists. */
+    Server getServer(String ref);
 
     //List<Link> getMachineLinks();
 
@@ -55,7 +55,7 @@ public interface MachineEntity /*extends Machine*/ {
 
     //Map<String, String> getEnvVariables();
 
-    /** Returns {@link Machine descriptor} */
-    //Machine getDescriptor();
+    /** Returns {@link OldMachine descriptor} */
+    //OldMachine getDescriptor();
 
 }

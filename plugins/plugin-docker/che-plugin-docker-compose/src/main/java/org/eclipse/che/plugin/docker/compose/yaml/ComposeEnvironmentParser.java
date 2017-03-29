@@ -18,7 +18,7 @@ import com.google.inject.Inject;
 
 import org.eclipse.che.api.core.ServerException;
 import org.eclipse.che.api.core.model.workspace.config.Environment;
-import org.eclipse.che.api.core.model.workspace.config.EnvironmentRecipe;
+import org.eclipse.che.api.core.model.workspace.config.Recipe;
 import org.eclipse.che.api.environment.server.TypeSpecificEnvironmentParser;
 import org.eclipse.che.api.environment.server.model.CheServiceBuildContextImpl;
 import org.eclipse.che.api.environment.server.model.CheServiceImpl;
@@ -54,8 +54,8 @@ public class ComposeEnvironmentParser implements TypeSpecificEnvironmentParser {
      * Parses compose file from {@link Environment} into {@link CheServicesEnvironmentImpl}.
      *
      * @param environment
-     *         environment with {@link EnvironmentRecipe} to parse.
-     *         {@link EnvironmentRecipe} contains {@link CheServicesEnvironmentImpl} definition.
+     *         environment with {@link Recipe} to parse.
+     *         {@link Recipe} contains {@link CheServicesEnvironmentImpl} definition.
      * @throws IllegalArgumentException
      *         when environment or environment recipe is invalid
      * @throws ServerException
@@ -64,7 +64,7 @@ public class ComposeEnvironmentParser implements TypeSpecificEnvironmentParser {
     @Override
     public CheServicesEnvironmentImpl parse(Environment environment) throws ServerException {
         requireNonNull(environment, "Environment should not be null");
-        EnvironmentRecipe recipe = environment.getRecipe();
+        Recipe recipe = environment.getRecipe();
         requireNonNull(environment.getRecipe(), "Environment recipe should not be null");
 
         String content = getContentOfRecipe(recipe);
@@ -83,8 +83,8 @@ public class ComposeEnvironmentParser implements TypeSpecificEnvironmentParser {
      *         when environment recipe can not be retrieved
      */
     public ComposeEnvironment parse(String recipeContent, String contentType) throws ServerException {
-        requireNonNull(recipeContent, "Recipe content should not be null");
-        requireNonNull(contentType, "Recipe content type should not be null");
+        requireNonNull(recipeContent, "OldRecipe content should not be null");
+        requireNonNull(contentType, "OldRecipe content type should not be null");
 
         ComposeEnvironment composeEnvironment;
         switch (contentType) {
@@ -125,11 +125,11 @@ public class ComposeEnvironmentParser implements TypeSpecificEnvironmentParser {
         }
     }
 
-    private String getContentOfRecipe(EnvironmentRecipe environmentRecipe) throws ServerException {
-        if (environmentRecipe.getContent() != null) {
-            return environmentRecipe.getContent();
+    private String getContentOfRecipe(Recipe recipe) throws ServerException {
+        if (recipe.getContent() != null) {
+            return recipe.getContent();
         } else {
-            return recipeDownloader.getRecipe(environmentRecipe.getLocation());
+            return recipeDownloader.getRecipe(recipe.getLocation());
         }
     }
 

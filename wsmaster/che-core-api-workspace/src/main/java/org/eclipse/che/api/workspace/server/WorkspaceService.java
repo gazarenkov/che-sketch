@@ -26,7 +26,7 @@ import org.eclipse.che.api.core.ConflictException;
 import org.eclipse.che.api.core.ForbiddenException;
 import org.eclipse.che.api.core.NotFoundException;
 import org.eclipse.che.api.core.ServerException;
-import org.eclipse.che.api.core.model.workspace.runtime.MachineRuntime;
+import org.eclipse.che.api.core.model.workspace.runtime.Machine;
 import org.eclipse.che.api.core.model.workspace.WorkspaceStatus;
 import org.eclipse.che.api.core.rest.Service;
 import org.eclipse.che.api.core.rest.annotations.GenerateLink;
@@ -36,7 +36,7 @@ import org.eclipse.che.api.workspace.server.model.impl.EnvironmentImpl;
 import org.eclipse.che.api.workspace.server.model.impl.ProjectConfigImpl;
 import org.eclipse.che.api.workspace.server.model.impl.WorkspaceImpl;
 import org.eclipse.che.api.workspace.shared.dto.EnvironmentDto;
-import org.eclipse.che.api.workspace.shared.dto.EnvironmentRecipeDto;
+import org.eclipse.che.api.workspace.shared.dto.RecipeDto;
 import org.eclipse.che.api.workspace.shared.dto.ProjectConfigDto;
 import org.eclipse.che.api.workspace.shared.dto.WorkspaceConfigDto;
 import org.eclipse.che.api.workspace.shared.dto.WorkspaceDto;
@@ -665,7 +665,7 @@ public class WorkspaceService extends Service {
         }
 
         //String activeEnv = workspace.getRuntime().getActiveEnv();
-        final MachineRuntime devMachine = workspace.getRuntime().getMachines().get(machine); //.getDevMachine();
+        final Machine devMachine = workspace.getRuntime().getMachines().get(machine); //.getDevMachine();
         if (devMachine == null) {
             return newDto(WsAgentHealthStateDto.class)
                     .withWorkspaceStatus(workspace.getStatus())
@@ -758,7 +758,7 @@ public class WorkspaceService extends Service {
     }
 
     private void relativizeRecipeLinks(EnvironmentDto environment) {
-        EnvironmentRecipeDto recipe =  environment.getRecipe();
+        RecipeDto recipe =  environment.getRecipe();
         if (recipe.getType().equals("dockerfile")) {
             String location = recipe.getLocation();
             if (location != null && location.startsWith(apiEndpoint)) {

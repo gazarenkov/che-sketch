@@ -10,7 +10,7 @@
  *******************************************************************************/
 package org.eclipse.che.ide.api.macro;
 
-import org.eclipse.che.api.core.model.machine.Machine;
+import org.eclipse.che.api.core.model.machine.OldMachine;
 import org.eclipse.che.api.promises.client.Promise;
 import org.eclipse.che.ide.api.command.CommandImpl;
 import org.eclipse.che.ide.api.command.CommandManager;
@@ -20,7 +20,7 @@ import org.eclipse.che.ide.api.command.CommandManager;
  *
  * @author Artem Zatsarynnyi
  * @see Macro
- * @see CommandManager#executeCommand(CommandImpl, Machine)
+ * @see CommandManager#executeCommand(CommandImpl, OldMachine)
  */
 public interface MacroProcessor {
 

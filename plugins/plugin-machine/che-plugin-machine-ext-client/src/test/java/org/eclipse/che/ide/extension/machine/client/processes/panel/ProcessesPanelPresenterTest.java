@@ -62,7 +62,7 @@ public class ProcessesPanelPresenterTest {
 //    @Mock
 //    private EntityFactory                 entityFactory;
 //    @Mock
-//    private WorkspaceRuntimeDto           workspaceRuntime;
+//    private RuntimeDto           runtime;
 //    @Mock
 //    private PartStack                     partStack;
 //    @Mock
@@ -94,7 +94,7 @@ public class ProcessesPanelPresenterTest {
 //        when(devMachine.getId()).thenReturn(WORKSPACE_ID);
 //        when(appContext.getDevMachine()).thenReturn(devMachine);
 //        when(appContext.getWorkspace()).thenReturn(workspace);
-//        when(workspace.getRuntime()).thenReturn(workspaceRuntime);
+//        when(workspace.getRuntime()).thenReturn(runtime);
 //
 //        when(processesPromise.then(Matchers.<Operation<List<MachineProcessDto>>>anyObject())).thenReturn(processesPromise);
 //        when(commandConsoleFactory.create(anyString())).thenReturn(mock(OutputConsole.class));
@@ -127,7 +127,7 @@ public class ProcessesPanelPresenterTest {
 //    @Test
 //    public void shouldAddMachineWhenMachineCreating() throws Exception {
 //        MachineEntity machine = mock(MachineEntity.class);
-//        MachineConfigDto machineConfigDto = mock(MachineConfigDto.class);
+//        OldMachineConfigDto machineConfigDto = mock(OldMachineConfigDto.class);
 //        OutputConsole outputConsole = mock(OutputConsole.class);
 //        when(machineConfigDto.getName()).thenReturn(MACHINE_NAME);
 //        when(machine.getConfig()).thenReturn(machineConfigDto);
@@ -249,16 +249,16 @@ public class ProcessesPanelPresenterTest {
 //
 //    @Test
 //    public void shouldHideStopProcessButtonAtAddingTerminal() throws Exception {
-//        MachineDto machineDto = mock(MachineDto.class);
+//        OldMachineDto machineDto = mock(OldMachineDto.class);
 //        MachineEntity machine = mock(MachineEntity.class);
 //        when(machine.getId()).thenReturn(MACHINE_ID);
-//        MachineConfigDto machineConfigDto = mock(MachineConfigDto.class);
+//        OldMachineConfigDto machineConfigDto = mock(OldMachineConfigDto.class);
 //        when(machine.getConfig()).thenReturn(machineConfigDto);
 //        when(machineConfigDto.isDev()).thenReturn(true);
 //        when(machine.getStatus()).thenReturn(MachineStatus.RUNNING);
-//        List<MachineDto> machines = new ArrayList<>(1);
+//        List<OldMachineDto> machines = new ArrayList<>(1);
 //        machines.add(machineDto);
-//        when(workspaceRuntime.getMachines()).thenReturn(machines);
+//        when(runtime.getMachines()).thenReturn(machines);
 //        when(entityFactory.createMachine(machineDto)).thenReturn(machine);
 //
 //        ProcessTreeNode machineNode = mock(ProcessTreeNode.class);
@@ -291,7 +291,7 @@ public class ProcessesPanelPresenterTest {
 //    public void shouldReplaceCommandOutput() throws Exception {
 //        MachineEntity machine = mock(MachineEntity.class);
 //        when(machine.getId()).thenReturn(MACHINE_ID);
-//        MachineConfigDto machineConfigDto = mock(MachineConfigDto.class);
+//        OldMachineConfigDto machineConfigDto = mock(OldMachineConfigDto.class);
 //        when(machine.getConfig()).thenReturn(machineConfigDto);
 //
 //        List<ProcessTreeNode> children = new ArrayList<>();
@@ -322,16 +322,16 @@ public class ProcessesPanelPresenterTest {
 //
 //    @Test
 //    public void shouldAddTerminal() throws Exception {
-//        MachineDto machineDto = mock(MachineDto.class);
+//        OldMachineDto machineDto = mock(OldMachineDto.class);
 //        MachineEntity machine = mock(MachineEntity.class);
 //        when(machine.getId()).thenReturn(MACHINE_ID);
-//        MachineConfigDto machineConfigDto = mock(MachineConfigDto.class);
+//        OldMachineConfigDto machineConfigDto = mock(OldMachineConfigDto.class);
 //        when(machine.getConfig()).thenReturn(machineConfigDto);
 //        when(machineConfigDto.isDev()).thenReturn(true);
 //        when(machine.getStatus()).thenReturn(MachineStatus.RUNNING);
-//        List<MachineDto> machines = new ArrayList<>(1);
+//        List<OldMachineDto> machines = new ArrayList<>(1);
 //        machines.add(machineDto);
-//        when(workspaceRuntime.getMachines()).thenReturn(machines);
+//        when(runtime.getMachines()).thenReturn(machines);
 //        when(entityFactory.createMachine(machineDto)).thenReturn(machine);
 //
 //        presenter.rootNode = new ProcessTreeNode(ROOT_NODE, null, null, null, new ArrayList<ProcessTreeNode>());
@@ -535,17 +535,17 @@ public class ProcessesPanelPresenterTest {
 //        WsAgentStateEvent event = mock(WsAgentStateEvent.class);
 //
 //        MachineEntity machineEntity = mock(MachineEntity.class);
-//        MachineDto machine = mock(MachineDto.class);
+//        OldMachineDto machine = mock(OldMachineDto.class);
 //        when(machineEntity.getId()).thenReturn(MACHINE_ID);
 //        when(machineEntity.getWorkspaceId()).thenReturn(WORKSPACE_ID);
 //        when(entityFactory.createMachine(machine)).thenReturn(machineEntity);
-//        MachineConfigDto machineConfigDto = mock(MachineConfigDto.class);
+//        OldMachineConfigDto machineConfigDto = mock(OldMachineConfigDto.class);
 //        when(machine.getConfig()).thenReturn(machineConfigDto);
 //        when(machineConfigDto.isDev()).thenReturn(true);
 //        when(machine.getStatus()).thenReturn(MachineStatus.RUNNING);
-//        List<MachineDto> machines = new ArrayList<>(2);
+//        List<OldMachineDto> machines = new ArrayList<>(2);
 //        machines.add(machine);
-//        when(workspaceRuntime.getMachines()).thenReturn(machines);
+//        when(runtime.getMachines()).thenReturn(machines);
 //
 //        MachineProcessDto machineProcessDto = mock(MachineProcessDto.class);
 //        when(machineProcessDto.getOutputChannel()).thenReturn(OUTPUT_CHANNEL);
@@ -558,7 +558,7 @@ public class ProcessesPanelPresenterTest {
 //        CommandType commandType = mock(CommandType.class);
 //        when(commandTypeRegistry.getCommandTypeById(anyString())).thenReturn(commandType);
 //        when(commandConsoleFactory.create(anyObject(),
-//                                          any(org.eclipse.che.api.core.model.machine.Machine.class))).thenReturn(outputConsole);
+//                                          any(org.eclipse.che.api.core.model.machine.OldMachine.class))).thenReturn(outputConsole);
 //
 //        presenter.onWsAgentStarted(event);
 //    }

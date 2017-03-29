@@ -14,8 +14,8 @@ import com.google.inject.Inject;
 import com.google.inject.Singleton;
 
 import org.eclipse.che.api.core.NotFoundException;
-import org.eclipse.che.api.core.model.machine.Machine;
-import org.eclipse.che.api.core.model.machine.MachineConfig;
+import org.eclipse.che.api.core.model.machine.OldMachine;
+import org.eclipse.che.api.core.model.machine.OldMachineConfig;
 import org.eclipse.che.api.core.model.machine.MachineSource;
 import org.eclipse.che.api.core.util.LineConsumer;
 import org.eclipse.che.api.machine.server.exception.InvalidRecipeException;
@@ -91,7 +91,7 @@ public class DockerInstanceProvider implements InstanceProvider {
 
     /**
      * Creates instance from scratch or by reusing a previously one by using specified {@link MachineSource}
-     * data in {@link MachineConfig}.
+     * data in {@link OldMachineConfig}.
      *
      * @param machine
      *         machine description
@@ -108,7 +108,7 @@ public class DockerInstanceProvider implements InstanceProvider {
      *         if other error occurs
      */
     @Override
-    public Instance createInstance(Machine machine,
+    public Instance createInstance(OldMachine machine,
                                    LineConsumer creationLogsOutput) throws NotFoundException,
                                                                            MachineException {
         throw new UnsupportedOperationException("This machine provider is deprecated.");

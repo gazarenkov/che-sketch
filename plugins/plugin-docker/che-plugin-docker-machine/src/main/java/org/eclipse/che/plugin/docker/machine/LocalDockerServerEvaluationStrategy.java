@@ -15,7 +15,7 @@ import java.util.HashMap;
 import java.util.List;
 import java.util.Map;
 
-import org.eclipse.che.api.machine.server.model.impl.ServerImpl;
+import org.eclipse.che.api.machine.server.model.impl.OldServerImpl;
 import org.eclipse.che.commons.annotation.Nullable;
 import org.eclipse.che.plugin.docker.client.json.ContainerInfo;
 import org.eclipse.che.plugin.docker.client.json.PortBinding;
@@ -28,7 +28,7 @@ import static com.google.common.base.Strings.isNullOrEmpty;
  * Represents a server evaluation strategy for the configuration where the workspace server and
  * workspace containers are running on the same Docker network. Calling
  * {@link ServerEvaluationStrategy#getServers(ContainerInfo, String, Map)} will return a completed
- * {@link ServerImpl} with internal addresses set to the container's address within the internal
+ * {@link OldServerImpl} with internal addresses set to the container's address within the internal
  * docker network. If the server cannot directly ping the container, communication will fail.
  *
  * <p>The addresses used for external address can be overridden via the property {@code che.docker.ip.external}.

@@ -40,7 +40,7 @@ public class EnvironmentOutputEvent extends GwtEvent<EnvironmentOutputEvent.Hand
     private  final String content;
 
     /**
-     * Machine name
+     * OldMachine name
      */
     private final String machineName;
 

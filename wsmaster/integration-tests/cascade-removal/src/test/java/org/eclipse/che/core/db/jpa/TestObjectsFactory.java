@@ -16,15 +16,15 @@ import com.google.common.collect.ImmutableMap;
 import org.eclipse.che.account.shared.model.Account;
 import org.eclipse.che.api.machine.server.model.impl.CommandImpl;
 import org.eclipse.che.api.machine.server.model.impl.SnapshotImpl;
-import org.eclipse.che.api.machine.server.recipe.RecipeImpl;
+import org.eclipse.che.api.machine.server.recipe.OldRecipeImpl;
 import org.eclipse.che.api.ssh.server.model.impl.SshPairImpl;
 import org.eclipse.che.api.user.server.model.impl.ProfileImpl;
 import org.eclipse.che.api.user.server.model.impl.UserImpl;
 import org.eclipse.che.api.workspace.server.model.impl.EnvironmentImpl;
-import org.eclipse.che.api.workspace.server.model.impl.EnvironmentRecipeImpl;
-import org.eclipse.che.api.workspace.server.model.impl.MachineConfig2Impl;
+import org.eclipse.che.api.workspace.server.model.impl.RecipeImpl;
+import org.eclipse.che.api.workspace.server.model.impl.MachineConfigImpl;
 import org.eclipse.che.api.workspace.server.model.impl.ProjectConfigImpl;
-import org.eclipse.che.api.workspace.server.model.impl.ServerConf2Impl;
+import org.eclipse.che.api.workspace.server.model.impl.ServerConfigImpl;
 import org.eclipse.che.api.workspace.server.model.impl.SourceStorageImpl;
 import org.eclipse.che.api.workspace.server.model.impl.WorkspaceConfigImpl;
 import org.eclipse.che.api.workspace.server.model.impl.WorkspaceImpl;
@@ -97,15 +97,15 @@ public final class TestObjectsFactory {
     }
 
     public static EnvironmentImpl createEnv() {
-        final EnvironmentRecipeImpl newRecipe = new EnvironmentRecipeImpl();
+        final RecipeImpl newRecipe = new RecipeImpl();
         newRecipe.setLocation("new-location");
         newRecipe.setType("new-type");
         newRecipe.setContentType("new-content-type");
         newRecipe.setContent("new-content");
 
-        final MachineConfig2Impl newMachine = new MachineConfig2Impl();
-        final ServerConf2Impl serverConf1 = new ServerConf2Impl("2265", "http", ImmutableMap.of("prop1", "val"));
-        final ServerConf2Impl serverConf2 = new ServerConf2Impl("2266", "ftp", ImmutableMap.of("prop1", "val"));
+        final MachineConfigImpl newMachine = new MachineConfigImpl();
+        final ServerConfigImpl serverConf1 = new ServerConfigImpl("2265", "http", ImmutableMap.of("prop1", "val"));
+        final ServerConfigImpl serverConf2 = new ServerConfigImpl("2266", "ftp", ImmutableMap.of("prop1", "val"));
         newMachine.setServers(ImmutableMap.of("ref1", serverConf1, "ref2", serverConf2));
         newMachine.setAgents(ImmutableList.of("agent5", "agent4"));
         newMachine.setAttributes(singletonMap("att1", "val"));
@@ -136,14 +136,14 @@ public final class TestObjectsFactory {
                                 snapshotId + "env-name");
     }
 
-    public static RecipeImpl createRecipe(String id) {
-        return new RecipeImpl(id,
+    public static OldRecipeImpl createRecipe(String id) {
+        return new OldRecipeImpl(id,
                               "recipe-name-" + id,
-                              "recipe-creator",
-                              "recipe-type",
-                              "recipe-script",
-                              asList("recipe-tag1", "recipe-tag2"),
-                              "recipe-description");
+                                 "recipe-creator",
+                                 "recipe-type",
+                                 "recipe-script",
+                                 asList("recipe-tag1", "recipe-tag2"),
+                                 "recipe-description");
     }
 
     public static StackImpl createStack(String id, String name) {

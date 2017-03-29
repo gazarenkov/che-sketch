@@ -14,7 +14,7 @@ import com.google.common.collect.ImmutableMap;
 
 import org.eclipse.che.api.core.ServerException;
 import org.eclipse.che.api.core.model.workspace.config.Environment;
-import org.eclipse.che.api.core.model.workspace.config.EnvironmentRecipe;
+import org.eclipse.che.api.core.model.workspace.config.Recipe;
 import org.eclipse.che.api.environment.server.model.CheServiceBuildContextImpl;
 import org.eclipse.che.api.environment.server.model.CheServiceImpl;
 import org.eclipse.che.api.environment.server.model.CheServicesEnvironmentImpl;
@@ -89,11 +89,11 @@ public class ComposeEnvironmentParserTest {
                                                   "    image: codenvy/ubuntu_jdk8\n";
 
     @Mock
-    private Environment       environment;
+    private Environment      environment;
     @Mock
-    private EnvironmentRecipe recipe;
+    private Recipe           recipe;
     @Mock
-    private RecipeDownloader  recipeDownloader;
+    private RecipeDownloader recipeDownloader;
 
     @InjectMocks
     private ComposeEnvironmentParser parser;

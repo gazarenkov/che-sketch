@@ -15,15 +15,15 @@ import com.google.gwt.user.client.ui.AcceptsOneWidget;
 import com.google.gwt.user.client.ui.IsWidget;
 import com.google.inject.Inject;
 
-import org.eclipse.che.api.machine.shared.dto.MachineRuntimeDto;
-import org.eclipse.che.api.machine.shared.dto.recipe.RecipeDescriptor;
+import org.eclipse.che.api.machine.shared.dto.MachineDto;
+import org.eclipse.che.api.machine.shared.dto.recipe.OldRecipeDescriptor;
 import org.eclipse.che.api.promises.client.Function;
 import org.eclipse.che.api.promises.client.FunctionException;
 import org.eclipse.che.api.promises.client.Operation;
 import org.eclipse.che.api.promises.client.OperationException;
 import org.eclipse.che.api.promises.client.Promise;
+import org.eclipse.che.api.workspace.shared.dto.RuntimeDto;
 import org.eclipse.che.api.workspace.shared.dto.WorkspaceDto;
-import org.eclipse.che.api.workspace.shared.dto.WorkspaceRuntimeDto;
 import org.eclipse.che.ide.api.app.AppContext;
 import org.eclipse.che.ide.api.machine.MachineEntity;
 import org.eclipse.che.ide.api.machine.MachineEntityImpl;
@@ -107,7 +107,7 @@ public class TargetsPresenter implements TargetsTreeManager, TargetsView.ActionD
             public void apply(List<MachineEntity> machineList) throws OperationException {
                 //create Target objects from all machines
                 for (MachineEntity machine : machineList) {
-                    //final MachineConfig machineConfig = machine.getConfig();
+                    //final OldMachineConfig machineConfig = machine.getConfig();
                     machines.put(machine.getDisplayName(), machine);
                     final String targetCategory = machine.isDev() ? machineLocale.devMachineCategory() : machine.getType();
                     final Target target = createTarget(machine.getDisplayName(), targetCategory);
@@ -115,10 +115,10 @@ public class TargetsPresenter implements TargetsTreeManager, TargetsView.ActionD
                     targets.put(target.getName(), target);
                 }
                 //create Target objects from recipe with ssh type
-                recipeServiceClient.getAllRecipes().then(new Operation<List<RecipeDescriptor>>() {
+                recipeServiceClient.getAllRecipes().then(new Operation<List<OldRecipeDescriptor>>() {
                     @Override
-                    public void apply(List<RecipeDescriptor> recipeList) throws OperationException {
-                        for (RecipeDescriptor recipe : recipeList) {
+                    public void apply(List<OldRecipeDescriptor> recipeList) throws OperationException {
+                        for (OldRecipeDescriptor recipe : recipeList) {
                             //only for SSH recipes
                             if (!machineLocale.targetsViewCategorySsh().equalsIgnoreCase(recipe.getType())) {
                                 continue;
@@ -144,12 +144,12 @@ public class TargetsPresenter implements TargetsTreeManager, TargetsView.ActionD
         return workspaceServiceClient.getWorkspace(workspaceId).then(new Function<WorkspaceDto, List<MachineEntity>>() {
             @Override
             public List<MachineEntity> apply(WorkspaceDto workspace) throws FunctionException {
-                WorkspaceRuntimeDto workspaceRuntime = workspace.getRuntime();
+                RuntimeDto workspaceRuntime = workspace.getRuntime();
                 if (workspaceRuntime == null) {
                     return emptyList();
                 }
 
-                Map <String, MachineRuntimeDto> runtimeMachines = workspaceRuntime.getMachines();
+                Map <String, MachineDto> runtimeMachines = workspaceRuntime.getMachines();
                 List<MachineEntity> machines = new ArrayList<>(runtimeMachines.size());
                 for (String machineId : runtimeMachines.keySet()) {
                     MachineEntity machineEntity = new MachineEntityImpl(appContext.getWorkspace(), machineId);

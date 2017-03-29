@@ -14,11 +14,11 @@ import com.google.inject.Inject;
 import com.google.inject.Singleton;
 import com.google.web.bindery.event.shared.EventBus;
 
-import org.eclipse.che.api.machine.shared.dto.MachineRuntimeDto;
+import org.eclipse.che.api.machine.shared.dto.MachineDto;
 import org.eclipse.che.api.promises.client.Operation;
 import org.eclipse.che.api.promises.client.OperationException;
+import org.eclipse.che.api.workspace.shared.dto.RuntimeDto;
 import org.eclipse.che.api.workspace.shared.dto.WorkspaceDto;
-import org.eclipse.che.api.workspace.shared.dto.WorkspaceRuntimeDto;
 import org.eclipse.che.ide.api.app.AppContext;
 import org.eclipse.che.ide.api.machine.MachineEntity;
 import org.eclipse.che.ide.api.machine.MachineEntityImpl;
@@ -77,7 +77,7 @@ public class MachineStatusHandler implements MachineStatusChangedEvent.Handler {
         workspaceServiceClient.getWorkspace(workspaceId).then(new Operation<WorkspaceDto>() {
             @Override
             public void apply(WorkspaceDto workspace) throws OperationException {
-                WorkspaceRuntimeDto workspaceRuntime = workspace.getRuntime();
+                RuntimeDto workspaceRuntime = workspace.getRuntime();
                 if (workspaceRuntime == null) {
                     return;
                 }
@@ -99,8 +99,8 @@ public class MachineStatusHandler implements MachineStatusChangedEvent.Handler {
         });
     }
 
-    private MachineEntity getMachine(String machineId, WorkspaceRuntimeDto workspaceRuntime) {
-        for (Map.Entry<String, MachineRuntimeDto> machineDto : workspaceRuntime.getMachines().entrySet()) {
+    private MachineEntity getMachine(String machineId, RuntimeDto workspaceRuntime) {
+        for (Map.Entry<String, MachineDto> machineDto : workspaceRuntime.getMachines().entrySet()) {
             if (machineId.equals(machineDto.getKey())) {
                 return  new MachineEntityImpl(appContext.getWorkspace(), machineId);
                 //return entityFactory.createMachine(machineDto.getValue());
@@ -110,7 +110,7 @@ public class MachineStatusHandler implements MachineStatusChangedEvent.Handler {
         return null;
     }
 
-    private void handleMachineCreating(final String machineId, final WorkspaceRuntimeDto workspaceRuntime) {
+    private void handleMachineCreating(final String machineId, final RuntimeDto workspaceRuntime) {
         final MachineEntity machine = getMachine(machineId, workspaceRuntime);
         if (machine == null) {
             return;
@@ -118,7 +118,7 @@ public class MachineStatusHandler implements MachineStatusChangedEvent.Handler {
         eventBus.fireEvent(new MachineStateEvent(machine, CREATING));
     }
 
-    private void handleMachineRunning(final String machineId, final WorkspaceRuntimeDto workspaceRuntime) {
+    private void handleMachineRunning(final String machineId, final RuntimeDto workspaceRuntime) {
         final MachineEntity machine = getMachine(machineId, workspaceRuntime);
         if (machine == null) {
             return;

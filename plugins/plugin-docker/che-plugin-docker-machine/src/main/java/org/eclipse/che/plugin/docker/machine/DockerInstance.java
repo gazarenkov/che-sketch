@@ -15,13 +15,13 @@ import com.google.inject.assistedinject.Assisted;
 
 import org.eclipse.che.api.core.NotFoundException;
 import org.eclipse.che.api.core.ServerException;
+import org.eclipse.che.api.core.model.machine.OldMachine;
 import org.eclipse.che.api.core.model.workspace.config.Command;
-import org.eclipse.che.api.core.model.machine.Machine;
 import org.eclipse.che.api.core.model.machine.MachineSource;
 import org.eclipse.che.api.core.util.LineConsumer;
 import org.eclipse.che.api.core.util.ListLineConsumer;
 import org.eclipse.che.api.machine.server.exception.MachineException;
-import org.eclipse.che.api.machine.server.model.impl.MachineRuntimeImpl;
+import org.eclipse.che.api.machine.server.model.impl.MachineImpl;
 import org.eclipse.che.api.machine.server.spi.Instance;
 import org.eclipse.che.api.machine.server.spi.InstanceProcess;
 import org.eclipse.che.api.machine.server.spi.impl.AbstractInstance;
@@ -101,14 +101,14 @@ public class DockerInstance extends AbstractInstance {
     private final DockerInstanceProcessesCleaner              processesCleaner;
     private final ConcurrentHashMap<Integer, InstanceProcess> machineProcesses;
     private final boolean                                     snapshotUseRegistry;
-    private final MachineRuntimeImpl                          machineRuntime;
+    private final MachineImpl                                 machineRuntime;
 
     @Inject
     public DockerInstance(DockerConnector docker,
                           @Named("che.docker.registry") String registry,
                           @Named("che.docker.namespace") @Nullable String registryNamespace,
                           DockerMachineFactory dockerMachineFactory,
-                          @Assisted Machine machine,
+                          @Assisted OldMachine machine,
                           @Assisted("container") String container,
                           @Assisted("image") String image,
                           @Assisted DockerNode node,
@@ -139,7 +139,7 @@ public class DockerInstance extends AbstractInstance {
     }
 
     @Override
-    public MachineRuntimeImpl getRuntime() {
+    public MachineImpl getRuntime() {
         return machineRuntime;
     }
 
@@ -176,7 +176,7 @@ public class DockerInstance extends AbstractInstance {
                     if (dockerProcess != null) {
                         processes.add(dockerProcess);
                     } else {
-                        LOG.warn("Machine process {} exists in container but missing in processes map", virtualPid);
+                        LOG.warn("OldMachine process {} exists in container but missing in processes map", virtualPid);
                     }
                 }
             });
@@ -379,16 +379,16 @@ public class DockerInstance extends AbstractInstance {
         return container;
     }
 
-    private MachineRuntimeImpl doGetRuntime() throws MachineException {
+    private MachineImpl doGetRuntime() throws MachineException {
         try {
 
             DockerInstanceRuntime runtime = dockerMachineFactory.createMetadata(docker.inspectContainer(container),
                                                                                 getConfig(),
                                                                                 node.getHost());
-            return new MachineRuntimeImpl(runtime.getProperties(), runtime.getServers());
+            return new MachineImpl(runtime.getProperties(), runtime.getServers());
 
 
-//            return new MachineRuntimeImpl(dockerMachineFactory.createMetadata(docker.inspectContainer(container),
+//            return new MachineImpl(dockerMachineFactory.createMetadata(docker.inspectContainer(container),
 //                                                                              getConfig(),
 //                                                                              node.getHost()));
         } catch (IOException x) {

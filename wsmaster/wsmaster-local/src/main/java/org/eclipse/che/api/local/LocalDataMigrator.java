@@ -16,13 +16,13 @@ import com.google.inject.Inject;
 import com.google.inject.Singleton;
 
 import org.eclipse.che.api.core.NotFoundException;
-import org.eclipse.che.api.core.model.machine.Recipe;
+import org.eclipse.che.api.core.model.machine.OldRecipe;
 import org.eclipse.che.api.core.model.workspace.config.ProjectConfig;
 import org.eclipse.che.api.local.storage.LocalStorage;
 import org.eclipse.che.api.local.storage.LocalStorageFactory;
 import org.eclipse.che.api.local.storage.stack.StackLocalStorage;
 import org.eclipse.che.api.machine.server.model.impl.SnapshotImpl;
-import org.eclipse.che.api.machine.server.recipe.RecipeImpl;
+import org.eclipse.che.api.machine.server.recipe.OldRecipeImpl;
 import org.eclipse.che.api.machine.server.recipe.adapters.RecipeTypeAdapter;
 import org.eclipse.che.api.machine.server.spi.RecipeDao;
 import org.eclipse.che.api.machine.server.spi.SnapshotDao;
@@ -101,7 +101,7 @@ public class LocalDataMigrator {
         // Create all the objects needed for migration, the order is important
         final List<Migration<?>> migrations = new ArrayList<>();
         final Map<Class<?>, Object> adapters = ImmutableMap.of(WorkspaceImpl.class, new WorkspaceDeserializer(),
-                                                               Recipe.class, new RecipeTypeAdapter(),
+                                                               OldRecipe.class, new RecipeTypeAdapter(),
                                                                ProjectConfig.class, new ProjectConfigAdapter(),
                                                                WorkspaceConfigImpl.class, new WorkspaceConfigDeserializer(cfgAdapter));
         migrations.add(new UserMigration(factory.create(LocalUserDaoImpl.FILENAME), userDao));
@@ -397,27 +397,27 @@ public class LocalDataMigrator {
         }
     }
 
-    public static class RecipeMigration extends Migration<RecipeImpl> {
+    public static class RecipeMigration extends Migration<OldRecipeImpl> {
 
         private final RecipeDao recipeDao;
 
         public RecipeMigration(LocalStorage localStorage, RecipeDao recipeDao) {
-            super("Recipe", localStorage);
+            super("OldRecipe", localStorage);
             this.recipeDao = recipeDao;
         }
 
         @Override
-        public List<RecipeImpl> getAllEntities() throws Exception {
-            return new ArrayList<>(storage.loadMap(new TypeToken<Map<String, RecipeImpl>>() {}).values());
+        public List<OldRecipeImpl> getAllEntities() throws Exception {
+            return new ArrayList<>(storage.loadMap(new TypeToken<Map<String, OldRecipeImpl>>() {}).values());
         }
 
         @Override
-        public void migrate(RecipeImpl entity) throws Exception {
+        public void migrate(OldRecipeImpl entity) throws Exception {
             recipeDao.create(entity);
         }
 
         @Override
-        public boolean isMigrated(RecipeImpl entity) throws Exception {
+        public boolean isMigrated(OldRecipeImpl entity) throws Exception {
             return exists(() -> recipeDao.getById(entity.getId()));
         }
     }

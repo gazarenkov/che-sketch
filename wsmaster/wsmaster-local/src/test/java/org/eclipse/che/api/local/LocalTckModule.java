@@ -14,14 +14,12 @@ import com.google.inject.Inject;
 import com.google.inject.TypeLiteral;
 import com.google.inject.name.Names;
 
-import org.eclipse.che.account.spi.AccountDao;
 import org.eclipse.che.account.spi.AccountImpl;
-import org.eclipse.che.account.spi.jpa.JpaAccountDao;
 import org.eclipse.che.api.local.storage.LocalStorage;
 import org.eclipse.che.api.local.storage.LocalStorageFactory;
 import org.eclipse.che.api.local.storage.stack.StackLocalStorage;
 import org.eclipse.che.api.machine.server.model.impl.SnapshotImpl;
-import org.eclipse.che.api.machine.server.recipe.RecipeImpl;
+import org.eclipse.che.api.machine.server.recipe.OldRecipeImpl;
 import org.eclipse.che.api.machine.server.spi.RecipeDao;
 import org.eclipse.che.api.machine.server.spi.SnapshotDao;
 import org.eclipse.che.api.ssh.server.model.impl.SshPairImpl;
@@ -79,7 +77,7 @@ public class LocalTckModule extends TckModule {
 
         bind(new TypeLiteral<TckRepository<UserImpl>>() {}).to(LocalUserTckRepository.class);
         bind(new TypeLiteral<TckRepository<ProfileImpl>>() {}).to(LocalProfileTckRepository.class);
-        bind(new TypeLiteral<TckRepository<RecipeImpl>>() {}).to(LocalRecipeTckRepository.class);
+        bind(new TypeLiteral<TckRepository<OldRecipeImpl>>() {}).to(LocalRecipeTckRepository.class);
         bind(new TypeLiteral<TckRepository<WorkspaceImpl>>() {}).to(LocalWorkspaceTckRepository.class);
         bind(new TypeLiteral<TckRepository<Pair<String, Map<String, String>>>>() {}).to(LocalPreferenceTckRepository.class);
         bind(new TypeLiteral<TckRepository<StackImpl>>() {}).to(LocalStackTckRepository.class);
@@ -122,10 +120,10 @@ public class LocalTckModule extends TckModule {
     }
 
     @Singleton
-    private static class LocalRecipeTckRepository extends LocalMapTckRepository<RecipeImpl> {
+    private static class LocalRecipeTckRepository extends LocalMapTckRepository<OldRecipeImpl> {
         @Inject
         public LocalRecipeTckRepository(LocalRecipeDaoImpl recipeDao) {
-            super(recipeDao.recipes, RecipeImpl::getId, recipeDao);
+            super(recipeDao.recipes, OldRecipeImpl::getId, recipeDao);
         }
     }
 

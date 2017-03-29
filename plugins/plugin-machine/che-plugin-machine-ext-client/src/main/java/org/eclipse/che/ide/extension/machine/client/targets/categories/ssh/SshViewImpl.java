@@ -27,7 +27,7 @@ import com.google.gwt.user.client.ui.Widget;
 import com.google.inject.Inject;
 import com.google.inject.Singleton;
 
-import org.eclipse.che.api.machine.shared.dto.recipe.RecipeDescriptor;
+import org.eclipse.che.api.machine.shared.dto.recipe.OldRecipeDescriptor;
 import org.eclipse.che.ide.CoreLocalizationConstant;
 import org.eclipse.che.ide.ui.TextBox;
 import org.eclipse.che.ide.util.loging.Log;
@@ -265,7 +265,7 @@ public class SshViewImpl implements SshView {
             return false;
         }
 
-        final RecipeDescriptor targetRecipe = target.getRecipe();
+        final OldRecipeDescriptor targetRecipe = target.getRecipe();
         if (targetRecipe == null) {
             return false;
         }

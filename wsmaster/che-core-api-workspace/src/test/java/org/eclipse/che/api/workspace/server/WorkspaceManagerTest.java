@@ -15,18 +15,18 @@ import org.eclipse.che.account.spi.AccountImpl;
 import org.eclipse.che.api.core.ConflictException;
 import org.eclipse.che.api.core.NotFoundException;
 import org.eclipse.che.api.core.ServerException;
-import org.eclipse.che.api.core.model.workspace.runtime.MachineRuntime;
+import org.eclipse.che.api.core.model.workspace.runtime.Machine;
 import org.eclipse.che.api.core.model.workspace.WorkspaceConfig;
 import org.eclipse.che.api.core.model.workspace.WorkspaceStatus;
 import org.eclipse.che.api.core.notification.EventService;
-import org.eclipse.che.api.machine.server.model.impl.MachineRuntimeImpl;
+import org.eclipse.che.api.machine.server.model.impl.MachineImpl;
 import org.eclipse.che.api.machine.server.spi.SnapshotDao;
 import org.eclipse.che.api.workspace.server.model.impl.EnvironmentImpl;
-import org.eclipse.che.api.workspace.server.model.impl.EnvironmentRecipeImpl;
-import org.eclipse.che.api.workspace.server.model.impl.MachineConfig2Impl;
+import org.eclipse.che.api.workspace.server.model.impl.RecipeImpl;
+import org.eclipse.che.api.workspace.server.model.impl.MachineConfigImpl;
+import org.eclipse.che.api.workspace.server.model.impl.RuntimeImpl;
 import org.eclipse.che.api.workspace.server.model.impl.WorkspaceConfigImpl;
 import org.eclipse.che.api.workspace.server.model.impl.WorkspaceImpl;
-import org.eclipse.che.api.workspace.server.model.impl.WorkspaceRuntimeImpl;
 import org.eclipse.che.api.workspace.server.spi.WorkspaceDao;
 import org.eclipse.che.commons.env.EnvironmentContext;
 import org.eclipse.che.commons.subject.Subject;
@@ -741,7 +741,7 @@ public class WorkspaceManagerTest {
 //        // given
 //        WorkspaceImpl workspace = createAndMockWorkspace();
 //        RuntimeDescriptor descriptor = createAndMockDescriptor(workspace, RUNNING);
-//        MachineConfigImpl machineConfig = createMachine(workspace.getId(),
+//        OldMachineConfigImpl machineConfig = createMachine(workspace.getId(),
 //                                                        descriptor.getRuntime().getActiveEnv(),
 //                                                        false).getConfig();
 //
@@ -757,7 +757,7 @@ public class WorkspaceManagerTest {
 //    public void shouldThrowExceptionOnStartMachineInNonRunningWs() throws Exception {
 //        // given
 //        WorkspaceImpl workspace = createAndMockWorkspace();
-//        MachineConfigImpl machineConfig = createMachine(workspace.getId(), "env1", false).getConfig();
+//        OldMachineConfigImpl machineConfig = createMachine(workspace.getId(), "env1", false).getConfig();
 //
 //        // when
 //        workspaceManager.startMachine(machineConfig, workspace.getId());
@@ -786,7 +786,7 @@ public class WorkspaceManagerTest {
 //        // given
 //        final WorkspaceImpl workspace = createAndMockWorkspace();
 //        RuntimeDescriptor descriptor = createAndMockDescriptor(workspace, RUNNING);
-//        MachineImpl machine = descriptor.getRuntime().getMachines().get(0);
+//        OldMachineImpl machine = descriptor.getRuntime().getMachines().get(0);
 //
 //        // when
 //        workspaceManager.stopMachine(workspace.getId(), machine.getId());
@@ -810,7 +810,7 @@ public class WorkspaceManagerTest {
 //        // given
 //        final WorkspaceImpl workspace = createAndMockWorkspace();
 //        RuntimeDescriptor descriptor = createAndMockDescriptor(workspace, RUNNING);
-//        MachineImpl machine = descriptor.getRuntime().getMachines().get(0);
+//        OldMachineImpl machine = descriptor.getRuntime().getMachines().get(0);
 //
 //        // when
 //        workspaceManager.getMachineInstance(workspace.getId(), machine.getId());
@@ -824,7 +824,7 @@ public class WorkspaceManagerTest {
 //        // given
 //        final WorkspaceImpl workspace = createAndMockWorkspace();
 //        RuntimeDescriptor descriptor = createAndMockDescriptor(workspace, STARTING);
-//        MachineImpl machine = descriptor.getRuntime().getMachines().get(0);
+//        OldMachineImpl machine = descriptor.getRuntime().getMachines().get(0);
 //
 //        // when
 //        workspaceManager.getMachineInstance(workspace.getId(), machine.getId());
@@ -877,14 +877,14 @@ public class WorkspaceManagerTest {
     private void createAndMockRuntime(WorkspaceImpl workspace, WorkspaceStatus status)
             throws ServerException, NotFoundException, ConflictException {
 
-        final MachineRuntime mr1 = new MachineRuntimeImpl(new HashMap<>(), new HashMap<>());
-        final Map<String, MachineRuntime> machines = new HashMap<>();
+        final Machine mr1 = new MachineImpl(new HashMap<>(), new HashMap<>());
+        final Map<String, Machine> machines = new HashMap<>();
         machines.put("dev-machine", mr1);
 
-        final WorkspaceRuntimeImpl runtime = new WorkspaceRuntimeImpl(workspace.getConfig().getDefaultEnv(), machines, "owner");
-//        final MachineImpl machine1 = spy(createMachine(workspace.getId(), workspace.getConfig().getDefaultEnv(), true));
-//        final MachineImpl machine2 = spy(createMachine(workspace.getId(), workspace.getConfig().getDefaultEnv(), false));
-//        final Map<String, MachineImpl> machines = new HashMap<>();
+        final RuntimeImpl runtime = new RuntimeImpl(workspace.getConfig().getDefaultEnv(), machines, "owner");
+//        final OldMachineImpl machine1 = spy(createMachine(workspace.getId(), workspace.getConfig().getDefaultEnv(), true));
+//        final OldMachineImpl machine2 = spy(createMachine(workspace.getId(), workspace.getConfig().getDefaultEnv(), false));
+//        final Map<String, OldMachineImpl> machines = new HashMap<>();
 //        machines.put(machine1.getId(), machine1);
 //        machines.put(machine2.getId(), machine2);
 //        runtime.getMachines().addAll(machines.values());
@@ -903,10 +903,10 @@ public class WorkspaceManagerTest {
 //        EnvironmentImpl environment = workspace.getConfig().getEnvironments().get(workspace.getConfig().getDefaultEnv());
 //        assertNotNull(environment);
 //
-//        final WorkspaceRuntimeImpl runtime = new WorkspaceRuntimeImpl(workspace.getConfig().getDefaultEnv());
-//        final MachineImpl machine1 = spy(createMachine(workspace.getId(), workspace.getConfig().getDefaultEnv(), true));
-//        final MachineImpl machine2 = spy(createMachine(workspace.getId(), workspace.getConfig().getDefaultEnv(), false));
-//        final Map<String, MachineImpl> machines = new HashMap<>();
+//        final RuntimeImpl runtime = new RuntimeImpl(workspace.getConfig().getDefaultEnv());
+//        final OldMachineImpl machine1 = spy(createMachine(workspace.getId(), workspace.getConfig().getDefaultEnv(), true));
+//        final OldMachineImpl machine2 = spy(createMachine(workspace.getId(), workspace.getConfig().getDefaultEnv(), false));
+//        final Map<String, OldMachineImpl> machines = new HashMap<>();
 //        machines.put(machine1.getId(), machine1);
 //        machines.put(machine2.getId(), machine2);
 //        runtime.getMachines().addAll(machines.values());
@@ -938,14 +938,14 @@ public class WorkspaceManagerTest {
     }
 
     private static WorkspaceConfigImpl createConfig() {
-        EnvironmentImpl environment = new EnvironmentImpl(new EnvironmentRecipeImpl("type",
-                                                                                    "contentType",
-                                                                                    "content",
-                                                                                    null),
+        EnvironmentImpl environment = new EnvironmentImpl(new RecipeImpl("type",
+                                                                         "contentType",
+                                                                         "content",
+                                                                         null),
                                                           singletonMap("dev-machine",
-                                                                       new MachineConfig2Impl(singletonList("org.eclipse.che.ws-agent"),
-                                                                                              null,
-                                                                                              singletonMap("memoryLimitBytes", "10000"))));
+                                                                       new MachineConfigImpl(singletonList("org.eclipse.che.ws-agent"),
+                                                                                             null,
+                                                                                             singletonMap("memoryLimitBytes", "10000"))));
         return WorkspaceConfigImpl.builder()
                                   .setName("dev-workspace")
                                   .setDefaultEnv("dev-env")
@@ -953,9 +953,9 @@ public class WorkspaceManagerTest {
                                   .build();
     }
 //
-//    private MachineImpl createMachine(String workspaceId, String envName, boolean isDev) {
-//        return MachineImpl.builder()
-//                          .setConfig(MachineConfigImpl.builder()
+//    private OldMachineImpl createMachine(String workspaceId, String envName, boolean isDev) {
+//        return OldMachineImpl.builder()
+//                          .setConfig(OldMachineConfigImpl.builder()
 //                                                      .setDev(isDev)
 //                                                      .setName("machineName" + UUID.randomUUID())
 //                                                      .setSource(new MachineSourceImpl("type").setContent("content"))
@@ -967,7 +967,7 @@ public class WorkspaceManagerTest {
 //                          .setStatus(MachineStatus.RUNNING)
 //                          .setWorkspaceId(workspaceId)
 //                          .setEnvName(envName)
-//                          .setRuntime(new MachineRuntimeImpl(new HashMap<>(),
+//                          .setRuntime(new MachineImpl(new HashMap<>(),
 //                                                             new HashMap<>(),
 //                                                             new HashMap<>()))
 //                          .build();

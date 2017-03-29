@@ -23,10 +23,10 @@ public interface Environment {
      * Returns the recipe (the main script) to define this environment (compose, kubernetes pod).
      * Type of this recipe defines engine for composing machines network runtime.
      */
-    EnvironmentRecipe getRecipe();
+    Recipe getRecipe();
 
     /**
      * Returns mapping of machine name to additional configuration of machine.
      */
-    Map<String, ? extends MachineConfig2> getMachines();
+    Map<String, ? extends MachineConfig> getMachines();
 }

@@ -13,7 +13,7 @@ package org.eclipse.che.plugin.docker.machine.local;
 import com.google.common.base.Strings;
 
 import org.eclipse.che.api.core.model.workspace.config.Environment;
-import org.eclipse.che.api.core.model.workspace.config.MachineConfig2;
+import org.eclipse.che.api.core.model.workspace.config.MachineConfig;
 import org.eclipse.che.api.core.util.SystemInfo;
 import org.eclipse.che.api.environment.server.AgentConfigApplier;
 import org.eclipse.che.api.environment.server.DefaultInfrastructureProvisioner;
@@ -114,7 +114,7 @@ public class LocalCheInfrastructureProvisioner extends DefaultInfrastructureProv
     }
 
     @Override
-    public void provision(MachineConfig2 machineConfig, CheServiceImpl internalMachine) throws EnvironmentException {
+    public void provision(MachineConfig machineConfig, CheServiceImpl internalMachine) throws EnvironmentException {
         internalMachine.getVolumes().add(terminalVolumeProvider.get());
 
         super.provision(machineConfig, internalMachine);

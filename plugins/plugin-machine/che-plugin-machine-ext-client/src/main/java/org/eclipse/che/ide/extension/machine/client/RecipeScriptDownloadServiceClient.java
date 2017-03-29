@@ -10,7 +10,7 @@
  *******************************************************************************/
 package org.eclipse.che.ide.extension.machine.client;
 
-import org.eclipse.che.api.core.model.machine.Machine;
+import org.eclipse.che.api.core.model.machine.OldMachine;
 import org.eclipse.che.api.promises.client.Promise;
 
 /**
@@ -25,5 +25,5 @@ public interface RecipeScriptDownloadServiceClient {
      *         machine to fetch script for
      * @return content of the recipe script
      */
-    Promise<String> getRecipeScript(Machine machine);
+    Promise<String> getRecipeScript(OldMachine machine);
 }

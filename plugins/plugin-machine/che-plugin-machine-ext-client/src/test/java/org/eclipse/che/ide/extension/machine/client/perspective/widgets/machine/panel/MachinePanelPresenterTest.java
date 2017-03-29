@@ -44,9 +44,9 @@ public class MachinePanelPresenterTest {
 //    @Mock
 //    private MachineEntity       machine2;
 //    @Mock
-//    private MachineDto machineDtoFromAPI1;
+//    private OldMachineDto machineDtoFromAPI1;
 //    @Mock
-//    private MachineDto machineDtoFromAPI2;
+//    private OldMachineDto machineDtoFromAPI2;
 //    @Mock
 //    private MachineEntity       selectedMachine1;
 //    @Mock
@@ -66,7 +66,7 @@ public class MachinePanelPresenterTest {
 //    @Mock
 //    private Workspace           usersWorkspace;
 //    @Mock
-//    private WorkspaceRuntimeDto workspaceRuntime;
+//    private RuntimeDto runtime;
 //
 //    private MachinePanelPresenter presenter;
 //
@@ -75,8 +75,8 @@ public class MachinePanelPresenterTest {
 //        when(entityFactory.createMachine(machineDtoFromAPI1)).thenReturn(machine1);
 //        when(entityFactory.createMachine(machineDtoFromAPI2)).thenReturn(machine2);
 //
-//        MachineConfigDto machineConfig1 = mock(MachineConfigDto.class);
-//        MachineConfigDto machineConfig2 = mock(MachineConfigDto.class);
+//        OldMachineConfigDto machineConfig1 = mock(OldMachineConfigDto.class);
+//        OldMachineConfigDto machineConfig2 = mock(OldMachineConfigDto.class);
 //        when(selectedMachine1.getConfig()).thenReturn(machineConfig1);
 //        when(selectedMachine2.getConfig()).thenReturn(machineConfig2);
 //
@@ -96,7 +96,7 @@ public class MachinePanelPresenterTest {
 //        presenter = new MachinePanelPresenter(view, entityFactory, locale, appliance, eventBus, resources, appContext);
 //
 //        when(appContext.getWorkspace()).thenReturn(usersWorkspace);
-//        when(usersWorkspace.getRuntime()).thenReturn(workspaceRuntime);
+//        when(usersWorkspace.getRuntime()).thenReturn(runtime);
 //        when(usersWorkspace.getId()).thenReturn(TEXT);
 //    }
 //
@@ -120,7 +120,7 @@ public class MachinePanelPresenterTest {
 //
 //    @Test
 //    public void treeShouldBeDisplayedWithMachines() throws Exception {
-//        when(workspaceRuntime.getMachines()).thenReturn(Collections.singletonList(machineDtoFromAPI1));
+//        when(runtime.getMachines()).thenReturn(Collections.singletonList(machineDtoFromAPI1));
 //
 //        presenter.showMachines();
 //
@@ -136,7 +136,7 @@ public class MachinePanelPresenterTest {
 //
 //    @Test
 //    public void stubShouldBeDisplayedWhenMachinesNotExist() throws OperationException {
-//        when(workspaceRuntime.getMachines()).thenReturn(Collections.<MachineDto>emptyList());
+//        when(runtime.getMachines()).thenReturn(Collections.<OldMachineDto>emptyList());
 //
 //        presenter.showMachines();
 //
@@ -271,7 +271,7 @@ public class MachinePanelPresenterTest {
 //
 //    @Test
 //    public void shouldShowMachinesWhenMachinesPartIsActive() throws Exception {
-//        when(workspaceRuntime.getMachines()).thenReturn(Collections.singletonList(machineDtoFromAPI1));
+//        when(runtime.getMachines()).thenReturn(Collections.singletonList(machineDtoFromAPI1));
 //        ActivePartChangedEvent event = mock(ActivePartChangedEvent.class);
 //        when(event.getActivePart()).thenReturn(presenter);
 //

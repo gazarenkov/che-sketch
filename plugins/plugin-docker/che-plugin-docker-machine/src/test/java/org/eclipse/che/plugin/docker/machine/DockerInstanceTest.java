@@ -10,15 +10,15 @@
  *******************************************************************************/
 package org.eclipse.che.plugin.docker.machine;
 
-import org.eclipse.che.api.core.model.machine.Machine;
-import org.eclipse.che.api.core.model.machine.MachineConfig;
+import org.eclipse.che.api.core.model.machine.OldMachine;
+import org.eclipse.che.api.core.model.machine.OldMachineConfig;
 import org.eclipse.che.api.core.model.machine.MachineSource;
 import org.eclipse.che.api.core.model.machine.MachineStatus;
 import org.eclipse.che.api.core.util.LineConsumer;
 import org.eclipse.che.api.machine.server.exception.MachineException;
 import org.eclipse.che.api.machine.server.model.impl.MachineLimitsImpl;
-import org.eclipse.che.api.machine.server.model.impl.MachineConfigImpl;
-import org.eclipse.che.api.machine.server.model.impl.MachineImpl;
+import org.eclipse.che.api.machine.server.model.impl.OldMachineConfigImpl;
+import org.eclipse.che.api.machine.server.model.impl.OldMachineImpl;
 import org.eclipse.che.api.machine.server.model.impl.MachineSourceImpl;
 import org.eclipse.che.plugin.docker.client.DockerConnector;
 import org.eclipse.che.plugin.docker.client.Exec;
@@ -202,7 +202,7 @@ public class DockerInstanceTest {
         return getDockerInstance(getMachine(), REGISTRY, CONTAINER, IMAGE, false);
     }
 
-    private DockerInstance getDockerInstance(Machine machine,
+    private DockerInstance getDockerInstance(OldMachine machine,
                                              String registry,
                                              String container,
                                              String image,
@@ -223,36 +223,36 @@ public class DockerInstanceTest {
                                   snapshotUseRegistry);
     }
 
-    private Machine getMachine() {
+    private OldMachine getMachine() {
         return getMachine(getMachineConfig(), OWNER, MACHINE_ID, WORKSPACE_ID, STATUS);
     }
 
-    private Machine getMachine(MachineConfig config,
-                               String owner,
-                               String machineId,
-                               String wsId,
-                               MachineStatus status) {
-        return MachineImpl.builder()
-                          .setConfig(config)
-                          .setId(machineId)
-                          .setOwner(owner)
-                          .setWorkspaceId(wsId)
-                          .setEnvName("env")
-                          .setStatus(status)
-                          .build();
+    private OldMachine getMachine(OldMachineConfig config,
+                                  String owner,
+                                  String machineId,
+                                  String wsId,
+                                  MachineStatus status) {
+        return OldMachineImpl.builder()
+                             .setConfig(config)
+                             .setId(machineId)
+                             .setOwner(owner)
+                             .setWorkspaceId(wsId)
+                             .setEnvName("env")
+                             .setStatus(status)
+                             .build();
     }
 
-    private MachineConfig getMachineConfig() {
+    private OldMachineConfig getMachineConfig() {
         return getMachineConfig(true, NAME, TYPE);
     }
 
-    private MachineConfig getMachineConfig(boolean isDev, String name, String type) {
-        return MachineConfigImpl.builder()
-                                .setDev(isDev)
-                                .setName(name)
-                                .setType(type)
-                                .setSource(new MachineSourceImpl("docker").setLocation("location"))
-                                .setLimits(new MachineLimitsImpl(64))
-                                .build();
+    private OldMachineConfig getMachineConfig(boolean isDev, String name, String type) {
+        return OldMachineConfigImpl.builder()
+                                   .setDev(isDev)
+                                   .setName(name)
+                                   .setType(type)
+                                   .setSource(new MachineSourceImpl("docker").setLocation("location"))
+                                   .setLimits(new MachineLimitsImpl(64))
+                                   .build();
     }
 }

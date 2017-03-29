@@ -15,7 +15,7 @@ import org.eclipse.che.api.core.NotFoundException;
 import org.eclipse.che.api.core.ServerException;
 import org.eclipse.che.api.core.model.workspace.config.Command;
 import org.eclipse.che.api.core.model.workspace.config.Environment;
-import org.eclipse.che.api.core.model.workspace.config.EnvironmentRecipe;
+import org.eclipse.che.api.core.model.workspace.config.Recipe;
 import org.eclipse.che.api.core.model.workspace.Workspace;
 import org.eclipse.che.api.core.model.workspace.WorkspaceConfig;
 
@@ -98,15 +98,15 @@ public class DefaultWorkspaceValidator implements WorkspaceValidator {
     private void validateEnvironment(Environment environment) throws BadRequestException, NotFoundException, ServerException {
 
         checkNotNull(environment, "Environment should not be null");
-        EnvironmentRecipe recipe = environment.getRecipe();
+        Recipe recipe = environment.getRecipe();
         checkNotNull(recipe, "Environment recipe should not be null");
         checkNotNull(recipe.getType(), "Environment recipe type should not be null");
 
         // TODO need that?
 //        checkArgument(recipe.getContent() != null || recipe.getLocation() != null,
-//                      "Recipe of environment must contain location or content");
+//                      "OldRecipe of environment must contain location or content");
 //        checkArgument(recipe.getContent() != null && recipe.getLocation() != null,
-//                      "Recipe of environment must contain either location or content but not both");
+//                      "OldRecipe of environment must contain either location or content but not both");
 
         runtimes.estimate(environment);
     }

@@ -15,7 +15,7 @@ import com.google.gson.GsonBuilder;
 
 import org.eclipse.che.api.core.NotFoundException;
 import org.eclipse.che.api.local.storage.LocalStorageFactory;
-import org.eclipse.che.api.machine.server.recipe.RecipeImpl;
+import org.eclipse.che.api.machine.server.recipe.OldRecipeImpl;
 import org.mockito.testng.MockitoTestNGListener;
 import org.testng.annotations.BeforeMethod;
 import org.testng.annotations.Listeners;
@@ -61,7 +61,7 @@ public class LocalRecipeDaoImplTest {
 
     @Test
     public void testRecipesSerialization() throws Exception {
-        final RecipeImpl recipe = createRecipe();
+        final OldRecipeImpl recipe = createRecipe();
 
         recipeDao.create(recipe);
         recipeDao.saveRecipes();
@@ -71,21 +71,21 @@ public class LocalRecipeDaoImplTest {
 
     @Test
     public void testRecipeSnapshotsDeserialization() throws Exception {
-        final RecipeImpl recipe = createRecipe();
+        final OldRecipeImpl recipe = createRecipe();
         Files.write(recipesPath, GSON.toJson(singletonMap(recipe.getId(), recipe)).getBytes());
 
         recipeDao.loadRecipes();
 
-        final RecipeImpl result = recipeDao.getById(recipe.getId());
+        final OldRecipeImpl result = recipeDao.getById(recipe.getId());
         assertEquals(result, recipe);
     }
 
     @Test
     public void shouldBeAbleToSaveAndGetRecipe() throws Exception {
-        final RecipeImpl recipe = createRecipe();
+        final OldRecipeImpl recipe = createRecipe();
 
         recipeDao.create(recipe);
-        final RecipeImpl stored = recipeDao.getById(recipe.getId());
+        final OldRecipeImpl stored = recipeDao.getById(recipe.getId());
 
         assertEquals(recipe, stored);
     }
@@ -93,17 +93,17 @@ public class LocalRecipeDaoImplTest {
     @Test
     public void shouldBeAbleToUpdateRecipe() throws Exception {
         recipeDao.create(createRecipe());
-        final RecipeImpl newRecipe = createRecipe().withDescription("new description");
+        final OldRecipeImpl newRecipe = createRecipe().withDescription("new description");
 
-        final RecipeImpl stored = recipeDao.update(newRecipe);
+        final OldRecipeImpl stored = recipeDao.update(newRecipe);
 
         assertEquals(newRecipe, stored);
     }
 
     @Test(expectedExceptions = NotFoundException.class,
-          expectedExceptionsMessageRegExp = "Recipe with id recipe123 was not found")
+          expectedExceptionsMessageRegExp = "OldRecipe with id recipe123 was not found")
     public void shouldBeAbleToRemoveRecipe() throws Exception {
-        final RecipeImpl recipe = createRecipe();
+        final OldRecipeImpl recipe = createRecipe();
         recipeDao.create(recipe);
 
         recipeDao.remove(recipe.getId());
@@ -113,25 +113,25 @@ public class LocalRecipeDaoImplTest {
 
     @Test
     public void shouldBeAbleToSearchRecipeByTag() throws Exception {
-        final RecipeImpl toFind = createRecipe();
+        final OldRecipeImpl toFind = createRecipe();
         recipeDao.create(toFind);
         recipeDao.create(createRecipe().withId("recipe321")
                                        .withType("custom")
                                        .withTags(emptyList()));
 
-        final List<RecipeImpl> search = recipeDao.search("creator", singletonList("java"), "dockerfile", 0, 0);
+        final List<OldRecipeImpl> search = recipeDao.search("creator", singletonList("java"), "dockerfile", 0, 0);
 
         assertEquals(search.size(), 1);
         assertEquals(search.get(0), toFind);
     }
 
-    private RecipeImpl createRecipe() {
-        return new RecipeImpl("recipe123",
-                              "Test Recipe",
-                              "creator",
-                              "dockerfile",
-                              "FROM che/ubuntu",
-                              asList("java", "ubuntu"),
-                              "Che ubuntu");
+    private OldRecipeImpl createRecipe() {
+        return new OldRecipeImpl("recipe123",
+                                 "Test OldRecipe",
+                                 "creator",
+                                 "dockerfile",
+                                 "FROM che/ubuntu",
+                                 asList("java", "ubuntu"),
+                                 "Che ubuntu");
     }
 }

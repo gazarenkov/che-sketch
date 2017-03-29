@@ -25,7 +25,7 @@ import com.google.inject.Singleton;
 import com.google.web.bindery.event.shared.EventBus;
 
 import org.eclipse.che.api.machine.shared.Constants;
-import org.eclipse.che.api.machine.shared.dto.MachineRuntimeDto;
+import org.eclipse.che.api.machine.shared.dto.MachineDto;
 import org.eclipse.che.api.promises.client.Operation;
 import org.eclipse.che.api.promises.client.OperationException;
 import org.eclipse.che.api.promises.client.PromiseError;
@@ -109,7 +109,7 @@ public class BootstrapController {
                     @Override
                     public void apply(WorkspaceDto ws) throws OperationException {
 
-                        //MachineDto devMachineDto = ws.getRuntime().getDevMachine();
+                        //OldMachineDto devMachineDto = ws.getRuntime().getDevMachine();
                         DevMachine devMachine = devMachine(ws);
 
                         if (appContext instanceof AppContextImpl) {
@@ -226,7 +226,7 @@ public class BootstrapController {
 
     private DevMachine devMachine(WorkspaceDto ws) {
 
-        for(Map.Entry<String, MachineRuntimeDto> runtime : ws.getRuntime().getMachines().entrySet()) {
+        for(Map.Entry<String, MachineDto> runtime : ws.getRuntime().getMachines().entrySet()) {
             for(String server : runtime.getValue().getServers().keySet()) {
                 if(server.equals(Constants.WSAGENT_REFERENCE)) {
                     return new DevMachine(ws, runtime.getKey());
@@ -234,7 +234,7 @@ public class BootstrapController {
             }
         }
 
-        throw new RuntimeException("Dev Machine description not found for workspace " + ws.getConfig().getName());
+        throw new RuntimeException("Dev OldMachine description not found for workspace " + ws.getConfig().getName());
     }
 
     /**

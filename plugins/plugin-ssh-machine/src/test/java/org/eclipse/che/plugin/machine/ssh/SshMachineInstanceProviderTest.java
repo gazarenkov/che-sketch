@@ -12,17 +12,17 @@ package org.eclipse.che.plugin.machine.ssh;
 
 import com.google.gson.Gson;
 
-import org.eclipse.che.api.core.model.machine.Machine;
-import org.eclipse.che.api.core.model.machine.MachineConfig;
+import org.eclipse.che.api.core.model.machine.OldMachine;
+import org.eclipse.che.api.core.model.machine.OldMachineConfig;
 import org.eclipse.che.api.core.model.machine.MachineStatus;
 import org.eclipse.che.api.core.util.LineConsumer;
 import org.eclipse.che.api.machine.server.exception.MachineException;
 import org.eclipse.che.api.machine.server.exception.SnapshotException;
-import org.eclipse.che.api.machine.server.model.impl.MachineConfigImpl;
-import org.eclipse.che.api.machine.server.model.impl.MachineImpl;
+import org.eclipse.che.api.machine.server.model.impl.OldMachineConfigImpl;
+import org.eclipse.che.api.machine.server.model.impl.OldMachineImpl;
 import org.eclipse.che.api.machine.server.model.impl.MachineSourceImpl;
-import org.eclipse.che.api.machine.server.model.impl.ServerConfImpl;
-import org.eclipse.che.api.machine.server.recipe.RecipeImpl;
+import org.eclipse.che.api.machine.server.model.impl.OldServerConfImpl;
+import org.eclipse.che.api.machine.server.recipe.OldRecipeImpl;
 import org.eclipse.che.api.machine.server.spi.Instance;
 import org.eclipse.che.api.machine.server.util.RecipeDownloader;
 import org.mockito.InjectMocks;
@@ -53,16 +53,16 @@ public class SshMachineInstanceProviderTest {
     private RecipeDownloader recipeDownloader;
 
     @Mock
-    private SshMachineFactory  sshMachineFactory;
+    private SshMachineFactory     sshMachineFactory;
     @Mock
-    private SshClient          sshClient;
+    private SshClient             sshClient;
     @Mock
-    private SshMachineInstance sshMachineInstance;
+    private SshOldMachineInstance sshMachineInstance;
 
     @InjectMocks
     private SshMachineInstanceProvider provider;
-    private RecipeImpl                 recipe;
-    private MachineImpl                machine;
+    private OldRecipeImpl              recipe;
+    private OldMachineImpl             machine;
 
     @BeforeMethod
     public void setUp() throws Exception {
@@ -71,8 +71,8 @@ public class SshMachineInstanceProviderTest {
                                                                  22,
                                                                  "user",
                                                                  "password");
-        recipe = new RecipeImpl().withType("ssh-config")
-                                 .withScript(RECIPE_SCRIPT);
+        recipe = new OldRecipeImpl().withType("ssh-config")
+                                    .withScript(RECIPE_SCRIPT);
     }
 
     @Test
@@ -94,7 +94,7 @@ public class SshMachineInstanceProviderTest {
     @Test(expectedExceptions = MachineException.class,
           expectedExceptionsMessageRegExp = "Dev machine is not supported for Ssh machine implementation")
     public void shouldThrowExceptionOnDevMachineCreationFromRecipe() throws Exception {
-        Machine machine = createMachine(true);
+        OldMachine machine = createMachine(true);
 
         provider.createInstance(machine, LineConsumer.DEV_NULL);
     }
@@ -102,7 +102,7 @@ public class SshMachineInstanceProviderTest {
     @Test(expectedExceptions = NullPointerException.class,
           expectedExceptionsMessageRegExp = "Location in machine source is required")
     public void shouldThrowExceptionInvalidMachineConfigSource() throws Exception {
-        MachineImpl machine = createMachine(true);
+        OldMachineImpl machine = createMachine(true);
         machine.getConfig().setSource(new MachineSourceImpl("ssh-config").setContent("hello"));
 
         provider.createInstance(machine, LineConsumer.DEV_NULL);
@@ -119,30 +119,30 @@ public class SshMachineInstanceProviderTest {
         assertEquals(instance, sshMachineInstance);
     }
 
-    private MachineImpl createMachine() {
+    private OldMachineImpl createMachine() {
         return createMachine(false);
     }
 
-    private MachineImpl createMachine(boolean isDev) {
-        MachineConfig machineConfig = MachineConfigImpl.builder()
-                                                       .setDev(isDev)
-                                                       .setEnvVariables(singletonMap("testEnvVar1", "testEnvVarVal1"))
-                                                       .setName("name1")
-                                                       .setServers(singletonList(new ServerConfImpl("myref1",
-                                                                                                    "10011/tcp",
-                                                                                                    "http",
-                                                                                                    null)))
-                                                       .setSource(new MachineSourceImpl("ssh-config").setLocation("localhost:10012/recipe"))
-                                                       .setType("ssh")
-                                                       .build();
-        return MachineImpl.builder()
-                          .setConfig(machineConfig)
-                          .setEnvName("env1")
-                          .setId("id1")
-                          .setOwner("owner1")
-                          .setRuntime(null)
-                          .setStatus(MachineStatus.CREATING)
-                          .setWorkspaceId("wsId1")
-                          .build();
+    private OldMachineImpl createMachine(boolean isDev) {
+        OldMachineConfig machineConfig = OldMachineConfigImpl.builder()
+                                                             .setDev(isDev)
+                                                             .setEnvVariables(singletonMap("testEnvVar1", "testEnvVarVal1"))
+                                                             .setName("name1")
+                                                             .setServers(singletonList(new OldServerConfImpl("myref1",
+                                                                                                             "10011/tcp",
+                                                                                                             "http",
+                                                                                                             null)))
+                                                             .setSource(new MachineSourceImpl("ssh-config").setLocation("localhost:10012/recipe"))
+                                                             .setType("ssh")
+                                                             .build();
+        return OldMachineImpl.builder()
+                             .setConfig(machineConfig)
+                             .setEnvName("env1")
+                             .setId("id1")
+                             .setOwner("owner1")
+                             .setRuntime(null)
+                             .setStatus(MachineStatus.CREATING)
+                             .setWorkspaceId("wsId1")
+                             .build();
     }
 }
