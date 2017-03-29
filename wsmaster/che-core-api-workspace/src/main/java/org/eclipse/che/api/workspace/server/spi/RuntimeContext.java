@@ -39,7 +39,6 @@ public abstract class RuntimeContext {
         this.identity = identity;
         this.infrastructure = infrastructure;
         this.internalEnv = new InternalEnvironmentConfig(environment, registryEndpoint);
-        this.state = WorkspaceStatus.STOPPED;
     }
 
 
@@ -52,8 +51,8 @@ public abstract class RuntimeContext {
      * @return running Runtime
      */
     public final InternalRuntime start(Map<String, String> startOptions) throws ApiException {
-        if(this.state != WorkspaceStatus.STOPPED)
-            throw new ConflictException("Runtime is not STOPPED");
+        if(this.state != null)
+            throw new ConflictException("Context already used");
         state = WorkspaceStatus.STARTING;
         InternalRuntime runtime = internalStart(startOptions);
         state = WorkspaceStatus.RUNNING;
@@ -68,6 +67,8 @@ public abstract class RuntimeContext {
      * @param stopOptions
      */
     public final void stop(Map<String, String> stopOptions) throws ServerException, ConflictException {
+        if(this.state != null)
+            throw new ConflictException("Context already used");
         internalStop(stopOptions);
         state = WorkspaceStatus.STOPPED;
     }
@@ -75,20 +76,22 @@ public abstract class RuntimeContext {
     protected abstract void internalStop(Map<String, String> stopOptions) throws ServerException;
 
     /**
-     * Infrastructure should assign a channel (usual WebSocket) to push long lived processes messages
+     * Infrastructure should assign channel (usual WebSocket) to push long lived processes messages
      * Examples of such messages include:
      * - Statuses changes
      * - Start/Stop logs output
      * - Agent installer output
      * etc
      * It is expected that ones returning this URL implementation guarantees supporting and not changing
-     * it during the whole life time of Runtime.
-     * Repeating call of this method should return the same URL
-     * @return URL of the channel endpoint
-     * @throws NotSupportedException if implementation does not provide channel in general or for this
-     * particular channel name
+     * it during the whole life time of Runtime. Repeating calls of this method should return the same URL
+     * If infrastructure implementation provides a channel it guarantees:
+     * - this endpoint is open and ready to use
+     * - this endpoint emmits only messages of specified formats (TODO specify the formats)
+     * - high loaded infrastructure provides scaling of "messaging server" to avoid overloading
+     * @return URL of the channels endpoint
+     * @throws NotSupportedException if implementation does not provide channel
      */
-    public abstract URL getRuntimeChannel(String name) throws NotSupportedException;
+    public abstract URL getOutputChannel() throws NotSupportedException, ServerException;
 
 
     /**

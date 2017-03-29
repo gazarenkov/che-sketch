@@ -670,18 +670,5 @@ public class WorkspaceRuntimes {
 //    }
 //
 
-//    private static class RuntimeHolder {
-//
-//        private final WorkspaceRuntime      runtime;
-//        private final RuntimeInfrastructure infra;
-//        private final RuntimeIdentity       runtimeId;
-//
-//        private RuntimeHolder(RuntimeIdentity runtimeId, WorkspaceRuntime runtime, RuntimeInfrastructure infra) {
-//            this.runtime = runtime;
-//            this.infra = infra;
-//            this.runtimeId = runtimeId;
-//        }
-//
-//    }
 
 }
